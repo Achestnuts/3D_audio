@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>XWidget</class>
+ <widget class="QWidget" name="XWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>827</width>
+    <height>602</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <fontweight>Thin</fontweight>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>XWidget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* 设置顶部栏的样式 */
+QWidget#top {
+    background-color: #2c3e50; /* 深蓝色背景 */
+    color: red; /*红色文字 */
+    border-top-left-radius: 7px;     /* 左上角 */
+    border-top-right-radius: 7px;     /* 右上角 */
+}
+
+#contentWidget {
+    background-color:white;/* 白色背景 */
+    border-bottom-left-radius: 7px;  /* 左下角 */
+    border-bottom-right-radius: 7px; /* 右下角 */
+}
+
+/* 设置按钮的基本样式*/
+QPushButton {
+    background-color: #3498db; /* 蓝色背景 */
+    border: none; /* 无边框 */
+    color: red; /* 红色文字 */
+    margin: 4px; /* 按钮外边距 */
+    border-radius: 5px; /* 圆角边框 */
+}
+
+/* 鼠标悬停时按钮的样式 */
+QPushButton:hover {
+    background-color: #2980b9; /* 深一些的蓝色 */
+}
+
+/* 鼠标按下时按钮的样式 */
+QPushButton:pressed {
+    background-color: #1e3799; /* 更深的蓝色 */
+}
+
+/* 设置水平间距的样式 */
+spacer#hSpacerLeft,
+spacer#hSpacerMinAndMax,
+spacer#hSpacerMaxAndNor,
+spacer#hSpacerNorAndClose,
+spacer#hSpacerRight {
+    background-color: transparent; /* 透明背景 */
+}
+
+/* 设置垂直间距的样式 */
+spacer#vSpacer {
+    background-color: transparent; /* 透明背景 */
+}
+
+
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="XWidgetLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="top" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QGridLayout" name="topLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="pushButtonMin">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>一</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="pushButtonRestore">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>品</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="7">
+       <widget class="QPushButton" name="pushButtonClose">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>X</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="pushButtonMax">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>25</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>口</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="8">
+       <spacer name="hSpacerRight">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="4">
+       <spacer name="hSpacerMaxAndNor">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <spacer name="hSpacerLeft">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Expanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>578</width>
+          <height>13</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="6">
+       <spacer name="hSpacerNorAndClose">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="2">
+       <spacer name="hSpacerMinAndMax">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="contentWidget" native="true">
+     <layout class="QGridLayout" name="contentWidgetLayout">
+      <item row="0" column="0" rowspan="2">
+       <widget class="QGraphicsView" name="roomMap">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>3</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" rowspan="2">
+       <widget class="QStackedWidget" name="stackedPanel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="publicParameter">
+         <layout class="QGridLayout" name="publicParaterLayout">
+          <item row="2" column="4">
+           <widget class="QLabel" name="meterLabel">
+            <property name="text">
+             <string>米</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="5">
+           <widget class="QLabel" name="publicParameterTitle">
+            <property name="text">
+             <string>公共参数</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="gridMeterLabel">
+            <property name="text">
+             <string>格子长度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLineEdit" name="gridMeterEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2" colspan="3">
+           <widget class="QLineEdit" name="lineEdit_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="3">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="5" column="2" colspan="3">
+           <widget class="QLineEdit" name="lineEdit_3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2" colspan="3">
+           <widget class="QLineEdit" name="lineEdit_4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="startButton">
+            <property name="text">
+             <string>start</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QPushButton" name="stopButton">
+            <property name="text">
+             <string>stop</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="AudioSourcePanel" name="audioSourcePanel"/>
+        <widget class="SourceParameterWidget" name="itemParameter">
+         <layout class="QGridLayout" name="itemParameterLayout"/>
+        </widget>
+        <widget class="OcclusionFilterPanel" name="occlusionFilterPanel"/>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SourceParameterWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">sourceparameterwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OcclusionFilterPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">occlusionfilterpanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AudioSourcePanel</class>
+   <extends>QWidget</extends>
+   <header location="global">audiosourcepanel.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

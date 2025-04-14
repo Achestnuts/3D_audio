@@ -1,0 +1,5 @@
+#ContentWidget {
+    background-color:white;/* 白色背景 */
+    border-bottom-left-radius: 5px;  /* 左下角 */
+    border-bottom-right-radius: 5px; /* 右下角 */
+}
