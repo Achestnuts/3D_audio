@@ -14,6 +14,9 @@ public:
     void initMenu() override;
     void setListener(const QString &id);
 
+    QJsonObject toJson() const;
+    static DraggableListener* createFromJson(const QJsonObject &obj);
+
 signals:
     void itemSelected(DraggableListener* listener);
 // private slots:

@@ -9,14 +9,11 @@
 #include <XWidget.h>
 #include "ui_xwidget.h"
 
-// const int GridSize = 10; // 假设网格大小为10
-
-WallRectItem::WallRectItem(const QRectF rect, AudioManager* addManager, QGraphicsItem *parent)
+WallRectItem::WallRectItem(const QRectF rect, QGraphicsItem *parent)
     : QGraphicsRectItem(rect, parent),
     m_snapThreshold(80.0f),
     m_resizable(true),
-    m_resizeMode(NoResize),
-    manager(addManager)
+    m_resizeMode(NoResize)
 {
     setFlags(ItemIsMovable | ItemIsSelectable | ItemSendsGeometryChanges);
     setPen(QPen(Qt::black, 2));
@@ -24,10 +21,7 @@ WallRectItem::WallRectItem(const QRectF rect, AudioManager* addManager, QGraphic
 
     RoomMap *roomMap = qvariant_cast<RoomMap*>(qApp->property("RoomMap"));
     roomMap->scene->addItem(this);
-    setPos(roomMap->mapToScene(roomMap->viewport()->rect().center()));
-    updateLocation();
-    addManager->scene->addItem(this);
-    addManager->walls[filter.getFilterId()] = this;
+    updateLocation(mapToScene(roomMap->viewport()->rect().center()));
     //qDebug()<<pos();
     //setPos(rect.topLeft());
 
@@ -41,21 +35,23 @@ WallRectItem::WallRectItem(const QRectF rect, AudioManager* addManager, QGraphic
 
 }
 
+WallRectItem::~WallRectItem() {
+    disconnect();
+}
+
 void WallRectItem::initMenu()
 {
     menu = new QMenu();
-    // QAction *playVoiceAction = menu->addAction("播放");
-    // QAction *setSourceFileAction = menu->addAction("设置音源");
     QAction *deleteAction = menu->addAction("删除");
 
-    // connect(playVoiceAction, &QAction::triggered, this, &DraggableSource::playVoice);
-    // connect(setSourceFileAction, &QAction::triggered, this, &DraggableSource::setAudioSourceFile);
     connect(deleteAction, &QAction::triggered, [this] () {
+        AudioManager *manager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
         manager->removeWallRectItem(filter.getFilterId());
     });
 }
 
-void WallRectItem::updateLocation() {
+void WallRectItem::updateLocation(const QPointF & newPos) {
+    setPos(newPos);
     leftTopX = pos().x();
     leftTopY = pos().y();
     width = rect().width();
@@ -104,18 +100,15 @@ void WallRectItem::snapToGrid(int gridSize) {
 void WallRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (m_resizeMode != NoResize) {
         resizeItem(event->pos());
+        updateLocation(QPointF(leftTopX, leftTopY));
     } else {
         // 平移模式
         QPointF delta = event->pos() - m_pressPos;
-        RoomMap *roomMap = qvariant_cast<RoomMap*>(qApp->property("RoomMap"));
-        setPos(((this->pos() + delta)));
-        // qDebug()<<m_pressPos;
-        // qDebug()<<event->pos();
-        // qDebug()<<delta;
+        updateLocation(((this->pos() + delta)));
     }
-    updateLocation();
+    AudioManager *manager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
     QTimer::singleShot(0, manager, &AudioManager::updateEffectSlots);
-    scene()->update();
+    // scene()->update();
 }
 
 void WallRectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
@@ -209,4 +202,30 @@ void WallRectItem::resizeItem(const QPointF &pos) {
 void WallRectItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     menu->exec(event->screenPos());
+}
+
+
+QJsonObject WallRectItem::toJson() const {
+    QJsonObject obj;
+    obj["leftTopX"] = leftTopX; // 以场景坐标保存
+    obj["leftTopY"] = leftTopY;
+    obj["width"] = width;
+    obj["height"] = height;
+    obj["filterGain"] = filter.gain;
+    obj["filterGainHF"] = filter.gainHF;
+    obj["filterGainLF"] = filter.gainLF;
+    // obj[""]
+    // 其他属性……
+    return obj;
+}
+
+WallRectItem* WallRectItem::createFromJson(const QJsonObject &obj) {
+    QRectF rect(0, 0, obj["width"].toDouble(), obj["height"].toDouble());
+    WallRectItem* wall = new WallRectItem(rect, nullptr);
+    wall->updateLocation(QPointF(obj["leftTopX"].toDouble(), obj["leftTopY"].toDouble()));
+    wall->filter.gain = obj["filterGain"].toDouble();
+    wall->filter.gainHF = obj["filterGainHF"].toDouble();
+    wall->filter.gainLF = obj["filterGainLF"].toDouble();
+    // 其他属性……
+    return wall;
 }

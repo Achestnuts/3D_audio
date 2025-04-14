@@ -20,7 +20,8 @@ class WallRectItem : public QObject, public QGraphicsRectItem
 public:
     enum { Type = UserType + 1 }; // 自定义类型
 
-    explicit WallRectItem(const QRectF rect, AudioManager* addManager,  QGraphicsItem *parent = nullptr);
+    explicit WallRectItem(const QRectF rect,  QGraphicsItem *parent = nullptr);
+    ~WallRectItem();
     int type() const override { return Type; }
 
     // 设置吸附阈值
@@ -31,13 +32,16 @@ public:
     void setResizable(bool resizable);
     bool isResizable() const;
     void snapToGrid(int gridSize);
-    void updateLocation();
+    void updateLocation(const QPointF & newPos);
     void initMenu();
 
     float leftTopX, leftTopY;
     float width, height;
 
     OcclusionFilter filter;
+
+    QJsonObject toJson() const;
+    static WallRectItem* createFromJson(const QJsonObject &obj);
 
 signals:
     void itemSelected(WallRectItem* wall);
@@ -68,8 +72,6 @@ private:
     // 根据鼠标点判断正在拖拽哪一条边或角
     ResizeMode hitTest(const QPointF &pos) const;
     void resizeItem(const QPointF &pos);
-
-    AudioManager* manager;
 
 private:
     float m_snapThreshold;

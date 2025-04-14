@@ -112,3 +112,28 @@ void DraggableSource::playVoice()
 {
     manager->playSingal(sourceId);
 }
+
+QJsonObject DraggableSource::toJson() const {
+    QJsonObject obj;
+    obj["leftTopX"] = leftTopX; // 以场景坐标保存
+    obj["leftTopY"] = leftTopY;
+    obj["width"] = width;
+    obj["height"] = height;
+    obj["filterGain"] = filter.gain;
+    obj["filterGainHF"] = filter.gainHF;
+    obj["filterGainLF"] = filter.gainLF;
+    // obj[""]
+    // 其他属性……
+    return obj;
+}
+
+DraggableSource* DraggableSource::createFromJson(const QJsonObject &obj) {
+    QRectF rect(0, 0, obj["width"].toDouble(), obj["height"].toDouble());
+    WallRectItem* wall = new WallRectItem(rect);
+    wall->updateLocation(QPointF(obj["leftTopX"].toDouble(), obj["leftTopY"].toDouble()));
+    wall->filter.gain = obj["filterGain"].toDouble();
+    wall->filter.gainHF = obj["filterGainHF"].toDouble();
+    wall->filter.gainLF = obj["filterGainLF"].toDouble();
+    // 其他属性……
+    return wall;
+}

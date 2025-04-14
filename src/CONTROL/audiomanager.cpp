@@ -254,6 +254,8 @@ WallRectItem* AudioManager::createWall()
 {
     QRectF rect =  QRectF(0, 0, 400, 400);
     WallRectItem *wall = new WallRectItem(rect, this);
+    scene->addItem(wall);
+    walls[wall->filter.getFilterId()] = wall;
     //wall->setRect(rect);
 
     return wall;

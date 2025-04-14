@@ -16,6 +16,9 @@ public:
     void initMenu();
     bool setAudioSourceFile();
 
+    QJsonObject toJson() const;
+    static DraggableSource* createFromJson(const QJsonObject &obj);
+
     ALuint sourceId;
     QString sourceName;
     QString sourceFilePath;

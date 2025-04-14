@@ -1,0 +1,32 @@
+{
+	"BUILD_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/3D_audio_autogen",
+	"CMAKE_BINARY_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio",
+	"CMAKE_SOURCE_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/3D_audio_autogen/include",
+	"INPUTS" : 
+	[
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/test.mp3",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/test2.wav",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/qss/xwidget.qss",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/qss/contentwidget.qss",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/icons/play.svg",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/icons/test.svg",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/icons/listener.svg",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/icons/stop.svg"
+	],
+	"LOCK_FILE" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/CMakeFiles/3D_audio_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "--no-zstd", "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "3YJK5W5UP7",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "E:/WORK_software/Qt/6.8.2/mingw_64/bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/CMakeFiles/3D_audio_autogen.dir/AutoRcc_resources_3YJK5W5UP7_Used.txt",
+	"SOURCE" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/resources.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}
