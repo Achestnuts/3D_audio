@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -22,6 +21,7 @@
 #include <QtWidgets/QWidget>
 #include <audiosourcepanel.h>
 #include <occlusionfilterpanel.h>
+#include <roommap.h>
 #include <sourceparameterwidget.h>
 
 QT_BEGIN_NAMESPACE
@@ -43,22 +43,24 @@ public:
     QSpacerItem *hSpacerMinAndMax;
     QWidget *contentWidget;
     QGridLayout *contentWidgetLayout;
-    QGraphicsView *roomMap;
+    RoomMap *roomMap;
     QStackedWidget *stackedPanel;
     QWidget *publicParameter;
     QGridLayout *publicParaterLayout;
-    QLabel *meterLabel;
+    QLineEdit *lineEdit_4;
     QLabel *publicParameterTitle;
     QLabel *gridMeterLabel;
-    QLineEdit *gridMeterEdit;
     QLineEdit *lineEdit_2;
+    QLabel *meterLabel;
+    QLineEdit *gridMeterEdit;
     QSpacerItem *verticalSpacer;
     QLineEdit *lineEdit_3;
-    QLineEdit *lineEdit_4;
-    QPushButton *startButton;
     QPushButton *stopButton;
+    QPushButton *startButton;
+    QPushButton *sceneSaveButton;
+    QPushButton *sceneLoadButton;
     AudioSourcePanel *audioSourcePanel;
-    SourceParameterWidget *itemParameter;
+    SourceParameterWidget *sourceParameterWidget;
     QGridLayout *itemParameterLayout;
     OcclusionFilterPanel *occlusionFilterPanel;
 
@@ -209,7 +211,7 @@ public:
         contentWidget->setObjectName("contentWidget");
         contentWidgetLayout = new QGridLayout(contentWidget);
         contentWidgetLayout->setObjectName("contentWidgetLayout");
-        roomMap = new QGraphicsView(contentWidget);
+        roomMap = new RoomMap(contentWidget);
         roomMap->setObjectName("roomMap");
         QSizePolicy sizePolicy2(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
         sizePolicy2.setHorizontalStretch(3);
@@ -230,10 +232,15 @@ public:
         publicParameter->setObjectName("publicParameter");
         publicParaterLayout = new QGridLayout(publicParameter);
         publicParaterLayout->setObjectName("publicParaterLayout");
-        meterLabel = new QLabel(publicParameter);
-        meterLabel->setObjectName("meterLabel");
+        lineEdit_4 = new QLineEdit(publicParameter);
+        lineEdit_4->setObjectName("lineEdit_4");
+        QSizePolicy sizePolicy4(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(lineEdit_4->sizePolicy().hasHeightForWidth());
+        lineEdit_4->setSizePolicy(sizePolicy4);
 
-        publicParaterLayout->addWidget(meterLabel, 2, 4, 1, 1);
+        publicParaterLayout->addWidget(lineEdit_4, 4, 2, 1, 3);
 
         publicParameterTitle = new QLabel(publicParameter);
         publicParameterTitle->setObjectName("publicParameterTitle");
@@ -245,16 +252,6 @@ public:
 
         publicParaterLayout->addWidget(gridMeterLabel, 2, 0, 1, 1);
 
-        gridMeterEdit = new QLineEdit(publicParameter);
-        gridMeterEdit->setObjectName("gridMeterEdit");
-        QSizePolicy sizePolicy4(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(gridMeterEdit->sizePolicy().hasHeightForWidth());
-        gridMeterEdit->setSizePolicy(sizePolicy4);
-
-        publicParaterLayout->addWidget(gridMeterEdit, 2, 3, 1, 1);
-
         lineEdit_2 = new QLineEdit(publicParameter);
         lineEdit_2->setObjectName("lineEdit_2");
         sizePolicy4.setHeightForWidth(lineEdit_2->sizePolicy().hasHeightForWidth());
@@ -262,9 +259,21 @@ public:
 
         publicParaterLayout->addWidget(lineEdit_2, 6, 2, 1, 3);
 
+        meterLabel = new QLabel(publicParameter);
+        meterLabel->setObjectName("meterLabel");
+
+        publicParaterLayout->addWidget(meterLabel, 2, 4, 1, 1);
+
+        gridMeterEdit = new QLineEdit(publicParameter);
+        gridMeterEdit->setObjectName("gridMeterEdit");
+        sizePolicy4.setHeightForWidth(gridMeterEdit->sizePolicy().hasHeightForWidth());
+        gridMeterEdit->setSizePolicy(sizePolicy4);
+
+        publicParaterLayout->addWidget(gridMeterEdit, 2, 3, 1, 1);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        publicParaterLayout->addItem(verticalSpacer, 8, 3, 1, 1);
+        publicParaterLayout->addItem(verticalSpacer, 9, 3, 1, 1);
 
         lineEdit_3 = new QLineEdit(publicParameter);
         lineEdit_3->setObjectName("lineEdit_3");
@@ -273,32 +282,35 @@ public:
 
         publicParaterLayout->addWidget(lineEdit_3, 5, 2, 1, 3);
 
-        lineEdit_4 = new QLineEdit(publicParameter);
-        lineEdit_4->setObjectName("lineEdit_4");
-        sizePolicy4.setHeightForWidth(lineEdit_4->sizePolicy().hasHeightForWidth());
-        lineEdit_4->setSizePolicy(sizePolicy4);
+        stopButton = new QPushButton(publicParameter);
+        stopButton->setObjectName("stopButton");
 
-        publicParaterLayout->addWidget(lineEdit_4, 4, 2, 1, 3);
+        publicParaterLayout->addWidget(stopButton, 7, 3, 1, 1);
 
         startButton = new QPushButton(publicParameter);
         startButton->setObjectName("startButton");
 
         publicParaterLayout->addWidget(startButton, 7, 2, 1, 1);
 
-        stopButton = new QPushButton(publicParameter);
-        stopButton->setObjectName("stopButton");
+        sceneSaveButton = new QPushButton(publicParameter);
+        sceneSaveButton->setObjectName("sceneSaveButton");
 
-        publicParaterLayout->addWidget(stopButton, 7, 3, 1, 1);
+        publicParaterLayout->addWidget(sceneSaveButton, 8, 2, 1, 1);
+
+        sceneLoadButton = new QPushButton(publicParameter);
+        sceneLoadButton->setObjectName("sceneLoadButton");
+
+        publicParaterLayout->addWidget(sceneLoadButton, 8, 3, 1, 1);
 
         stackedPanel->addWidget(publicParameter);
         audioSourcePanel = new AudioSourcePanel();
         audioSourcePanel->setObjectName("audioSourcePanel");
         stackedPanel->addWidget(audioSourcePanel);
-        itemParameter = new SourceParameterWidget();
-        itemParameter->setObjectName("itemParameter");
-        itemParameterLayout = new QGridLayout(itemParameter);
+        sourceParameterWidget = new SourceParameterWidget();
+        sourceParameterWidget->setObjectName("sourceParameterWidget");
+        itemParameterLayout = new QGridLayout(sourceParameterWidget);
         itemParameterLayout->setObjectName("itemParameterLayout");
-        stackedPanel->addWidget(itemParameter);
+        stackedPanel->addWidget(sourceParameterWidget);
         occlusionFilterPanel = new OcclusionFilterPanel();
         occlusionFilterPanel->setObjectName("occlusionFilterPanel");
         stackedPanel->addWidget(occlusionFilterPanel);
@@ -324,11 +336,13 @@ public:
         pushButtonRestore->setText(QCoreApplication::translate("XWidget", "\345\223\201", nullptr));
         pushButtonClose->setText(QCoreApplication::translate("XWidget", "X", nullptr));
         pushButtonMax->setText(QCoreApplication::translate("XWidget", "\345\217\243", nullptr));
-        meterLabel->setText(QCoreApplication::translate("XWidget", "\347\261\263", nullptr));
         publicParameterTitle->setText(QCoreApplication::translate("XWidget", "\345\205\254\345\205\261\345\217\202\346\225\260", nullptr));
         gridMeterLabel->setText(QCoreApplication::translate("XWidget", "\346\240\274\345\255\220\351\225\277\345\272\246", nullptr));
-        startButton->setText(QCoreApplication::translate("XWidget", "start", nullptr));
+        meterLabel->setText(QCoreApplication::translate("XWidget", "\347\261\263", nullptr));
         stopButton->setText(QCoreApplication::translate("XWidget", "stop", nullptr));
+        startButton->setText(QCoreApplication::translate("XWidget", "start", nullptr));
+        sceneSaveButton->setText(QCoreApplication::translate("XWidget", "save", nullptr));
+        sceneLoadButton->setText(QCoreApplication::translate("XWidget", "load", nullptr));
     } // retranslateUi
 
 };

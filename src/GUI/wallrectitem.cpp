@@ -19,20 +19,23 @@ WallRectItem::WallRectItem(const QRectF rect, QGraphicsItem *parent)
     setPen(QPen(Qt::black, 2));
     setBrush(QBrush(Qt::lightGray));
 
-    RoomMap *roomMap = qvariant_cast<RoomMap*>(qApp->property("RoomMap"));
+    std::shared_ptr<XWidget> xWidget = qvariant_cast<std::shared_ptr<XWidget>>(qApp->property("MainXWidget"));
+    RoomMap* roomMap = xWidget->ui->roomMap;
     roomMap->scene->addItem(this);
-    updateLocation(mapToScene(roomMap->viewport()->rect().center()));
-    //qDebug()<<pos();
-    //setPos(rect.topLeft());
 
-    //connect()
-    XWidget* xWidget = qvariant_cast<XWidget*>(qApp->property("MainXWidget"));
     connect(this, &WallRectItem::itemSelected, [this, xWidget](WallRectItem* selectedWall) {
         xWidget->ui->occlusionFilterPanel->setFilter(&(selectedWall->filter));
     });
 
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    mutex = audioManager->itemMutex;
+    connect(this, &WallRectItem::needUpdateEffect, [audioManager](){
+        audioManager->updateEffectSlots();
+    });
+
     initMenu();
 
+    updateLocation(roomMap->mapToScene(roomMap->viewport()->rect().center()));
 }
 
 WallRectItem::~WallRectItem() {
@@ -45,17 +48,23 @@ void WallRectItem::initMenu()
     QAction *deleteAction = menu->addAction("删除");
 
     connect(deleteAction, &QAction::triggered, [this] () {
-        AudioManager *manager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
+        QMutex mutex;
+        QMutexLocker locker(&mutex);
+        std::shared_ptr<AudioManager> manager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
         manager->removeWallRectItem(filter.getFilterId());
+        emit needUpdateEffect();
     });
 }
 
 void WallRectItem::updateLocation(const QPointF & newPos) {
+    mutex->lockForWrite();
     setPos(newPos);
     leftTopX = pos().x();
     leftTopY = pos().y();
     width = rect().width();
     height = rect().height();
+    mutex->unlock();
+    emit needUpdateEffect();
 }
 
 void WallRectItem::setSnapThreshold(float threshold) {
@@ -92,7 +101,7 @@ void WallRectItem::snapToGrid(int gridSize) {
     QPointF pos = scenePos();
     qreal snappedX = round(pos.x() / gridSize) * gridSize;
     qreal snappedY = round(pos.y() / gridSize) * gridSize;
-    setPos(snappedX, snappedY);
+    updateLocation(QPointF(snappedX, snappedY));
 }
 
 
@@ -106,8 +115,9 @@ void WallRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         QPointF delta = event->pos() - m_pressPos;
         updateLocation(((this->pos() + delta)));
     }
-    AudioManager *manager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-    QTimer::singleShot(0, manager, &AudioManager::updateEffectSlots);
+    qDebug()<<"moving";
+    std::shared_ptr<AudioManager> manager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    // QTimer::singleShot(0, manager.get(), &AudioManager::updateEffectSlots);
     // scene()->update();
 }
 
@@ -206,6 +216,7 @@ void WallRectItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 
 QJsonObject WallRectItem::toJson() const {
+    QReadLocker locker(mutex.get());
     QJsonObject obj;
     obj["leftTopX"] = leftTopX; // 以场景坐标保存
     obj["leftTopY"] = leftTopY;
@@ -219,13 +230,15 @@ QJsonObject WallRectItem::toJson() const {
     return obj;
 }
 
-WallRectItem* WallRectItem::createFromJson(const QJsonObject &obj) {
+std::shared_ptr<WallRectItem> WallRectItem::createFromJson(const QJsonObject &obj) {
     QRectF rect(0, 0, obj["width"].toDouble(), obj["height"].toDouble());
-    WallRectItem* wall = new WallRectItem(rect, nullptr);
+    std::shared_ptr<WallRectItem> wall = std::make_shared<WallRectItem>(rect, nullptr);
     wall->updateLocation(QPointF(obj["leftTopX"].toDouble(), obj["leftTopY"].toDouble()));
+    wall->mutex->lockForWrite();
     wall->filter.gain = obj["filterGain"].toDouble();
     wall->filter.gainHF = obj["filterGainHF"].toDouble();
     wall->filter.gainLF = obj["filterGainLF"].toDouble();
     // 其他属性……
+    wall->mutex->unlock();
     return wall;
 }

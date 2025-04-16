@@ -9,7 +9,7 @@
 
 // 前向声明各个场景对象类
 class WallRectItem;
-class AudioSource;
+class DraggableSource;
 class Listener;
 
 class SceneFileHandler : public QObject
@@ -20,18 +20,16 @@ public:
 
     // 保存场景到指定文件
     bool saveScene(const QString &filename,
-                   const QList<WallRectItem*> &walls,
-                   const QList<AudioSource*> &audioSources,
-                   const Listener* listener,
-                   int gridSize);
+                          const std::list<std::shared_ptr<WallRectItem>> &walls,
+                          const std::list<std::shared_ptr<DraggableSource>> &sources,
+                          float gridSize);
 
     // 读取场景文件并生成各对象
     // 返回 true 表示读取成功，并利用输出参数加载到各个容器中
     bool loadScene(const QString &filename,
-                   QList<WallRectItem*> &walls,
-                   QList<AudioSource*> &audioSources,
-                   Listener* listener,
-                   int &gridSize);
+                          std::list<std::shared_ptr<WallRectItem>> &walls,
+                          std::list<std::shared_ptr<DraggableSource>> &sources,
+                          float &gridSize);
 
 signals:
     void sceneLoaded();

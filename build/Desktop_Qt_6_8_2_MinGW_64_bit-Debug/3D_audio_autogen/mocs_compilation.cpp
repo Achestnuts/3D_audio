@@ -3,6 +3,7 @@
 #include "MELDYZ2Z65/moc_auxeffectslot.cpp"
 #include "RCUKELS2VO/moc_audiomanager.cpp"
 #include "RCUKELS2VO/moc_roommap.cpp"
+#include "RCUKELS2VO/moc_scenefilehandler.cpp"
 #include "LETX6WCXY7/moc_audiosourcepanel.cpp"
 #include "LETX6WCXY7/moc_draggableitem.cpp"
 #include "LETX6WCXY7/moc_draggablelistener.cpp"

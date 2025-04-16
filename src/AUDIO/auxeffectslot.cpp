@@ -11,7 +11,7 @@ AuxEffectSlot::AuxEffectSlot() {
 
     qDebug()<<"effect效果槽准备创建";
 
-    reflectDir[0]=0, reflectDir[1]=0, reflectDir[2]=0;
+    // reflectDir[0]=0, reflectDir[1]=0, reflectDir[2]=0;
 
     roomSize = 0;
 
@@ -44,23 +44,23 @@ AuxEffectSlot::AuxEffectSlot() {
     alAuxiliaryEffectSloti(slotId, AL_EFFECTSLOT_EFFECT, effectId);
 }
 
-bool AuxEffectSlot::setDirection(int dir) {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    float reflectDir[3] = {0.0f, 0.0f, 0.0f};
+// bool AuxEffectSlot::setDirection(int dir) {
+//     std::lock_guard<std::mutex> lock(m_mutex);
+//     float reflectDir[3] = {0.0f, 0.0f, 0.0f};
 
-    if(dir == FrontEffect) {
-        reflectDir[2] = -1.0f;
-    } else if(dir == RightEffect) {
-        reflectDir[0] = -1.0f;
-    } else if(dir == BackEffect) {
-        reflectDir[2] = 1.0f;
-    } else if(dir == LeftEffect) {
-        reflectDir[0] = 1.0f;
-    } else {
-        return true;
-    }
-    return true;
-}
+//     if(dir == FrontEffect) {
+//         reflectDir[2] = -1.0f;
+//     } else if(dir == RightEffect) {
+//         reflectDir[0] = -1.0f;
+//     } else if(dir == BackEffect) {
+//         reflectDir[2] = 1.0f;
+//     } else if(dir == LeftEffect) {
+//         reflectDir[0] = 1.0f;
+//     } else {
+//         return true;
+//     }
+//     return true;
+// }
 
 bool AuxEffectSlot::resetEffect() {
     std::lock_guard<std::mutex> lock(m_mutex);
@@ -138,7 +138,7 @@ bool AuxEffectSlot::updateEffectParams(float estimateRoomSize, QVector3D reflect
     if (err != AL_NO_ERROR) {
         // 处理错误...
     }
-
+    float reflectDir[] = {reflection.x(), reflection.y(), reflection.z()};
     alEffectfv(effectId, AL_EAXREVERB_REFLECTIONS_PAN, reflectDir);
 
     alAuxiliaryEffectSloti(slotId, AL_EFFECTSLOT_EFFECT, effectId);

@@ -10,7 +10,7 @@
 
 class AudioSource {
 public:
-    explicit AudioSource(const std::string& filePath);
+    explicit AudioSource(const std::string& filePath = "");
     ~AudioSource();
 
     void initEffectSlots();

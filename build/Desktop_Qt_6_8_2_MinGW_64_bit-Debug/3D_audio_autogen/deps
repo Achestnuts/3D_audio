@@ -7,6 +7,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QList \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QMutex \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QObject \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QReadWriteLock \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QRect \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QSize \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QSizeF \
@@ -103,6 +104,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qpair.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qpoint.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qprocessordetection.h \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qreadwritelock.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qrect.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qrefcount.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qregularexpression.h \

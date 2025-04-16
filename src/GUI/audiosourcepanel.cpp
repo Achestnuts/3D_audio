@@ -35,11 +35,11 @@ AudioSourcePanel::~AudioSourcePanel() {
     delete ui;
 }
 
-void AudioSourcePanel::setSource(std::shared_ptr<AudioSource> source) {
-    m_source = source.get();
+void AudioSourcePanel::setSource(AudioSource* source) {
+    m_source = source;
     if (m_source) {
         ui->volumeSlider->setValue(static_cast<int>(m_source->volume * 100));
-        m_durationSeconds = m_source->duration;  // 你可以在 AudioSource 中补充 duration 读取
+        m_durationSeconds = m_source->duration;  // 在 AudioSource 中补充 duration 读取
     }
 }
 

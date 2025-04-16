@@ -1,12 +1,12 @@
 #ifndef PARAMETERCALCULATIONENGINE_H
 #define PARAMETERCALCULATIONENGINE_H
 
-#include "audiosource.h"
 #include "listener.h"
 #include "wallrectitem.h"
 
 #include <QMutex>
 #include <QPointF>
+#include <draggablesource.h>
 #include <list>
 
 // typedef struct {
@@ -83,9 +83,9 @@ public:
         double* quarterArea, double* quarterRadian, QPointF* quarterReflection
         );
     static float calculateEffectParameter(
-        std::shared_ptr<AudioSource> source,
-        const Listener* listener,
-        const std::unordered_map<ALuint, WallRectItem*> &walls,
+        std::shared_ptr<DraggableSource> source,
+        const std::shared_ptr<Listener> listener,
+        const std::unordered_map<ALuint, std::shared_ptr<WallRectItem>> &walls,
         float gridMeter,
         float *estimateRoomSize, QPointF *totalReflection
         );

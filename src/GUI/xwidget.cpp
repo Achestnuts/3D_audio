@@ -14,6 +14,8 @@
 XWidget::XWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::XWidget)
 {
+    qApp->setProperty("MainXWidget", QVariant::fromValue(std::shared_ptr<XWidget>(this))); // 存储指针
+
     setWindowFlags(Qt::FramelessWindowHint);    // 隐藏标题栏（无边框）
     setAttribute(Qt::WA_StyledBackground);      // 启用样式背景绘制
     setAttribute(Qt::WA_TranslucentBackground); // 背景透明
@@ -26,17 +28,17 @@ XWidget::XWidget(QWidget *parent)
 
     ui->setupUi(this);
 
-    if (ui->roomMap) {
-        roomMap = new RoomMap(ui->contentWidget);
-        qApp->setProperty("RoomMap", QVariant::fromValue(roomMap)); // 存储指针
-        QGraphicsView *graphicsView = ui->roomMap;
-        roomMap->setWindowTitle(graphicsView->windowTitle());
-        roomMap->setObjectName(graphicsView->objectName());
-        roomMap->setSizePolicy(graphicsView->sizePolicy());
-        ui->contentWidgetLayout->replaceWidget(ui->roomMap, roomMap);
-        ui->roomMap = roomMap;
-        delete graphicsView;
-    }
+    // if (ui->roomMap) {
+    //     roomMap = new RoomMap(ui->contentWidget);
+    //     qApp->setProperty("RoomMap", QVariant::fromValue(roomMap)); // 存储指针
+    //     QGraphicsView *graphicsView = ui->roomMap;
+    //     roomMap->setWindowTitle(graphicsView->windowTitle());
+    //     roomMap->setObjectName(graphicsView->objectName());
+    //     roomMap->setSizePolicy(graphicsView->sizePolicy());
+    //     ui->contentWidgetLayout->replaceWidget(ui->roomMap, roomMap);
+    //     ui->roomMap = roomMap;
+    //     delete graphicsView;
+    // }
 
     // QFile xWidgetStyleSheet(":/qss/qss/xwidget.qss");
     // xWidgetStyleSheet.open(QIODevice::ReadOnly);
@@ -47,10 +49,10 @@ XWidget::XWidget(QWidget *parent)
     connect(ui->pushButtonRestore, &QPushButton::clicked, this, &XWidget::restoreWidget);
     connect(ui->pushButtonMin, &QPushButton::clicked, this, &QWidget::showMinimized);
 
-    AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-    ui->gridMeterEdit->setText(QString::number(audioManager->gridMeter));
-    connect(ui->gridMeterEdit, &QLineEdit::editingFinished, [audioManager, this]() {
-        audioManager->gridMeter = this->ui->gridMeterEdit->text().toFloat();
+    //AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
+    ui->gridMeterEdit->setText(QString::number(ui->roomMap->audioManager->gridMeter));
+    connect(ui->gridMeterEdit, &QLineEdit::editingFinished, [this]() {
+        ui->roomMap->audioManager->gridMeter = this->ui->gridMeterEdit->text().toFloat();
     });
 
     ui->stackedPanel->installEventFilter(this);
@@ -61,13 +63,19 @@ XWidget::XWidget(QWidget *parent)
     // });
 
     connect(ui->startButton, &QPushButton::clicked, [this](){
-        AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-        audioManager->recorder->startRecording("E:/WorkPlace/QT/3D_audio/music/recorder.wav");
+        ui->roomMap->audioManager->recorder->startRecording("E:/WorkPlace/QT/3D_audio/music/recorder.wav");
     });
 
     connect(ui->stopButton, &QPushButton::clicked, [this](){
-        AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-        audioManager->recorder->stopRecording();
+        ui->roomMap->audioManager->recorder->stopRecording();
+    });
+
+    connect(ui->sceneSaveButton, &QPushButton::clicked, [this]() {
+        ui->roomMap->saveSceneFile();
+    });
+
+    connect(ui->sceneLoadButton, &QPushButton::clicked, [this]() {
+        ui->roomMap->loadSceneFile();
     });
 
     createShadow();
@@ -136,41 +144,41 @@ bool XWidget::eventFilter(QObject *watched, QEvent *event)
 }
 
 
-void XWidget::updateSourceParameterWidget(DraggableSource* source) {
-    QMutex mutex;
-    QMutexLocker locker(&mutex);
-    if(ui->itemParameter) {
-        qDebug()<<"准备更新窗口";
+// void XWidget::updateSourceParameterWidget(DraggableSource* source) {
+//     QMutex mutex;
+//     QMutexLocker locker(&mutex);
+//     if(ui->sourceParameterWidget) {
+//         qDebug()<<"准备更新窗口";
 
-        // 获取原页面的索引
-        //int originalIndex = ui->stackedPanel->indexOf(ui->itemParameter);
+//         // 获取原页面的索引
+//         //int originalIndex = ui->stackedPanel->indexOf(ui->itemParameter);
 
-        // AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-        // QWidget* widget = ui->itemParameter;
-        // SourceParameterWidget* itemParamter = new SourceParameterWidget(ui->contentWidget);
+//         // AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
+//         // QWidget* widget = ui->itemParameter;
+//         // SourceParameterWidget* itemParamter = new SourceParameterWidget(ui->contentWidget);
 
-        // itemParamter->setWindowTitle(widget->windowTitle());
-        // itemParamter->setObjectName(widget->objectName());
-        // itemParamter->setSizePolicy(widget->sizePolicy());
+//         // itemParamter->setWindowTitle(widget->windowTitle());
+//         // itemParamter->setObjectName(widget->objectName());
+//         // itemParamter->setSizePolicy(widget->sizePolicy());
 
-        // //ui->sidePanleLayout->removeWidget(ui->itemParameter);
+//         // //ui->sidePanleLayout->removeWidget(ui->itemParameter);
 
-        // ui->stackedPanel->insertWidget(originalIndex, itemParamter);
-        ui->itemParameter->disconnectBound();
-        ui->itemParameter->boundSource(source);
-
-
+//         // ui->stackedPanel->insertWidget(originalIndex, itemParamter);
+//         ui->sourceParameterWidget->disconnectBound();
+//         ui->sourceParameterWidget->boundSource(source);
 
 
-        qDebug()<<"完成窗口更新";
-    }
-}
-void XWidget::updateParameterWidget(DraggableListener* source) {
 
-}
-void XWidget::updateParameterWidget(WallRectItem* source) {
 
-}
+//         qDebug()<<"完成窗口更新";
+//     }
+// }
+// void XWidget::updateParameterWidget(DraggableListener* source) {
+
+// }
+// void XWidget::updateParameterWidget(WallRectItem* source) {
+
+// }
 
 bool XWidget::event(QEvent *event)
 {

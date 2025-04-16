@@ -21,14 +21,14 @@ class AuxEffectSlot : public QObject
 public:
 
     AuxEffectSlot();
-    bool setDirection(int dir);
+    // bool setDirection(int dir);
     bool updateEffectParams(float estimateRoomSize, QVector3D reflection, float gainFactor);
     bool resetEffect();
 
     ALuint slotId;   // 效果槽ID
     ALuint effectId; // 效果器ID
 
-    float reflectDir[3];
+    // float reflectDir[3];
 
     float decayTimeIntercept;
     float decayTimeFactor;

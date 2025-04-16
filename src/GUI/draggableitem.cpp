@@ -1,9 +1,8 @@
 #include "draggableitem.h"
 
-DraggableItem::DraggableItem(const QPixmap &icon, AudioManager *newManager)
-    : QGraphicsPixmapItem(icon)
+DraggableItem::DraggableItem(const QPixmap &icon)
+    : QGraphicsPixmapItem(QPixmap(icon).scaled(100, 100, Qt::KeepAspectRatio))
 {
-    manager = newManager;
     setFlags(ItemIsMovable | ItemIsSelectable); // 允许拖动和选择
 }
 
@@ -16,10 +15,10 @@ void DraggableItem::initMenu()
     //connect(playSourceAction, &QAction::triggered, this, &DraggableSource::playSource);
 }
 
-void DraggableItem::setManager(AudioManager* newManager)
-{
-    manager = newManager;
-}
+// void DraggableItem::setManager(AudioManager* newManager)
+// {
+//     manager = newManager;
+// }
 
 void DraggableItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

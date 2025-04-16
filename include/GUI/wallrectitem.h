@@ -3,12 +3,13 @@ class WallManager;
 #ifndef WALLRECTITEM_H
 #define WALLRECTITEM_H
 
-#include "OcclusionFilter.h"
-
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include <QPen>
 #include <QBrush>
+#include <QMutex>
+#include <QReadWriteLock>
+#include <occlusionfilter.h>
 
 #define GridSize 50
 
@@ -41,10 +42,11 @@ public:
     OcclusionFilter filter;
 
     QJsonObject toJson() const;
-    static WallRectItem* createFromJson(const QJsonObject &obj);
+    static std::shared_ptr<WallRectItem> createFromJson(const QJsonObject &obj);
 
 signals:
     void itemSelected(WallRectItem* wall);
+    void needUpdateEffect();
 
 protected:
     // 鼠标事件
@@ -72,6 +74,8 @@ private:
     // 根据鼠标点判断正在拖拽哪一条边或角
     ResizeMode hitTest(const QPointF &pos) const;
     void resizeItem(const QPointF &pos);
+
+    std::shared_ptr<QReadWriteLock> mutex = nullptr; // 来自管理器的读写锁
 
 private:
     float m_snapThreshold;

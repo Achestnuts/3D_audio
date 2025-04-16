@@ -50,21 +50,21 @@ public:
     bool eventFilter(QObject *watched, QEvent *event) override;
     void animatePageSwitch(int from, int to);
 
-    Ui::XWidget *ui;                          //边框ui
+    Ui::XWidget* ui;                          //边框ui
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
-public slots:
-    void updateSourceParameterWidget(DraggableSource* source);
-    void updateParameterWidget(DraggableListener* source);
-    void updateParameterWidget(WallRectItem* source);
+// public slots:
+//     void updateSourceParameterWidget(DraggableSource* source);
+//     void updateParameterWidget(DraggableListener* source);
+//     void updateParameterWidget(WallRectItem* source);
 
 // signals:
 //     void clickClose();
 
 private:
 
-    RoomMap *roomMap;
+    // std::shared_ptr<RoomMap> roomMap;
     // ContentWidget *contentWidget;             //中间内容层
     bool m_bIsPressed;                        //是否按下鼠标
     bool m_bIsDoublePressed;                  //是否是左键双击

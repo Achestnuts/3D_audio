@@ -11,9 +11,10 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <QGraphicsScene>
+#include <QReadWriteLock>
+#include <draggablesource.h>
 #include <unordered_map>
 #include "audiorecorder.h"
-#include "audiosource.h"
 #include "listener.h"
 #include "wallrectitem.h"
 
@@ -24,39 +25,41 @@ class XWidget;
 class AudioManager : public QObject {
     Q_OBJECT
 public:
-    explicit AudioManager(QGraphicsScene * addScene, QObject *parent = nullptr);
+    explicit AudioManager(std::shared_ptr<QGraphicsScene> addScene, QObject *parent = nullptr);
     ~AudioManager();
 
-    ALuint addAudioSource(const QString &filePath, float x, float y, float volume);
-    void setAudioSource(const ALuint &sourceId, const QString &filePath, float x, float y, float volume);
-    void updateAudioSource(const ALuint &sourceId, float x, float y, float volume);
-    void updateListener(float x, float y, float z);
-    ALuint getSourceBuffer(ALuint sourceId);
+    //ALuint addAudioSource(const QString &filePath, float x, float y, float volume);
+    //void setAudioSource(const ALuint &sourceId, const QString &filePath, float x, float y, float volume);
+    //void updateAudioSource(const ALuint &sourceId, float x, float y, float volume);
+    //void updateListener(float x, float y, float z);
+    //ALuint getSourceBuffer(ALuint sourceId);
     void removeAudioSource(const ALuint &sourceId);
-    void saveToFile(const QString &filename);
-    void loadFromFile(const QString &filename);
-    void playSingal(const ALuint &sourceId);
+    //void saveToFile(const QString &filename);
+    //void loadFromFile(const QString &filename);
+    //void playSingal(const ALuint &sourceId);
     void playAll();
     void stopAll();
     bool isSourceExist(const ALuint &sourceId);
     void removeWallRectItem(const ALuint &filterId);
+    bool listenerIsExist(std::shared_ptr<Listener> checkListener);
 
-    WallRectItem* createWall();
+    std::shared_ptr<WallRectItem> createWall();
     // 吸附功能: 让一个墙体与其他墙体对齐
-    void snapWall(WallRectItem *item);
+    // void snapWall(std::shared_ptr<WallRectItem> item);
     void updateEffectSlots();
 
-    std::unordered_map<ALuint, std::shared_ptr<AudioSource>> sources;
-    Listener *listener;
-    QGraphicsScene *scene;
-    std::unordered_map<ALuint, WallRectItem*> walls;
-    XWidget* xWidget;
-    AudioRecorder* recorder;
+    std::unordered_map<ALuint, std::shared_ptr<DraggableSource>> sources;
+    std::unordered_map<ALuint, std::shared_ptr<WallRectItem>> walls;
+    std::shared_ptr<Listener> listener;
+    std::shared_ptr<QGraphicsScene> scene;
+    std::shared_ptr<XWidget> xWidget;
+    std::shared_ptr<AudioRecorder> recorder;
 
     float gridMeter;
+    QMutex managerMutex;
+    std::shared_ptr<QReadWriteLock> itemMutex;
 
 private:
-    QMutex mutex;
     ALCdevice *device;
     ALCcontext *context;
 

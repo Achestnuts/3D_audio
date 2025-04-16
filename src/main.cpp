@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
 
     XWidget w;
-    qApp->setProperty("MainXWidget", QVariant::fromValue(&w)); // 存储指针
+
     w.show();
 
     return a.exec();

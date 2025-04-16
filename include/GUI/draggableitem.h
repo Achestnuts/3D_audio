@@ -1,7 +1,6 @@
 #ifndef DRAGGABLEITEM_H
 #define DRAGGABLEITEM_H
 
-#include "audiomanager.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsSceneMouseEvent>
@@ -13,9 +12,8 @@ class DraggableItem : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    explicit DraggableItem(const QPixmap &icon, AudioManager *newManager = nullptr);
+    explicit DraggableItem(const QPixmap &icon);
     //void setAudioSource(const QString &sourcName);
-    void setManager(AudioManager* newManager);
 
 
 protected:
@@ -32,7 +30,6 @@ protected:
 protected:
     bool dragging;
     QPointF lastMousePos;
-    AudioManager *manager;
     QMenu *menu;
 
 };

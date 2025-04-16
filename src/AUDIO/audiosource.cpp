@@ -32,6 +32,7 @@ AudioSource::AudioSource(const std::string& filePath)
 }
 
 
+
 void AudioSource::initEffectSlots() {
     qDebug()<<"effect准备创建";
         // 设置方向
@@ -98,6 +99,7 @@ void AudioSource::setVolume(float newVolume) {
 
 void AudioSource::setPosition(float x, float y, float z) {
     std::lock_guard<std::mutex> lock(mtx);
+    qDebug()<<"source is"<<x<<" "<<y<<" "<<z;
     posX = x;
     posY = y;
     alSource3f(sourceId, AL_POSITION, x, y, z);

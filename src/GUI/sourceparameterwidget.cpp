@@ -1,6 +1,8 @@
 #include "sourceparameterwidget.h"
 #include "ui_sourceparameterwidget.h"
 
+#include <audiomanager.h>
+
 SourceParameterWidget::SourceParameterWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SourceParameterWidget)
@@ -15,9 +17,9 @@ void SourceParameterWidget::disconnectBound()
         return;
     }
     disconnect();
-    AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-    if((audioManager->isSourceExist(source->sourceId))) {
-        audioManager->sources[source->sourceId]->auxEffectSlots.disconnect();
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    if((audioManager->isSourceExist(source->boundSource->sourceId))) {
+        audioManager->sources[source->boundSource->sourceId]->boundSource->auxEffectSlots.disconnect();
     }
 
     ui->nameEdit->disconnect();
@@ -72,28 +74,35 @@ void SourceParameterWidget::disconnectBound()
 
 bool SourceParameterWidget::boundSource(DraggableSource *boundSource)
 {
-    QMutex mutex;
-    QMutexLocker locker(&mutex);
     disconnect();
     source = boundSource;
 
-    AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-    if(!(audioManager->isSourceExist(boundSource->sourceId))) {
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    if(!(audioManager->isSourceExist(boundSource->boundSource->sourceId))) {
         return false;
     }
 
-    AuxEffectSlot* eSlot = &(audioManager->sources[source->sourceId]->auxEffectSlots);
+    AuxEffectSlot* eSlot = &(audioManager->sources[source->boundSource->sourceId]->boundSource->auxEffectSlots);
     qDebug()<<"准备连接";
-    auto changeParameterConnect = [this] (QLineEdit* edit, float* needChangeParameter) {
-        this->connect(edit, &QLineEdit::editingFinished, [needChangeParameter, edit] () {
+    auto changeParameterConnect = [=] (QLineEdit* edit, float* needChangeParameter) {
+        this->connect(edit, &QLineEdit::editingFinished, [=] () {
+            // qDebug()<<"pre change";
+            audioManager->itemMutex->lockForRead();
             *needChangeParameter = edit->text().toFloat();
+            audioManager->itemMutex->unlock();
+            audioManager->updateEffectSlots();
+            // qDebug()<<"change ok";
         });
         edit->setText(QString::number(*needChangeParameter));
     };
 
-    auto showSlotParameterConnect = [this, eSlot] (QLabel* label, float* showParameter){
-        connect(eSlot, &AuxEffectSlot::roomSizeChange, [label, showParameter] (float newRoomSize) {
+    auto showSlotParameterConnect = [=] (QLabel* label, float* showParameter){
+        connect(eSlot, &AuxEffectSlot::roomSizeChange, [=] (float newRoomSize) {
+            // qDebug()<<"pre show";
+            audioManager->itemMutex->lockForWrite();
             label->setText(QString::number(*showParameter));
+            audioManager->itemMutex->unlock();
+            // qDebug()<<"show ok";
         } );
         label->setText(QString::number(*showParameter));
     };

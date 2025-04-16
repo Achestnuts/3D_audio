@@ -18,7 +18,7 @@ public:
     explicit AudioSourcePanel(QWidget *parent = nullptr);
     ~AudioSourcePanel();
 
-    void setSource(std::shared_ptr<AudioSource> source);
+    void setSource(AudioSource* source);
     void disconnectSource();
 
 private slots:

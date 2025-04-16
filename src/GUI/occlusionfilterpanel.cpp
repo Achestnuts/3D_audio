@@ -1,6 +1,7 @@
 #include "occlusionfilterpanel.h"
 #include <QtMath>
 #include <QTime>
+#include <audiomanager.h>
 
 OcclusionFilterPanel::OcclusionFilterPanel(QWidget *parent)
     : QWidget(parent), ui(new Ui::OcclusionFilterPanel), m_filter(nullptr)
@@ -17,6 +18,10 @@ OcclusionFilterPanel::OcclusionFilterPanel(QWidget *parent)
 
     m_waveformTimer = new QTimer(this);
     connect(m_waveformTimer, &QTimer::timeout, this, &OcclusionFilterPanel::updateWaveform);
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    connect(this, &OcclusionFilterPanel::filterChanged, [=](){
+        audioManager->updateEffectSlots();
+    });
     m_waveformTimer->start(33); // ~30fps
 }
 

@@ -153,9 +153,9 @@ void ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(
 }
 
 float ParameterCalculationEngine::calculateEffectParameter(
-    std::shared_ptr<AudioSource> source,
-    const Listener* listener,
-    const std::unordered_map<ALuint, WallRectItem*> &walls,
+    std::shared_ptr<DraggableSource> source,
+    const std::shared_ptr<Listener> listener,
+    const std::unordered_map<ALuint, std::shared_ptr<WallRectItem>> &walls,
     float gridMeter,
     float *estimateRoomSize, QPointF *totalReflection
     ) {
@@ -163,8 +163,8 @@ float ParameterCalculationEngine::calculateEffectParameter(
     QMutex mutex;
     QMutexLocker locker(&mutex);
     // 获取声源位置
-    float srcX = source->posX / GridSize * gridMeter;
-    float srcY = source->posY / GridSize * gridMeter;
+    float srcX = source->boundSource->posX / GridSize * gridMeter;
+    float srcY = source->boundSource->posY / GridSize * gridMeter;
     QPointF sourcePoint = {srcX, srcY};
     QPointF listenerPoint = {listener->posX / GridSize * gridMeter, listener->posY / GridSize * gridMeter};
 
@@ -206,8 +206,8 @@ float ParameterCalculationEngine::calculateEffectParameter(
 
             switch (dir) {
             case RightEffect:
-                // 检查墙体的左边界是否在声源右侧，并且声源的 y 坐标在墙体上下范围内
-                if (wallLeft >= srcX && srcY >= wallTop && srcY <= wallBottom) {
+                // 检查墙体的左边界是否在声源右侧，/*并且声源的 y 坐标在墙体上下范围内*/
+                if (wallLeft >= srcX /*&& srcY >= wallTop && srcY <= wallBottom*/) {
                     distance = wallLeft - srcX;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallTop};
@@ -216,7 +216,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case LeftEffect:
-                if (wallRight <= srcX && srcY >= wallTop && srcY <= wallBottom) {
+                if (wallRight <= srcX /*&& srcY >= wallTop && srcY <= wallBottom*/) {
                     distance = srcX - wallRight;
                     candidate = true;
                     needHandleWall.frontEnd = {wallRight, wallTop};
@@ -225,7 +225,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case FrontEffect: // 前方：假设向上
-                if (wallBottom <= srcY && srcX >= wallLeft && srcX <= wallRight) {
+                if (wallBottom <= srcY /*&& srcX >= wallLeft && srcX <= wallRight*/) {
                     distance = srcY - wallBottom;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallBottom};
@@ -234,7 +234,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case BackEffect: // 后方：假设向下
-                if (wallTop >= srcY && srcX >= wallLeft && srcX <= wallRight) {
+                if (wallTop >= srcY /*&& srcX >= wallLeft && srcX <= wallRight*/) {
                     distance = wallTop - srcY;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallTop};
@@ -250,10 +250,10 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 //minDistance = distance;
                 // 如果听者与声源的连线与墙体相交，就将墙体的过滤器加入到声源中
                 if(needHandleWall.existIntersection(sourcePoint, listenerPoint)) {
-                    source->addFilter(&(wall->filter));
+                    source->boundSource->addFilter(&(wall->filter));
                 }
                 else {
-                    source->removeFilter(wall->filter.getFilterId());
+                    source->boundSource->removeFilter(wall->filter.getFilterId());
                 }
                 needHandleWalls.push_back(needHandleWall);
                 foundWall = true;
