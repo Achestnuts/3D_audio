@@ -73,9 +73,9 @@ bool AuxEffectSlot::resetEffect() {
 
 bool AuxEffectSlot::updateEffectParams(float estimateRoomSize, QVector3D reflection, float wallGain) {
     std::lock_guard<std::mutex> lock(m_mutex);
-    qDebug()<<"准备发送更新";
+    //qDebug()<<"准备发送更新";
     emit roomSizeChange(estimateRoomSize);
-    qDebug()<<"已发送更新";
+    //qDebug()<<"已发送更新";
 
 
     // 参数范围约束函数

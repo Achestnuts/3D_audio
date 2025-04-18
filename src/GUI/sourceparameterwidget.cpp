@@ -87,7 +87,7 @@ bool SourceParameterWidget::boundSource(DraggableSource *boundSource)
     auto changeParameterConnect = [=] (QLineEdit* edit, float* needChangeParameter) {
         this->connect(edit, &QLineEdit::editingFinished, [=] () {
             // qDebug()<<"pre change";
-            audioManager->itemMutex->lockForRead();
+            audioManager->itemMutex->lockForWrite();
             *needChangeParameter = edit->text().toFloat();
             audioManager->itemMutex->unlock();
             audioManager->updateEffectSlots();
@@ -99,7 +99,7 @@ bool SourceParameterWidget::boundSource(DraggableSource *boundSource)
     auto showSlotParameterConnect = [=] (QLabel* label, float* showParameter){
         connect(eSlot, &AuxEffectSlot::roomSizeChange, [=] (float newRoomSize) {
             // qDebug()<<"pre show";
-            audioManager->itemMutex->lockForWrite();
+            audioManager->itemMutex->lockForRead();
             label->setText(QString::number(*showParameter));
             audioManager->itemMutex->unlock();
             // qDebug()<<"show ok";

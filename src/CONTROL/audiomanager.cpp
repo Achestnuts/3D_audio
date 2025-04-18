@@ -51,7 +51,7 @@ AudioManager::~AudioManager() {
 
 void AudioManager::updateEffectSlots() {
     QMutexLocker lock(&managerMutex);
-    //QReadLocker locker(itemMutex.get());
+    QReadLocker locker(itemMutex.get());
 
     qDebug()<<"正在更新";
     // 假设 listener 和 source 均在 scene 坐标系中，且 sources 存储所有可见声源

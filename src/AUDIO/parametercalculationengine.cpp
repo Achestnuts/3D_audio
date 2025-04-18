@@ -5,8 +5,8 @@ ParameterCalculationEngine::ParameterCalculationEngine() {}
 
 
 std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(std::list<WallLineSegment> & walls) {
-    QMutex mutex;
-    QMutexLocker locker(&mutex);
+    // QMutex mutex;
+    // QMutexLocker locker(&mutex);
     // 先将墙体线段按距离升序排序
     // std::sort(walls.begin(), walls.end(), [](WallLineSegment a, WallLineSegment b){
     //     return a.distance <= b.distance;
@@ -19,17 +19,54 @@ std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(std::list<WallL
     for(auto wall : walls) {
 
         bool finishInsert = false;
-
+        //front               back
+        //  [--------wall-------]
+        //  [---splilltedWall---]
         for(auto it = splitedWalls.begin(); it != splitedWalls.end(); it++) {
             auto splitedWall = *it;
+
             // 后端点小于前端点，全部放入
+            //  [--------wall-------]
+            //                        [---splilltedWall---]
             if(wall.getBack() <= splitedWall.getFront()) {
                 splitedWalls.insert(it, wall);
                 finishInsert = true;
+                break;
             }
-            // 先将可放入的截下，再往后继续找
-            else {
+            //  [--------wall-------]
+            //                   [---splilltedWall---]
+            //                      or
+            //  [------------------------wall----------------]
+            //                        [---splilltedWall---]
+            // 先将可放入的截下，其余另行处理(没有等号)
+            else if(wall.getFront() < splitedWall.getFront()){
                 splitedWalls.insert(it, wall.cutDownTo(splitedWall.getFront()));
+            }
+            //                        [---wall---]
+            //  [---splilltedWall---]
+            // 看下一个
+            if(wall.getFront() >= splitedWall.getBack()) {
+                continue;
+            }
+            //   [---wall---]
+            //  [---splilltedWall---]
+            //           or
+            //       [-----------wall-----------]
+            //  [---splilltedWall---]
+            else {
+                //   [---wall---]
+                //  [---splilltedWall---]
+                // 全部舍弃
+                if(wall.getBack() <= splitedWall.getBack()) {
+                    finishInsert = true;
+                    break;
+                }
+                //       [-----------wall-----------]
+                //  [---splilltedWall---]
+                // 截下多余的
+                else {
+                    wall.cutDownTo(splitedWall.getBack());
+                }
             }
         }
 
@@ -39,7 +76,11 @@ std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(std::list<WallL
         }
 
     }
-    //qDebug()<<splitedWalls.size()<<"walls were splited";
+    qDebug()<<"*********************";
+    qDebug()<<splitedWalls.size()<<"walls were splited";
+    for(auto wall : splitedWalls) {
+        qDebug()<<wall.frontEnd<<"  "<<wall.backEnd;
+    }
     return splitedWalls;
 }
 
@@ -73,12 +114,12 @@ double calculateAngleAtPointA(float x1, float y1, float x2, float y2, float x3, 
 
     // 计算夹角的余弦值
     float cosTheta = dot / (magAB * magAC);
-    qDebug()<<"cos:"<<cosTheta;
+    // qDebug()<<"cos:"<<cosTheta;
 
     // 防止计算误差导致 acos 参数超出 [-1, 1] 范围
     if (cosTheta > 1.0) cosTheta = 1.0;
     if (cosTheta < -1.0) cosTheta = -1.0;
-    qDebug()<<"Theta"<<std::acos(cosTheta) *180 / M_PI;
+    // qDebug()<<"Theta"<<std::acos(cosTheta) *180 / M_PI;
     // 计算角度（弧度）
     return std::acos(cosTheta) *180 / M_PI;
 }
@@ -110,8 +151,8 @@ void ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(
     QPointF source, const std::list<WallLineSegment> &walls,
     double *quarterArea, double *quarterRadian, QPointF* quarterReflection) {
 
-    QMutex mutex;
-    QMutexLocker locker(&mutex);
+    // QMutex mutex;
+    // QMutexLocker locker(&mutex);
 
     *quarterReflection = {0, 0};
     float totalWeight = 0;
@@ -139,11 +180,11 @@ void ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(
         quarterReflection->setY(quarterReflection->y() + reflection.y() * weight);
         totalWeight += weight;
 
-        qDebug()<<wall.getFront()<<"end"<<wall.getBack();
-        qDebug()<<"wall y at:"<<wall.frontEnd.y();
-        qDebug()<<source.x()<<"and"<<source.y();
-        qDebug()<<"Area:"<<area;
-        qDebug()<<"Radian:"<<radian;
+        // qDebug()<<wall.getFront()<<"end"<<wall.getBack();
+        // qDebug()<<"wall y at:"<<wall.frontEnd.y();
+        // qDebug()<<source.x()<<"and"<<source.y();
+        // qDebug()<<"Area:"<<area;
+        // qDebug()<<"Radian:"<<radian;
     }
 
     quarterReflection->setX(quarterReflection->x() / totalWeight);
@@ -160,8 +201,8 @@ float ParameterCalculationEngine::calculateEffectParameter(
     float *estimateRoomSize, QPointF *totalReflection
     ) {
 
-    QMutex mutex;
-    QMutexLocker locker(&mutex);
+    // QMutex mutex;
+    // QMutexLocker locker(&mutex);
     // 获取声源位置
     float srcX = source->boundSource->posX / GridSize * gridMeter;
     float srcY = source->boundSource->posY / GridSize * gridMeter;
@@ -207,7 +248,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
             switch (dir) {
             case RightEffect:
                 // 检查墙体的左边界是否在声源右侧，/*并且声源的 y 坐标在墙体上下范围内*/
-                if (wallLeft >= srcX /*&& srcY >= wallTop && srcY <= wallBottom*/) {
+                if (wallLeft >= srcX && srcY >= wallTop && srcY <= wallBottom) {
                     distance = wallLeft - srcX;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallTop};
@@ -216,7 +257,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case LeftEffect:
-                if (wallRight <= srcX /*&& srcY >= wallTop && srcY <= wallBottom*/) {
+                if (wallRight <= srcX && srcY >= wallTop && srcY <= wallBottom) {
                     distance = srcX - wallRight;
                     candidate = true;
                     needHandleWall.frontEnd = {wallRight, wallTop};
@@ -225,7 +266,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case FrontEffect: // 前方：假设向上
-                if (wallBottom <= srcY /*&& srcX >= wallLeft && srcX <= wallRight*/) {
+                if (wallBottom <= srcY && srcX >= wallLeft && srcX <= wallRight) {
                     distance = srcY - wallBottom;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallBottom};
@@ -234,7 +275,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case BackEffect: // 后方：假设向下
-                if (wallTop >= srcY /*&& srcX >= wallLeft && srcX <= wallRight*/) {
+                if (wallTop >= srcY && srcX >= wallLeft && srcX <= wallRight) {
                     distance = wallTop - srcY;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallTop};
