@@ -149,7 +149,8 @@ float calculateWeight(float segmentLength, float distanceToSource) {
 }
 void ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(
     QPointF source, const std::list<WallLineSegment> &walls,
-    double *quarterArea, double *quarterRadian, QPointF* quarterReflection) {
+    double *quarterArea, double *quarterRadian, QPointF* quarterReflection,
+    double gridMeter) {
 
     // QMutex mutex;
     // QMutexLocker locker(&mutex);
@@ -161,9 +162,9 @@ void ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(
     for(auto wall : walls) {
         double area, radian;
         area = calculateTriangleArea(
-            source.x(), source.y(),
-            wall.frontEnd.x(), wall.frontEnd.y(),
-            wall.backEnd.x(), wall.backEnd.y()
+            source.x() / GridSize * gridMeter , source.y() / GridSize * gridMeter,
+            wall.frontEnd.x() / GridSize * gridMeter, wall.frontEnd.y() / GridSize * gridMeter,
+            wall.backEnd.x() / GridSize * gridMeter, wall.backEnd.y() / GridSize * gridMeter
             );
         *quarterArea += area;
         radian = calculateAngleAtPointA(
@@ -204,10 +205,10 @@ float ParameterCalculationEngine::calculateEffectParameter(
     // QMutex mutex;
     // QMutexLocker locker(&mutex);
     // 获取声源位置
-    float srcX = source->boundSource->posX / GridSize * gridMeter;
-    float srcY = source->boundSource->posY / GridSize * gridMeter;
+    float srcX = source->boundSource->posX /*/ GridSize * gridMeter*/;
+    float srcY = source->boundSource->posY /*/ GridSize * gridMeter*/;
     QPointF sourcePoint = {srcX, srcY};
-    QPointF listenerPoint = {listener->posX / GridSize * gridMeter, listener->posY / GridSize * gridMeter};
+    QPointF listenerPoint = {listener->posX /*/ GridSize * gridMeter*/, listener->posY /*/ GridSize * gridMeter*/};
 
     double totalArea = 0;
     double totalRadian = 0;
@@ -229,11 +230,11 @@ float ParameterCalculationEngine::calculateEffectParameter(
         for (auto wallPair : walls) {
             auto wall = wallPair.second;
             // 获取墙体在场景中的左上角坐标
-            QPointF wallPos = wall->scenePos();
-            float wallLeft = wallPos.x()  / GridSize * gridMeter;
-            float wallTop = wallPos.y()  / GridSize * gridMeter;
-            float wallWidth = wall->rect().width()  / GridSize * gridMeter;
-            float wallHeight = wall->rect().height()  / GridSize * gridMeter;
+            //QPointF wallPos = wall->scenePos();
+            float wallLeft = wall->leftTopX  /*/ GridSize * gridMeter*/;
+            float wallTop = wall->leftTopY  /*/ GridSize * gridMeter*/;
+            float wallWidth = wall->rect().width()  /*/ GridSize * gridMeter*/;
+            float wallHeight = wall->rect().height()  /*/ GridSize * gridMeter*/;
             float wallRight = wallLeft + wallWidth;
             float wallBottom = wallTop + wallHeight;
             // qDebug()<<"source at:"<<srcX<<" "<<srcY;
@@ -308,7 +309,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
             //qDebug()<<handledWalls.size()<<"walls were splited";
             ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(
                 sourcePoint, handledWalls,
-                &quarterArea, &quarterRadian, &quarterReflection
+                &quarterArea, &quarterRadian, &quarterReflection, gridMeter
                 );
             //qDebug() << "更新方向" << dir;
         } else {

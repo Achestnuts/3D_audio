@@ -58,11 +58,16 @@ void WallRectItem::initMenu()
 
 void WallRectItem::updateLocation(const QPointF & newPos) {
     mutex->lockForWrite();
+    qDebug()<<"before:"<<QPoint(leftTopX, leftTopY)<<" "<<width<<" "<<height;
+    // std::shared_ptr<XWidget> xWidget = qvariant_cast<std::shared_ptr<XWidget>>(qApp->property("MainXWidget"));
+    // RoomMap* roomMap = xWidget->ui->roomMap;
+    // setPos(roomMap->mapToScene(newPos.toPoint()));
     setPos(newPos);
     leftTopX = pos().x();
     leftTopY = pos().y();
     width = rect().width();
     height = rect().height();
+    qDebug()<<"after:"<<QPoint(leftTopX, leftTopY)<<" "<<width<<" "<<height;
     mutex->unlock();
     emit needUpdateEffect();
 }
@@ -116,7 +121,7 @@ void WallRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         updateLocation(((this->pos() + delta)));
     }
     qDebug()<<"moving";
-    std::shared_ptr<AudioManager> manager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    //std::shared_ptr<AudioManager> manager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
     // QTimer::singleShot(0, manager.get(), &AudioManager::updateEffectSlots);
     // scene()->update();
 }

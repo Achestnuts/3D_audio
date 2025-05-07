@@ -9,7 +9,6 @@
 	"INCLUDE_DIR" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/3D_audio_autogen/include",
 	"INPUTS" : 
 	[
-		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/test.mp3",
 		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/test2.wav",
 		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/qss/xwidget.qss",
 		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/qss/contentwidget.qss",

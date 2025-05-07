@@ -80,7 +80,8 @@ public:
     static void estimateQuarterAreaAndRadianAndReflection(
         QPointF source,
         const std::list<WallLineSegment> &walls,
-        double* quarterArea, double* quarterRadian, QPointF* quarterReflection
+        double* quarterArea, double* quarterRadian, QPointF* quarterReflection,
+        double gridMeter
         );
     static float calculateEffectParameter(
         std::shared_ptr<DraggableSource> source,

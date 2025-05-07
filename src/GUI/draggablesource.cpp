@@ -41,7 +41,7 @@ DraggableSource::DraggableSource()
 }
 
 DraggableSource::~DraggableSource() {
-    removeSelf();
+    //removeSelf();
     // if(boundSource) {
     //     delete boundSource;
     // }
@@ -60,9 +60,12 @@ void DraggableSource::removeSelf() {
     std::shared_ptr<RoomMap> roomMap = qvariant_cast<std::shared_ptr<RoomMap>>(qApp->property("RoomMap"));
     roomMap->scene->removeItem(this);
     if(roomMap->audioManager->isSourceExist(boundSource->sourceId)) {
+        qDebug()<<"准备删除";
         roomMap->audioManager->removeAudioSource(boundSource->sourceId);
     }
+    qDebug()<<"删除完成";
     mutex->unlock();
+    qDebug()<<"解锁";
     emit needUpdateEffect();
 }
 

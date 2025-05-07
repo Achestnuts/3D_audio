@@ -147,11 +147,14 @@ void AudioManager::updateEffectSlots() {
 // }
 
 void AudioManager::removeAudioSource(const ALuint &sourceId) {
+    // qDebug()<<"即将锁住管理器";
     QMutexLocker locker(&managerMutex);
     if (sources.find(sourceId) == sources.end()) return;
-
-    alDeleteSources(1, &(sources[sourceId]->boundSource->sourceId));
+    // qDebug()<<sourceId<<"锁住并找到了";
+    alDeleteSources(1, &(sourceId));
+    // qDebug()<<"删除完成";
     sources.erase(sourceId);
+    // qDebug()<<"管理器删除完成";
     return;
 }
 

@@ -12,6 +12,10 @@ DraggableListener::DraggableListener()
     // setPos(10, 10);
     std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
     mutex = audioManager->itemMutex;
+
+    connect(this, &DraggableListener::needUpdateEffect, [audioManager](){
+        audioManager->updateEffectSlots();
+    });
 }
 
 void DraggableListener::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -33,11 +37,13 @@ void DraggableListener::setListener(std::shared_ptr<Listener> newListener) {
 }
 
 void DraggableListener::setPosition(QPointF newPos) {
-    QWriteLocker locker(mutex.get());
+    mutex->lockForWrite();
     setPos(newPos);
     if(listener) {
         listener->setPosition(pos().x(), pos().y(), RoomHeight);
     }
+    mutex->unlock();
+    emit needUpdateEffect();
 }
 
 void DraggableListener::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

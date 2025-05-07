@@ -28,6 +28,8 @@ public:
 
 signals:
     void itemSelected(DraggableListener* listener);
+    void needUpdateEffect();
+
 // private slots:
 //     void playVoice();
 
