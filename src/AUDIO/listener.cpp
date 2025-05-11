@@ -39,6 +39,8 @@ void Listener::setPosition(float x, float y, float z) {
     posZ = z;
     alListener3f(AL_POSITION, x, y, z);
 
+    qDebug()<<"now listener is at:"<<x<<","<<y<<","<<z;
+
     // 保存播放上下文并切换到录音上下文-------------------------------------------------
     ALCcontext* currentCtx = alcGetCurrentContext();
     alcMakeContextCurrent(recordCtx);

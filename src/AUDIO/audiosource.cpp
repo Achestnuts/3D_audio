@@ -18,6 +18,8 @@ AudioSource::AudioSource(const std::string& filePath)
     alGenSources(1, &sourceId);
     alGenBuffers(1, &sourceBuffer);
 
+    initMirrorSource();
+
     if (!loadWavFile(filePath)) {
         std::cerr << "Failed to load WAV file: " << filePath << std::endl;
     }
@@ -116,7 +118,26 @@ void AudioSource::play() {
     ALCcontext* currentCtx = alcGetCurrentContext();
     alcMakeContextCurrent(recordCtx);
 
+    qDebug()<<"record:"<<recordCtx;
+    qDebug()<<"main:"<<currentCtx;
+    qDebug()<<"now:"<<alcGetCurrentContext();
+    if (alcGetCurrentContext() == currentCtx) {
+        qWarning() << "当前上下文不是 loopbackContext，alSourcePlay 无效！";
+    }
+
+    ALint checkBuffer;
+    alGetSourcei(mirrorSourceId, AL_BUFFER, &checkBuffer);
+    qDebug() << "绑定的 buffer 是：" << checkBuffer;
+
     alSourcePlay(mirrorSourceId);
+
+    ALint state = 0;
+    alGetSourcei(mirrorSourceId, AL_SOURCE_STATE, &state);
+    if (state == AL_PLAYING) {
+        qDebug() << "Mirror source is playing.";
+    } else {
+        qWarning() << "Mirror source is NOT playing.";
+    }
 
     // 切回原上下文
     alcMakeContextCurrent(currentCtx);
@@ -282,8 +303,8 @@ void AudioSource::initMirrorSource() {
     alFilterf(mirrorFilterId, AL_BANDPASS_GAINHF, 1.0f);
     alFilterf(mirrorFilterId, AL_BANDPASS_GAINLF, 1.0f);
 
-    // 暂不确定是不是这里绑定比较好
-    alSourceQueueBuffers(mirrorSourceId, 1, &mirrorBufferId);
+    // // 暂不确定是不是这里绑定比较好
+    // alSourceQueueBuffers(mirrorSourceId, 1, &mirrorBufferId);
 
     // 同步基本参数
     alSourcef(mirrorSourceId, AL_GAIN, this->volume);
@@ -455,6 +476,22 @@ bool AudioSource::loadWavFile(const std::string& filePath) {
         sampleRate
         ); // 和主源一致
 
+    // 暂不确定是不是这里绑定比较好
+    alSourceQueueBuffers(mirrorSourceId, 1, &mirrorBufferId);
+
+    qDebug()<<"record:"<<recordCtx;
+    qDebug()<<"main:"<<currentCtx;
+    qDebug()<<"now:"<<alcGetCurrentContext();
+    if (alcGetCurrentContext() == currentCtx) {
+        qWarning() << "当前上下文不是 loopbackContext，alSourcePlay 无效！";
+    }
+
+    ALint checkBuffer;
+    alGetSourcei(mirrorSourceId, AL_BUFFER, &checkBuffer);
+    qDebug() << "绑定的 buffer 是：" << checkBuffer;
+    qDebug() << "目标的 buffer 是：" << mirrorBufferId;
+
+
     // 切回原上下文
     alcMakeContextCurrent(currentCtx);
     // ----------------------------------------------------------------------------
@@ -597,6 +634,18 @@ void AudioSource::updateFilter()
         alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER,
                    auxEffectSlots.slotId, 0, AL_FILTER_NULL);
         alSourcei(sourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
+
+        // 保存播放上下文并切换到录音上下文-------------------------------------------------
+        ALCcontext* currentCtx = alcGetCurrentContext();
+        alcMakeContextCurrent(recordCtx);
+
+        alSource3i(mirrorSourceId, AL_AUXILIARY_SEND_FILTER,
+                   auxEffectSlots.mirrorSlotId, 0, AL_FILTER_NULL);
+        alSourcei(mirrorSourceId, AL_DIRECT_FILTER, AL_FILTER_NULL);
+
+        // 切回原上下文
+        alcMakeContextCurrent(currentCtx);
+        // ----------------------------------------------------------------------------
         return;
     }
     // 依次叠加

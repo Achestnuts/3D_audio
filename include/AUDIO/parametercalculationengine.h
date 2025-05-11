@@ -59,11 +59,16 @@ struct WallLineSegment {
     bool existIntersection(const QPointF& p1, const QPointF& p2) const {
         QLineF path(p1, p2);
         QLineF wallEdge(frontEnd, backEnd);
+        qDebug()<<"lineA:"<<path;
+        qDebug()<<"lineB:"<<wallEdge;
 
         QPointF intersection;
-        if (path.intersects(wallEdge, &intersection) == QLineF::BoundedIntersection)
+        if (path.intersects(wallEdge, &intersection) == QLineF::BoundedIntersection) {
+            qDebug()<<"yes";
             return true;
+        }
         else {
+            qDebug()<<"no";
             return false;
         }
     }

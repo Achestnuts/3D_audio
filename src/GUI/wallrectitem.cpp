@@ -144,7 +144,7 @@ QVariant WallRectItem::itemChange(GraphicsItemChange change, const QVariant &val
 
 WallRectItem::ResizeMode WallRectItem::hitTest(const QPointF &pos) const {
     QRectF r = rect();
-    const float margin = 80.0f; // 边缘判定范围
+    const float margin = 10.0f; // 边缘判定范围
 
     bool left   = std::fabs(pos.x() - r.left())   < margin;
     bool right  = std::fabs(pos.x() - r.right())  < margin;

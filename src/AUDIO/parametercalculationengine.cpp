@@ -205,10 +205,10 @@ float ParameterCalculationEngine::calculateEffectParameter(
     // QMutex mutex;
     // QMutexLocker locker(&mutex);
     // 获取声源位置
-    float srcX = source->boundSource->posX /*/ GridSize * gridMeter*/;
-    float srcY = source->boundSource->posY /*/ GridSize * gridMeter*/;
+    float srcX = source->boundSource->posX + 50 /*/ GridSize * gridMeter*/;
+    float srcY = source->boundSource->posY + 50 /*/ GridSize * gridMeter*/;
     QPointF sourcePoint = {srcX, srcY};
-    QPointF listenerPoint = {listener->posX /*/ GridSize * gridMeter*/, listener->posY /*/ GridSize * gridMeter*/};
+    QPointF listenerPoint = {listener->posX + 50 /*/ GridSize * gridMeter*/, listener->posY + 50 /*/ GridSize * gridMeter*/};
 
     double totalArea = 0;
     double totalRadian = 0;
@@ -249,7 +249,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
             switch (dir) {
             case RightEffect:
                 // 检查墙体的左边界是否在声源右侧，/*并且声源的 y 坐标在墙体上下范围内*/
-                if (wallLeft >= srcX && srcY >= wallTop && srcY <= wallBottom) {
+                if (wallLeft >= srcX /*&& srcY >= wallTop && srcY <= wallBottom*/) {
                     distance = wallLeft - srcX;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallTop};
@@ -258,7 +258,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case LeftEffect:
-                if (wallRight <= srcX && srcY >= wallTop && srcY <= wallBottom) {
+                if (wallRight <= srcX /*&& srcY >= wallTop && srcY <= wallBottom*/) {
                     distance = srcX - wallRight;
                     candidate = true;
                     needHandleWall.frontEnd = {wallRight, wallTop};
@@ -267,7 +267,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case FrontEffect: // 前方：假设向上
-                if (wallBottom <= srcY && srcX >= wallLeft && srcX <= wallRight) {
+                if (wallBottom <= srcY /*&& srcX >= wallLeft && srcX <= wallRight*/) {
                     distance = srcY - wallBottom;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallBottom};
@@ -276,7 +276,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 }
                 break;
             case BackEffect: // 后方：假设向下
-                if (wallTop >= srcY && srcX >= wallLeft && srcX <= wallRight) {
+                if (wallTop >= srcY /*&& srcX >= wallLeft && srcX <= wallRight*/) {
                     distance = wallTop - srcY;
                     candidate = true;
                     needHandleWall.frontEnd = {wallLeft, wallTop};
@@ -290,13 +290,13 @@ float ParameterCalculationEngine::calculateEffectParameter(
 
             if (candidate) {
                 //minDistance = distance;
-                // 如果听者与声源的连线与墙体相交，就将墙体的过滤器加入到声源中
-                if(needHandleWall.existIntersection(sourcePoint, listenerPoint)) {
-                    source->boundSource->addFilter(&(wall->filter));
-                }
-                else {
-                    source->boundSource->removeFilter(wall->filter.getFilterId());
-                }
+                // // 如果听者与声源的连线与墙体相交，就将墙体的过滤器加入到声源中
+                // if(needHandleWall.existIntersection(sourcePoint, listenerPoint)) {
+                //     source->boundSource->addFilter(&(wall->filter));
+                // }
+                // else {
+                //     source->boundSource->removeFilter(wall->filter.getFilterId());
+                // }
                 needHandleWalls.push_back(needHandleWall);
                 foundWall = true;
             }
@@ -323,6 +323,43 @@ float ParameterCalculationEngine::calculateEffectParameter(
         totalReflection->setX(totalReflection->x() + quarterReflection.x());
         totalReflection->setY(totalReflection->y() + quarterReflection.y());
     }
+
+    for(auto wallPair : walls) {
+        auto wall = wallPair.second;
+        bool isOcclusion = false;
+        // 获取墙体在场景中的左上角坐标
+        //QPointF wallPos = wall->scenePos();
+        float wallLeft = wall->leftTopX  /*/ GridSize * gridMeter*/;
+        float wallTop = wall->leftTopY  /*/ GridSize * gridMeter*/;
+        float wallWidth = wall->rect().width()  /*/ GridSize * gridMeter*/;
+        float wallHeight = wall->rect().height()  /*/ GridSize * gridMeter*/;
+        float wallRight = wallLeft + wallWidth;
+        float wallBottom = wallTop + wallHeight;
+        // 墙体的四个边
+        WallLineSegment top, right, bottom, left;
+        top.frontEnd = {wallLeft, wallTop}, top.backEnd = {wallRight, wallTop};
+        right.frontEnd = {wallRight, wallTop}, right.backEnd = {wallRight, wallBottom};
+        bottom.frontEnd = {wallLeft, wallBottom}, bottom.backEnd = {wallRight, wallBottom};
+        left.frontEnd = {wallLeft, wallTop}, left.backEnd = {wallLeft, wallBottom};
+        std::vector<WallLineSegment> wallLines = {top, right, bottom, left};
+
+        for(auto line : wallLines) {
+            if(line.existIntersection(sourcePoint, listenerPoint)) {
+                isOcclusion = true;
+                break;
+            }
+        }
+
+        // 如果听者与声源的连线与墙体相交，就将墙体的过滤器加入到声源中
+        if(isOcclusion) {
+            source->boundSource->addFilter(&(wall->filter));
+        }
+        // 否则就尝试移除
+        else {
+            source->boundSource->removeFilter(wall->filter.getFilterId());
+        }
+    }
+
     *estimateRoomSize = totalArea / totalRadian * 360.0;
     totalReflection->setX(totalReflection->x() / 4);
     totalReflection->setY(totalReflection->y() / 4);
