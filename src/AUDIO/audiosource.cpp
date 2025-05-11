@@ -1,10 +1,12 @@
 #include "audiosource.h"
 #include <iostream>
 #include <fstream>
+#include <qapplication.h>
 #include <qdebug>
 #include <vector>
 
-
+Q_DECLARE_OPAQUE_POINTER(ALCcontext)
+Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
 
 AudioSource::AudioSource(const std::string& filePath)
     : volume(1.0f), posX(0.0f), posY(0.0f), posZ(0.0f),
@@ -20,7 +22,7 @@ AudioSource::AudioSource(const std::string& filePath)
         std::cerr << "Failed to load WAV file: " << filePath << std::endl;
     }
 
-    // 初始队列两个缓冲区
+    // 初始队列缓冲区
     alSourceQueueBuffers(sourceId, 1, &sourceBuffer);
 
     initEffectSlots();
@@ -39,6 +41,17 @@ void AudioSource::initEffectSlots() {
         //auxEffectSlots.setDirection(i);
         // 将效果槽绑定到声源
     alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER, auxEffectSlots.slotId, 0, AL_FILTER_NULL);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSource3i(mirrorSourceId, AL_AUXILIARY_SEND_FILTER, auxEffectSlots.mirrorSlotId, 0, AL_FILTER_NULL);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
+
     qDebug()<<"effect创建成功";
 }
 ALuint AudioSource::getSourceId() {
@@ -61,12 +74,36 @@ void AudioSource::loadBufferAndArguments() {
 
     // 默认开启衰减
     setAttenuation(5.0f, 700.0f, 900.0f);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourcef(mirrorSourceId, AL_GAIN, volume);
+    // 默认开启衰减
+    setAttenuation(5.0f, 700.0f, 900.0f);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 AudioSource::~AudioSource() {
     // 释放 OpenAL 资源
     alDeleteSources(1, &sourceId);
     alDeleteBuffers(1, &sourceBuffer);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 释放 OpenAL 资源
+    alDeleteSources(1, &mirrorSourceId);
+    alDeleteBuffers(1, &mirrorBufferId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::play() {
@@ -74,27 +111,77 @@ void AudioSource::play() {
     //qDebug()<<buffer[usingBuffer]<<"buffer start play";
 
     alSourcePlay(sourceId);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourcePlay(mirrorSourceId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::pause() {
     std::lock_guard<std::mutex> lock(mtx);
     alSourcePause(sourceId);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourcePause(mirrorSourceId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::stop() {
     std::lock_guard<std::mutex> lock(mtx);
     alSourceStop(sourceId);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourceStop(mirrorSourceId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::setLooping(bool loop) {
     std::lock_guard<std::mutex> lock(mtx);
     alSourcei(sourceId, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourcei(mirrorSourceId, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::setVolume(float newVolume) {
     std::lock_guard<std::mutex> lock(mtx);
     volume = newVolume;
     alSourcef(sourceId, AL_GAIN, volume);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourcef(mirrorSourceId, AL_GAIN, volume);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::setPosition(float x, float y, float z) {
@@ -103,6 +190,16 @@ void AudioSource::setPosition(float x, float y, float z) {
     posX = x;
     posY = y;
     alSource3f(sourceId, AL_POSITION, x, y, z);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSource3f(mirrorSourceId, AL_POSITION, x, y, z);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::setDirection(float x, float y, float z) {
@@ -110,6 +207,16 @@ void AudioSource::setDirection(float x, float y, float z) {
     dirX = x; dirY = y; dirZ = z;
     float direction[] = { x, y, z };
     alSourcefv(sourceId, AL_DIRECTION, direction);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alSourcefv(mirrorSourceId, AL_DIRECTION, direction);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void AudioSource::setAttenuation(float rolloffFactor, float referenceDistance, float maxDistance) {
@@ -120,15 +227,74 @@ void AudioSource::setAttenuation(float rolloffFactor, float referenceDistance, f
     alSourcef(sourceId, AL_REFERENCE_DISTANCE, referenceDistance);
     // 內插範圍外界，出外界之後不再衰減
     alSourcef(sourceId, AL_MAX_DISTANCE, maxDistance);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 衰減速度，內插範圍內才有效
+    alSourcef(mirrorSourceId, AL_ROLLOFF_FACTOR, rolloffFactor);
+    // 內插範圍內界，進內界之前不會衰減
+    alSourcef(mirrorSourceId, AL_REFERENCE_DISTANCE, referenceDistance);
+    // 內插範圍外界，出外界之後不再衰減
+    alSourcef(mirrorSourceId, AL_MAX_DISTANCE, maxDistance);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 bool AudioSource::isPlaying() const {
     std::lock_guard<std::mutex> lock(mtx);
     ALint state;
     alGetSourcei(sourceId, AL_SOURCE_STATE, &state);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alGetSourcei(sourceId, AL_SOURCE_STATE, &state);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
+
     return state == AL_PLAYING;
 }
 
+void AudioSource::initMirrorSource() {
+    if (mirrorInitialized) return;
+
+    recordCtx = qvariant_cast<ALCcontext*>(qApp->property("recordCtx"));
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alGenSources(1, &mirrorSourceId);
+    alGenBuffers(1, &mirrorBufferId);
+
+    alGenFilters(1, &mirrorFilterId);
+    // 设置为带通滤波器
+    alFilteri(mirrorFilterId, AL_FILTER_TYPE, AL_FILTER_BANDPASS);
+    // 初始化默认参数
+    alFilterf(mirrorFilterId, AL_BANDPASS_GAIN, 1.0f);
+    alFilterf(mirrorFilterId, AL_BANDPASS_GAINHF, 1.0f);
+    alFilterf(mirrorFilterId, AL_BANDPASS_GAINLF, 1.0f);
+
+    // 暂不确定是不是这里绑定比较好
+    alSourceQueueBuffers(mirrorSourceId, 1, &mirrorBufferId);
+
+    // 同步基本参数
+    alSourcef(mirrorSourceId, AL_GAIN, this->volume);
+    alSource3f(mirrorSourceId, AL_POSITION, this->posX, this->posY, this->posZ);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
+    mirrorInitialized = true;
+
+}
 
 /**
  * 解析 WAV 文件并加载到 OpenAL 缓冲区 注：一定要转为单声道，要不无法有空间音频效果
@@ -172,7 +338,7 @@ bool AudioSource::loadWavFile(const std::string& filePath) {
 
     // 解析 WAV 格式
     short audioFormat, numChannels;
-    int sampleRate, byteRate;
+    int byteRate;
     short blockAlign, bitsPerSample;
 
     file.read(reinterpret_cast<char*>(&audioFormat), sizeof(audioFormat));
@@ -210,8 +376,7 @@ bool AudioSource::loadWavFile(const std::string& filePath) {
     file.read(rawData.data(), subchunkSize);
 
     // 单声道转换核心逻辑
-    std::vector<char> monoData;    // 最终单声道数据容器
-    ALenum bit_format;             // 最终OpenAL格式
+
     //const int bytesPerSample = bitsPerSample / 8;
 
     // 仅当原始是单声道时直接使用原数据
@@ -278,6 +443,22 @@ bool AudioSource::loadWavFile(const std::string& filePath) {
         sampleRate
         );
 
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alBufferData(
+        mirrorBufferId,
+        bit_format,
+        monoData.data(),
+        static_cast<ALsizei>(monoData.size()),
+        sampleRate
+        ); // 和主源一致
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
+
     qDebug()<<sourceBuffer<<" finish bound";
 
     return true;
@@ -302,6 +483,30 @@ void AudioSource::switchAudio(const std::string& newFile) {
         alSourceUnqueueBuffers(sourceId, 1, &buf);
     }
 
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 1. 停止播放并解绑所有缓冲区
+    ALint mirrorState;
+    alGetSourcei(mirrorSourceId, AL_SOURCE_STATE, &mirrorState);
+    bool mirrorWasPlaying = (mirrorState == AL_PLAYING);
+
+    alSourceStop(mirrorSourceId);
+    alSourcei(mirrorSourceId, AL_BUFFER, 0); // 清除绑定的缓冲区
+
+    // 2. 释放旧的缓冲区数据
+    ALint mirrorProcessed = 0;
+    alGetSourcei(mirrorSourceId, AL_BUFFERS_PROCESSED, &mirrorProcessed);
+    while (mirrorProcessed-- > 0) {
+        ALuint buf;
+        alSourceUnqueueBuffers(mirrorSourceId, 1, &buf);
+    }
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
+
     // 3. 重新加载新音频数据
     if (!loadWavFile(newFile)) {
         std::cerr << "Error: Failed to load new WAV file: " << newFile << std::endl;
@@ -315,6 +520,22 @@ void AudioSource::switchAudio(const std::string& newFile) {
     if (wasPlaying) {
         alSourcePlay(sourceId);
     }
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 4. 重新绑定缓冲区
+    alSourceQueueBuffers(mirrorSourceId, 1, &mirrorBufferId);
+
+    // 5. 只有之前在播放才恢复播放
+    if (wasPlaying) {
+        alSourcePlay(mirrorSourceId);
+    }
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 // 获取[left, right]范围的随机数
@@ -338,10 +559,6 @@ bool AudioSource::addFilter(OcclusionFilter* filterIndex)
         return true;
     }
 
-    // 将滤波器发向辅助槽
-    // updateFilterAndSlot();
-    // alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER,
-    //            auxEffectSlots.slotId, auxEffectSlots.filterIndex[filterId], filterId);
     return true;
 }
 
@@ -399,4 +616,21 @@ void AudioSource::updateFilter()
     alSource3i(sourceId, AL_AUXILIARY_SEND_FILTER,
                auxEffectSlots.slotId, 0, filter.getFilterId());
     alSourcei(sourceId, AL_DIRECT_FILTER, filter.getFilterId());
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alFilterf(mirrorFilterId, AL_BANDPASS_GAIN, gain);
+    alFilterf(mirrorFilterId, AL_BANDPASS_GAINHF, gainHF);
+    alFilterf(mirrorFilterId, AL_BANDPASS_GAINLF, gainLF);
+
+    // 设置干声和混声的过滤
+    alSource3i(mirrorSourceId, AL_AUXILIARY_SEND_FILTER,
+               auxEffectSlots.mirrorSlotId, 0, mirrorFilterId);
+    alSourcei(mirrorSourceId, AL_DIRECT_FILTER, mirrorFilterId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }

@@ -10,9 +10,12 @@ set(CMAKE_AUTOMOC ON)  # 自动调用moc(元对象编译器)
 set(CMAKE_AUTORCC ON)  # 自动处理资源
 
 # 设置 OpenAL 动态库的路径
-set(OPENAL_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/dll/soft_oal.dll)
+set(OPENAL_DLL_PATH ${PROJECT_SOURCE_DIR}/dll/soft_oal.dll)
+
+set(PORTAUDIO_LIBRARY_PATH ${PROJECT_SOURCE_DIR}/lib/portaudio_x64.lib)
+set(PORTAUDIO_DLL_PATH ${PROJECT_SOURCE_DIR}/dll/portaudio_x64.dll)
 # 设置头文件路径
-file(GLOB INCLUDE "include/AUDIO/*.h" "include/CONTROL/*.h" "include/GUI/*.h" "include/AL/*.h")
+file(GLOB INCLUDE "include/AUDIO/*.h" "include/CONTROL/*.h" "include/GUI/*.h" "include/AL/*.h" "include/PA/*.h")
 
 # 设置ui文件路径
 file(GLOB_RECURSE UI_PATH "*.ui")
@@ -42,6 +45,7 @@ target_include_directories(3D_audio PUBLIC
     ${PROJECT_SOURCE_DIR}/include/AUDIO
     ${PROJECT_SOURCE_DIR}/include/CONTROL
     ${PROJECT_SOURCE_DIR}/include/GUI
+    ${PROJECT_SOURCE_DIR}/include/PA
 )
 
 
@@ -58,7 +62,9 @@ target_link_libraries(3D_audio
         Qt::Widgets
         Qt6::Multimedia
         Qt6::Concurrent
-        ${OPENAL_LIBRARY_PATH}
+        ${PORTAUDIO_LIBRARY_PATH}
+        ${OPENAL_DLL_PATH}
+        ${PORTAUDIO_DLL_PATH}
 )
 
 include(GNUInstallDirs)

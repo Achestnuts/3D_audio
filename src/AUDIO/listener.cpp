@@ -1,4 +1,8 @@
 #include "listener.h"
+#include <qapplication.h>
+
+Q_DECLARE_OPAQUE_POINTER(ALCcontext)
+Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
 
 Listener::Listener()
     : posX(0.0f), posY(0.0f), posZ(0.0f),
@@ -11,6 +15,21 @@ Listener::Listener()
 
     float orientation[] = { oriAtX, oriAtY, oriAtZ, oriUpX, oriUpY, oriUpZ };
     alListenerfv(AL_ORIENTATION, orientation);
+
+    recordCtx = qvariant_cast<ALCcontext*>(qApp->property("recordCtx"));
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 初始化 OpenAL 监听器参数
+    alListener3f(AL_POSITION, posX, posY, posZ);
+    alListener3f(AL_VELOCITY, velX, velY, velZ);
+
+    alListenerfv(AL_ORIENTATION, orientation);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void Listener::setPosition(float x, float y, float z) {
@@ -19,6 +38,16 @@ void Listener::setPosition(float x, float y, float z) {
     posY = y;
     posZ = z;
     alListener3f(AL_POSITION, x, y, z);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alListener3f(AL_POSITION, x, y, z);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void Listener::setVelocity(float x, float y, float z) {
@@ -27,6 +56,16 @@ void Listener::setVelocity(float x, float y, float z) {
     velY = y;
     velZ = z;
     alListener3f(AL_VELOCITY, x, y, z);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alListener3f(AL_VELOCITY, x, y, z);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 void Listener::setOrientation(float atX, float atY, float atZ, float upX, float upY, float upZ) {
@@ -40,6 +79,16 @@ void Listener::setOrientation(float atX, float atY, float atZ, float upX, float 
 
     float orientation[] = { atX, atY, atZ, upX, upY, upZ };
     alListenerfv(AL_ORIENTATION, orientation);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    alListenerfv(AL_ORIENTATION, orientation);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 }
 
 std::array<float, 3> Listener::getPosition() const {

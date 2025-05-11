@@ -22,7 +22,6 @@ AudioManager::AudioManager(std::shared_ptr<QGraphicsScene> addScene, QObject *pa
 
     itemMutex = std::make_shared<QReadWriteLock>();
 
-    listener = std::make_shared<Listener>();
     if (!device) {
         qDebug() << "Failed to open OpenAL device";
         return;
@@ -36,9 +35,14 @@ AudioManager::AudioManager(std::shared_ptr<QGraphicsScene> addScene, QObject *pa
     }
 
     context = alcCreateContext(device, nullptr);
+    alcMakeContextCurrent(context);
+
     const ALCchar* deviceName = alcGetString(device, ALC_DEVICE_SPECIFIER);
     recorder = std::make_shared<AudioRecorder>(this, deviceName);
-    alcMakeContextCurrent(context);
+
+
+    listener = std::make_shared<Listener>();
+
     alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
 
 

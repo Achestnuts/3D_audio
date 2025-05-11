@@ -37,6 +37,18 @@ public:
 
     bool isPlaying() const;
 
+    void initMirrorSource();
+    ALCcontext* recordCtx;
+    ALuint mirrorSourceId = 0;
+    ALuint mirrorBufferId = 0;
+    ALuint mirrorFilterId = 0;
+
+    bool mirrorInitialized = false;
+
+    std::vector<char> monoData;    // 最终单声道数据容器
+    ALenum bit_format;             // 最终OpenAL格式
+    int sampleRate;                // 采样率
+
     QString filePath;
     float posX, posY, posZ;
     float volume;

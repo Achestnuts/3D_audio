@@ -25,6 +25,8 @@ public:
     float oriAtX, oriAtY, oriAtZ;
     float oriUpX, oriUpY, oriUpZ;
 
+    ALCcontext* recordCtx;
+
 private:
     mutable std::mutex mtx;
 

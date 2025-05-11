@@ -14,6 +14,7 @@ public:
     explicit AudioRecorder(QObject *parent = nullptr, const ALCchar* deviceName = nullptr);
     ~AudioRecorder();
 
+    bool init();
     bool startRecording(const QString &filename);
     void pauseRecording();
     void stopRecording();
@@ -45,6 +46,10 @@ private:
     // 添加函数指针声明
     typedef void (ALC_APIENTRY* LPALCRENDERSAMPLESSOFT)(ALCdevice *, ALCvoid *, ALCsizei);
     LPALCRENDERSAMPLESSOFT alcRenderSamplesSOFT = nullptr;
+
+    ALCenum ALC_FORMAT_CHANNELS_SOFT;
+    ALCenum ALC_FORMAT_TYPE_SOFT;
+    ALCenum ALC_SHORT_SOFT;
 };
 
 #endif // AUDIORECORDER_H

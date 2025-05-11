@@ -749,6 +749,16 @@
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/wallrectitem.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/waveformwidget.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/xwidget.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_asio.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_jack.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_linux_alsa.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_mac_core.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_ds.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_wasapi.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_waveformat.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_wdmks.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_wmme.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/portaudio.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/resources.qrc \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/AUDIO/audiorecorder.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/AUDIO/audiosource.cpp \

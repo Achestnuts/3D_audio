@@ -489,6 +489,66 @@
 			"MU",
 			"LETX6WCXY7/moc_xwidget.cpp",
 			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_asio.h",
+			"MU",
+			"677FU6RSFX/moc_pa_asio.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_jack.h",
+			"MU",
+			"677FU6RSFX/moc_pa_jack.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_linux_alsa.h",
+			"MU",
+			"677FU6RSFX/moc_pa_linux_alsa.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_mac_core.h",
+			"MU",
+			"677FU6RSFX/moc_pa_mac_core.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_ds.h",
+			"MU",
+			"677FU6RSFX/moc_pa_win_ds.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_wasapi.h",
+			"MU",
+			"677FU6RSFX/moc_pa_win_wasapi.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_waveformat.h",
+			"MU",
+			"677FU6RSFX/moc_pa_win_waveformat.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_wdmks.h",
+			"MU",
+			"677FU6RSFX/moc_pa_win_wdmks.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/pa_win_wmme.h",
+			"MU",
+			"677FU6RSFX/moc_pa_win_wmme.cpp",
+			null
+		],
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA/portaudio.h",
+			"MU",
+			"677FU6RSFX/moc_portaudio.cpp",
+			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -526,6 +586,7 @@
 		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/AUDIO",
 		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/CONTROL",
 		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI",
+		"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/PA",
 		"E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore",
 		"E:/WORK_software/Qt/6.8.2/mingw_64/include",
 		"E:/WORK_software/Qt/6.8.2/mingw_64/mkspecs/win32-g++",

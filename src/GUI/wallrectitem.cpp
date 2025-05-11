@@ -63,11 +63,11 @@ void WallRectItem::updateLocation(const QPointF & newPos) {
     // RoomMap* roomMap = xWidget->ui->roomMap;
     // setPos(roomMap->mapToScene(newPos.toPoint()));
     setPos(newPos);
-    leftTopX = pos().x();
-    leftTopY = pos().y();
+    leftTopX = pos().x() + rect().left();
+    leftTopY = pos().y() + rect().top();
     width = rect().width();
     height = rect().height();
-    qDebug()<<"after:"<<QPoint(leftTopX, leftTopY)<<" "<<width<<" "<<height;
+    qDebug()<<"after:"<<QPoint(leftTopX, leftTopY)<<" "<<rect().left()<<" "<<width<<" "<<height;
     mutex->unlock();
     emit needUpdateEffect();
 }
@@ -114,11 +114,11 @@ void WallRectItem::snapToGrid(int gridSize) {
 void WallRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (m_resizeMode != NoResize) {
         resizeItem(event->pos());
-        updateLocation(QPointF(leftTopX, leftTopY));
+        updateLocation(QPointF(pos()));
     } else {
         // 平移模式
         QPointF delta = event->pos() - m_pressPos;
-        updateLocation(((this->pos() + delta)));
+        updateLocation(((pos() + delta)));
     }
     qDebug()<<"moving";
     //std::shared_ptr<AudioManager> manager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
@@ -165,12 +165,35 @@ WallRectItem::ResizeMode WallRectItem::hitTest(const QPointF &pos) const {
 
 void WallRectItem::resizeItem(const QPointF &pos) {
     QRectF newRect = m_pressRect;
-    QPointF diff = pos - m_pressPos; // 本地坐标差
-    //qDebug()<<"before:"<<diff;
+    QPointF diff = pos - m_pressPos;
+
     diff.setX((round(diff.x() / GridSize) * GridSize));
     diff.setY((round(diff.y() / GridSize) * GridSize));
-    //qDebug()<<"after:"<<diff;
 
+    // 记录当前“锚点”（变形参考点）在 scene 中的位置
+    QPointF anchorPointLocal;
+    switch (m_resizeMode) {
+    case ResizeLeft:
+    case ResizeTop:
+    case ResizeTopLeft:
+    case ResizeBottomLeft:
+        anchorPointLocal = m_pressRect.topLeft();
+        break;
+    case ResizeRight:
+    case ResizeTopRight:
+    case ResizeBottomRight:
+        anchorPointLocal = m_pressRect.topRight();
+        break;
+    case ResizeBottom:
+        anchorPointLocal = m_pressRect.bottomLeft();
+        break;
+    default:
+        anchorPointLocal = m_pressRect.topLeft();
+        break;
+    }
+    QPointF anchorScenePos = mapToScene(anchorPointLocal);
+
+    // 修改 rect
     switch (m_resizeMode) {
     case ResizeLeft:
         newRect.setLeft(m_pressRect.left() + diff.x());
@@ -205,13 +228,34 @@ void WallRectItem::resizeItem(const QPointF &pos) {
     }
 
     // 保持最小尺寸
-    if (newRect.width() < 100) newRect.setWidth(100);
-    if (newRect.height() < 100) newRect.setHeight(100);
+    if (newRect.width() < 100) {
+        if (m_resizeMode == ResizeLeft || m_resizeMode == ResizeTopLeft || m_resizeMode == ResizeBottomLeft)
+            newRect.setLeft(newRect.right() - 100);
+        else
+            newRect.setRight(newRect.left() + 100);
+    }
+
+    if (newRect.height() < 100) {
+        if (m_resizeMode == ResizeTop || m_resizeMode == ResizeTopLeft || m_resizeMode == ResizeTopRight)
+            newRect.setTop(newRect.bottom() - 100);
+        else
+            newRect.setBottom(newRect.top() + 100);
+    }
 
     prepareGeometryChange();
-    // qDebug()<<"before:"<<leftTopX<<" "<<leftTopY;
+    // qDebug()<<"newRect:"<<newRect.topLeft();
+    // QPoint origin;
+    // origin.setX(0), origin.setY(0);
+    // newRect.setCoords(0, 0, newRect.width(), newRect.height());
     setRect(newRect);
-    // qDebug()<<"after:"<<leftTopX<<" "<<leftTopY;
+    // qDebug()<<"rect:"<<rect().topLeft();
+
+    // 获取调整后锚点在场景中的新位置
+    QPointF newAnchorScenePos = mapToScene(anchorPointLocal);
+    QPointF offset = newAnchorScenePos - anchorScenePos;
+
+    // 修正 pos 保持锚点不动
+    updateLocation(this->pos() - offset);
 }
 
 void WallRectItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

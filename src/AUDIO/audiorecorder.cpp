@@ -3,14 +3,23 @@
 #include "AL/alc.h"
 #include <QDebug>
 #include <QDataStream>
+#include <qapplication.h>
 #include <vector>
 
 #define AL_ALEXT_PROTOTYPES
 #include <AL/alc.h>
 
+#include <QVariant>
+
+Q_DECLARE_OPAQUE_POINTER(ALCcontext)
+Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
+
 AudioRecorder::AudioRecorder(QObject *parent, const ALCchar* deviceName) : QObject(parent),
     m_timer(new QTimer(this))
 {
+    init();
+    qApp->setProperty("recordCtx", QVariant::fromValue(m_loopbackContext)); // 存储指针
+
     connect(m_timer, &QTimer::timeout, this, &AudioRecorder::captureLoop);
     soundDeviceName = const_cast<ALCchar*>(deviceName);
 }
@@ -19,15 +28,15 @@ AudioRecorder::~AudioRecorder() {
     stopRecording();
 }
 
-bool AudioRecorder::startRecording(const QString &filename) {
-    if (m_isRecording) return false;
+bool AudioRecorder::init() {
+    ALCcontext* currentCtx =  alcGetCurrentContext();
 
     typedef ALCdevice* (*LPALCLOOPBACKOPENDEVICESOFT)(const ALCchar*);
     LPALCLOOPBACKOPENDEVICESOFT alcLoopbackOpenDeviceSOFT = (LPALCLOOPBACKOPENDEVICESOFT)alcGetProcAddress(nullptr, "alcLoopbackOpenDeviceSOFT");
     if (!alcLoopbackOpenDeviceSOFT) {
         qDebug() << "Failed to get alcLoopbackOpenDeviceSOFT function pointer.";
         //alcCloseDevice(device);
-        return 1;
+        return false;
     }
 
     m_loopbackDevice = alcLoopbackOpenDeviceSOFT(soundDeviceName);
@@ -42,9 +51,9 @@ bool AudioRecorder::startRecording(const QString &filename) {
     }
 
     // 获取枚举值
-    ALCenum ALC_FORMAT_CHANNELS_SOFT = alcGetEnumValue(m_loopbackDevice, "ALC_FORMAT_CHANNELS_SOFT");
-    ALCenum ALC_FORMAT_TYPE_SOFT = alcGetEnumValue(m_loopbackDevice, "ALC_FORMAT_TYPE_SOFT");
-    ALCenum ALC_SHORT_SOFT = alcGetEnumValue(m_loopbackDevice, "ALC_SHORT_SOFT");
+    ALC_FORMAT_CHANNELS_SOFT = alcGetEnumValue(m_loopbackDevice, "ALC_FORMAT_CHANNELS_SOFT");
+    ALC_FORMAT_TYPE_SOFT = alcGetEnumValue(m_loopbackDevice, "ALC_FORMAT_TYPE_SOFT");
+    ALC_SHORT_SOFT = alcGetEnumValue(m_loopbackDevice, "ALC_SHORT_SOFT");
     if (ALC_FORMAT_CHANNELS_SOFT == AL_NONE || ALC_FORMAT_TYPE_SOFT == AL_NONE || ALC_SHORT_SOFT == AL_NONE) {
         qDebug() << "Failed to get enum value.";
         alcCloseDevice(m_loopbackDevice);
@@ -89,6 +98,9 @@ bool AudioRecorder::startRecording(const QString &filename) {
         return false;
     }
 
+    // 切换至录制上下文-------------------------------------------------
+    alcMakeContextCurrent(m_loopbackContext);
+
     // 在创建上下文后获取渲染函数
     alcRenderSamplesSOFT = reinterpret_cast<LPALCRENDERSAMPLESSOFT>(
         alcGetProcAddress(m_loopbackDevice, "alcRenderSamplesSOFT")
@@ -98,11 +110,35 @@ bool AudioRecorder::startRecording(const QString &filename) {
         alcDestroyContext(m_loopbackContext);
         alcCloseDevice(m_loopbackDevice);
         return false;
+
+        // 切回原上下文
+        alcMakeContextCurrent(currentCtx);
+        // -------------------------------------------------------------
     }
+
+    alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // -------------------------------------------------------------
+    return true;
+}
+
+bool AudioRecorder::startRecording(const QString &filename) {
+    if (m_isRecording) return false;
+
+    qDebug()<<"start recording...";
+
+    // 保存原上下文并切换至录制上下文-------------------------------------------------
+    ALCcontext* currentCtx =  alcGetCurrentContext();
+    alcMakeContextCurrent(m_loopbackContext);
 
     m_outputFile.setFileName(filename);
     if (!m_outputFile.open(QIODevice::WriteOnly)) {
         qWarning() << "Failed to open file for writing.";
+        // 切回原上下文
+        alcMakeContextCurrent(currentCtx);
+        // -------------------------------------------------------------
         return false;
     }
 
@@ -124,6 +160,11 @@ bool AudioRecorder::startRecording(const QString &filename) {
     constexpr int framesPerBuffer = 512;
     const int bufferDurationMs = (framesPerBuffer * 1000) / m_sampleRate;
     m_timer->start(bufferDurationMs); // 512帧 → 约12ms
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // -------------------------------------------------------------
+
     return true;
 }
 
@@ -135,22 +176,24 @@ void AudioRecorder::pauseRecording() {
 void AudioRecorder::stopRecording() {
     if (!m_isRecording && !m_outputFile.isOpen()) return;
 
+    qDebug()<<"stop recording";
+
     m_isRecording = false;
     m_timer->stop();
 
     finalizeWavHeader();
     m_outputFile.close();
 
-    if (m_loopbackContext) {
-        alcMakeContextCurrent(nullptr);
-        alcDestroyContext(m_loopbackContext);
-        m_loopbackContext = nullptr;
-    }
+    // if (m_loopbackContext) {
+    //     alcMakeContextCurrent(nullptr);
+    //     alcDestroyContext(m_loopbackContext);
+    //     m_loopbackContext = nullptr;
+    // }
 
-    if (m_loopbackDevice) {
-        alcCloseDevice(m_loopbackDevice);
-        m_loopbackDevice = nullptr;
-    }
+    // if (m_loopbackDevice) {
+    //     alcCloseDevice(m_loopbackDevice);
+    //     m_loopbackDevice = nullptr;
+    // }
 
     emit recordingStopped();
 }
@@ -176,6 +219,11 @@ bool AudioRecorder::isRecording() const {
 // }
 
 void AudioRecorder::captureLoop() {
+
+    // 保存原上下文并切换至录制上下文-------------------------------------------------
+    ALCcontext* currentCtx =  alcGetCurrentContext();
+    alcMakeContextCurrent(m_loopbackContext);
+
     constexpr int framesPerBuffer = 512;
     std::vector<short> buffer(framesPerBuffer * m_channels); // 缓冲区大小 = 帧数 × 通道数（每通道16位=2字节）
 
@@ -196,6 +244,10 @@ void AudioRecorder::captureLoop() {
     if (bytesWritten != buffer.size() * sizeof(short)) {
         qWarning() << "Failed to write to file. Bytes written: " << bytesWritten;
     }
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // -------------------------------------------------------------
 }
 
 // Offset  Field           Value

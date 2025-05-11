@@ -1,7 +1,10 @@
 #include "auxeffectslot.h"
 #include <cstring>
 #include <qDebug>
+#include <qapplication.h>
 
+Q_DECLARE_OPAQUE_POINTER(ALCcontext)
+Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
 
 AuxEffectSlot::AuxEffectSlot() {
     std::lock_guard<std::mutex> lock(m_mutex);
@@ -42,31 +45,45 @@ AuxEffectSlot::AuxEffectSlot() {
 
     // 绑定效果到效果槽
     alAuxiliaryEffectSloti(slotId, AL_EFFECTSLOT_EFFECT, effectId);
+
+    mirrorInit();
+
 }
 
-// bool AuxEffectSlot::setDirection(int dir) {
-//     std::lock_guard<std::mutex> lock(m_mutex);
-//     float reflectDir[3] = {0.0f, 0.0f, 0.0f};
+void AuxEffectSlot::mirrorInit() {
+    recordCtx = qvariant_cast<ALCcontext*>(qApp->property("recordCtx"));
+    ALCcontext* currentCtx = alcGetCurrentContext();
 
-//     if(dir == FrontEffect) {
-//         reflectDir[2] = -1.0f;
-//     } else if(dir == RightEffect) {
-//         reflectDir[0] = -1.0f;
-//     } else if(dir == BackEffect) {
-//         reflectDir[2] = 1.0f;
-//     } else if(dir == LeftEffect) {
-//         reflectDir[0] = 1.0f;
-//     } else {
-//         return true;
-//     }
-//     return true;
-// }
+    // 切换到录音上下文--------------------------------------------------------------
+    alcMakeContextCurrent(recordCtx);
+
+    alGenAuxiliaryEffectSlots(1, &mirrorSlotId);
+    alGenEffects(1, &mirrorEffectId);
+    // 绑定效果到效果槽
+    alAuxiliaryEffectSloti(slotId, AL_EFFECTSLOT_EFFECT, effectId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ---------------------------------------------------------------------------
+}
 
 bool AuxEffectSlot::resetEffect() {
     std::lock_guard<std::mutex> lock(m_mutex);
     // 设置效果器初始混响参数
     alEffecti(effectId, AL_EFFECT_TYPE, AL_EFFECT_NULL);
     alAuxiliaryEffectSloti(slotId, AL_EFFECTSLOT_EFFECT, effectId);
+
+    // 保存播放上下文并切换到录音上下文-------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 设置效果器初始混响参数
+    alEffecti(mirrorEffectId, AL_EFFECT_TYPE, AL_EFFECT_NULL);
+    alAuxiliaryEffectSloti(mirrorSlotId, AL_EFFECTSLOT_EFFECT, mirrorEffectId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------
 
     return true;
 }
@@ -106,6 +123,9 @@ bool AuxEffectSlot::updateEffectParams(float estimateRoomSize, QVector3D reflect
     diffusion = clamp(diffusionIntercept + linearSize * diffusionFactor, 0.0f, 1.0f);      // 扩散度
     density = clamp(densityIntercept - linearSize * densityFactor, 0.0f, 1.0f);        // 密度
 
+    // 设定反射方向
+    float reflectDir[] = {reflection.x(), reflection.y(), reflection.z()};
+
     // 设置EAX Reverb参数
     alEffecti(effectId, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
 
@@ -138,10 +158,56 @@ bool AuxEffectSlot::updateEffectParams(float estimateRoomSize, QVector3D reflect
     if (err != AL_NO_ERROR) {
         // 处理错误...
     }
-    float reflectDir[] = {reflection.x(), reflection.y(), reflection.z()};
+
     alEffectfv(effectId, AL_EAXREVERB_REFLECTIONS_PAN, reflectDir);
 
     alAuxiliaryEffectSloti(slotId, AL_EFFECTSLOT_EFFECT, effectId);
+
+    // 保存播放上下文并切换到录音上下文-----------------------------------------------------
+    ALCcontext* currentCtx = alcGetCurrentContext();
+    alcMakeContextCurrent(recordCtx);
+
+    // 设置EAX Reverb参数
+    alEffecti(mirrorEffectId, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
+
+    // 时间参数
+    alEffectf(mirrorEffectId, AL_EAXREVERB_DECAY_TIME, decayTime);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_REFLECTIONS_DELAY, reflectionsDelay);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_LATE_REVERB_DELAY, lateReverbDelay);
+
+    // 能量参数
+    alEffectf(mirrorEffectId, AL_EAXREVERB_GAIN, gain);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_REFLECTIONS_GAIN, reflectionsGain);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_LATE_REVERB_GAIN, lateReverbGain);
+
+    // 频率参数
+    alEffectf(mirrorEffectId, AL_EAXREVERB_AIR_ABSORPTION_GAINHF, airAbsorptionHF);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_DECAY_HFRATIO, decayHFRatio);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_DECAY_LFRATIO, decayLFRatio);
+
+    // 空间特性
+    alEffectf(mirrorEffectId, AL_EAXREVERB_DIFFUSION, diffusion);
+    alEffectf(mirrorEffectId, AL_EAXREVERB_DENSITY, density);
+
+    // 固定参数（可根据需要调整）
+    alEffectf(mirrorEffectId, AL_EAXREVERB_HFREFERENCE, 5000.0f);    // 高频参考点5kHz
+    alEffectf(mirrorEffectId, AL_EAXREVERB_LFREFERENCE, 250.0f);     // 低频参考点250Hz
+    alEffecti(mirrorEffectId, AL_EAXREVERB_DECAY_HFLIMIT, AL_TRUE);  // 启用高频衰减限制
+
+    // 检查错误
+    err = alGetError();
+    if (err != AL_NO_ERROR) {
+        // 处理错误...
+    }
+
+    alEffectfv(mirrorEffectId, AL_EAXREVERB_REFLECTIONS_PAN, reflectDir);
+
+    alAuxiliaryEffectSloti(mirrorSlotId, AL_EFFECTSLOT_EFFECT, mirrorEffectId);
+
+    // 切回原上下文
+    alcMakeContextCurrent(currentCtx);
+    // ----------------------------------------------------------------------------------
+
     return true;
 }
 

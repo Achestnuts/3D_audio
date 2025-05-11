@@ -25,8 +25,14 @@ public:
     bool updateEffectParams(float estimateRoomSize, QVector3D reflection, float gainFactor);
     bool resetEffect();
 
+    void mirrorInit();
+
     ALuint slotId;   // 效果槽ID
     ALuint effectId; // 效果器ID
+
+    ALCcontext* recordCtx;
+    ALuint mirrorSlotId;
+    ALuint mirrorEffectId;
 
     // float reflectDir[3];
 

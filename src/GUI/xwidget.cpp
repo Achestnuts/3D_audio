@@ -63,7 +63,7 @@ XWidget::XWidget(QWidget *parent)
     // });
 
     connect(ui->startButton, &QPushButton::clicked, [this](){
-        ui->roomMap->audioManager->recorder->startRecording("E:/WorkPlace/QT/3D_audio/music/recorder.wav");
+        ui->roomMap->audioManager->recorder->startRecording("E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/recorder.wav");
     });
 
     connect(ui->stopButton, &QPushButton::clicked, [this](){
