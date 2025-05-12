@@ -149,7 +149,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName("scrollAreaWidgetContents");
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 465, 711));
+        scrollAreaWidgetContents->setGeometry(QRect(-50, -18, 465, 711));
         verticalLayout = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout->setObjectName("verticalLayout");
         nameWidget = new QWidget(scrollAreaWidgetContents);
@@ -158,6 +158,11 @@ public:
         gridLayout_4->setObjectName("gridLayout_4");
         nameEdit = new QLineEdit(nameWidget);
         nameEdit->setObjectName("nameEdit");
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(nameEdit->sizePolicy().hasHeightForWidth());
+        nameEdit->setSizePolicy(sizePolicy);
 
         gridLayout_4->addWidget(nameEdit, 1, 1, 1, 1);
 
@@ -212,11 +217,15 @@ public:
 
         decayTimeIntercept = new QLineEdit(decayTimeWidget);
         decayTimeIntercept->setObjectName("decayTimeIntercept");
+        sizePolicy.setHeightForWidth(decayTimeIntercept->sizePolicy().hasHeightForWidth());
+        decayTimeIntercept->setSizePolicy(sizePolicy);
 
         decayTimeWidgetLayout->addWidget(decayTimeIntercept, 1, 2, 1, 1);
 
         decayTimeFactor = new QLineEdit(decayTimeWidget);
         decayTimeFactor->setObjectName("decayTimeFactor");
+        sizePolicy.setHeightForWidth(decayTimeFactor->sizePolicy().hasHeightForWidth());
+        decayTimeFactor->setSizePolicy(sizePolicy);
 
         decayTimeWidgetLayout->addWidget(decayTimeFactor, 1, 5, 1, 1);
 
@@ -234,6 +243,8 @@ public:
         reflectionDelayWidgetLayout->setObjectName("reflectionDelayWidgetLayout");
         reflectionsDelayFactor = new QLineEdit(reflectionsDelayWidget);
         reflectionsDelayFactor->setObjectName("reflectionsDelayFactor");
+        sizePolicy.setHeightForWidth(reflectionsDelayFactor->sizePolicy().hasHeightForWidth());
+        reflectionsDelayFactor->setSizePolicy(sizePolicy);
 
         reflectionDelayWidgetLayout->addWidget(reflectionsDelayFactor, 1, 5, 1, 1);
 
@@ -244,6 +255,8 @@ public:
 
         reflectionsDelayIntercept = new QLineEdit(reflectionsDelayWidget);
         reflectionsDelayIntercept->setObjectName("reflectionsDelayIntercept");
+        sizePolicy.setHeightForWidth(reflectionsDelayIntercept->sizePolicy().hasHeightForWidth());
+        reflectionsDelayIntercept->setSizePolicy(sizePolicy);
 
         reflectionDelayWidgetLayout->addWidget(reflectionsDelayIntercept, 1, 2, 1, 1);
 
@@ -281,6 +294,8 @@ public:
 
         lateReverbDelayFactor = new QLineEdit(lateReverbDelayWidget);
         lateReverbDelayFactor->setObjectName("lateReverbDelayFactor");
+        sizePolicy.setHeightForWidth(lateReverbDelayFactor->sizePolicy().hasHeightForWidth());
+        lateReverbDelayFactor->setSizePolicy(sizePolicy);
 
         lateReverbDelayWidgetLayout->addWidget(lateReverbDelayFactor, 1, 5, 1, 1);
 
@@ -301,6 +316,8 @@ public:
 
         lateReverbDelayIntercept = new QLineEdit(lateReverbDelayWidget);
         lateReverbDelayIntercept->setObjectName("lateReverbDelayIntercept");
+        sizePolicy.setHeightForWidth(lateReverbDelayIntercept->sizePolicy().hasHeightForWidth());
+        lateReverbDelayIntercept->setSizePolicy(sizePolicy);
 
         lateReverbDelayWidgetLayout->addWidget(lateReverbDelayIntercept, 1, 2, 1, 1);
 
@@ -323,6 +340,8 @@ public:
 
         gainIntercept = new QLineEdit(gainWidget);
         gainIntercept->setObjectName("gainIntercept");
+        sizePolicy.setHeightForWidth(gainIntercept->sizePolicy().hasHeightForWidth());
+        gainIntercept->setSizePolicy(sizePolicy);
 
         gainWidgetLayout->addWidget(gainIntercept, 1, 2, 1, 1);
 
@@ -333,6 +352,8 @@ public:
 
         gainFactor = new QLineEdit(gainWidget);
         gainFactor->setObjectName("gainFactor");
+        sizePolicy.setHeightForWidth(gainFactor->sizePolicy().hasHeightForWidth());
+        gainFactor->setSizePolicy(sizePolicy);
 
         gainWidgetLayout->addWidget(gainFactor, 1, 5, 1, 1);
 
@@ -360,6 +381,8 @@ public:
         reflectionsGainWidgetLayout->setObjectName("reflectionsGainWidgetLayout");
         reflectionsGainFactor = new QLineEdit(reflectionsGainWidget);
         reflectionsGainFactor->setObjectName("reflectionsGainFactor");
+        sizePolicy.setHeightForWidth(reflectionsGainFactor->sizePolicy().hasHeightForWidth());
+        reflectionsGainFactor->setSizePolicy(sizePolicy);
 
         reflectionsGainWidgetLayout->addWidget(reflectionsGainFactor, 1, 5, 1, 1);
 
@@ -385,6 +408,8 @@ public:
 
         reflectionsGainIntercept = new QLineEdit(reflectionsGainWidget);
         reflectionsGainIntercept->setObjectName("reflectionsGainIntercept");
+        sizePolicy.setHeightForWidth(reflectionsGainIntercept->sizePolicy().hasHeightForWidth());
+        reflectionsGainIntercept->setSizePolicy(sizePolicy);
 
         reflectionsGainWidgetLayout->addWidget(reflectionsGainIntercept, 1, 2, 1, 1);
 
@@ -402,6 +427,8 @@ public:
         lateReverbGainLayout->setObjectName("lateReverbGainLayout");
         lateReverbGainIntercept = new QLineEdit(lateReverbGainWidget);
         lateReverbGainIntercept->setObjectName("lateReverbGainIntercept");
+        sizePolicy.setHeightForWidth(lateReverbGainIntercept->sizePolicy().hasHeightForWidth());
+        lateReverbGainIntercept->setSizePolicy(sizePolicy);
 
         lateReverbGainLayout->addWidget(lateReverbGainIntercept, 1, 2, 1, 1);
 
@@ -412,6 +439,8 @@ public:
 
         lateReverbGainFactor = new QLineEdit(lateReverbGainWidget);
         lateReverbGainFactor->setObjectName("lateReverbGainFactor");
+        sizePolicy.setHeightForWidth(lateReverbGainFactor->sizePolicy().hasHeightForWidth());
+        lateReverbGainFactor->setSizePolicy(sizePolicy);
 
         lateReverbGainLayout->addWidget(lateReverbGainFactor, 1, 5, 1, 1);
 
@@ -444,6 +473,8 @@ public:
         airAbsorptionHFLayout->setObjectName("airAbsorptionHFLayout");
         airAbsorptionHFIntercept = new QLineEdit(airAbsorptionHFWidget);
         airAbsorptionHFIntercept->setObjectName("airAbsorptionHFIntercept");
+        sizePolicy.setHeightForWidth(airAbsorptionHFIntercept->sizePolicy().hasHeightForWidth());
+        airAbsorptionHFIntercept->setSizePolicy(sizePolicy);
 
         airAbsorptionHFLayout->addWidget(airAbsorptionHFIntercept, 1, 2, 1, 1);
 
@@ -464,6 +495,8 @@ public:
 
         airAbsorptionHFFactor = new QLineEdit(airAbsorptionHFWidget);
         airAbsorptionHFFactor->setObjectName("airAbsorptionHFFactor");
+        sizePolicy.setHeightForWidth(airAbsorptionHFFactor->sizePolicy().hasHeightForWidth());
+        airAbsorptionHFFactor->setSizePolicy(sizePolicy);
 
         airAbsorptionHFLayout->addWidget(airAbsorptionHFFactor, 1, 5, 1, 1);
 
@@ -496,6 +529,8 @@ public:
 
         decayHFRatioIntercept = new QLineEdit(decayHFRatioWidget);
         decayHFRatioIntercept->setObjectName("decayHFRatioIntercept");
+        sizePolicy.setHeightForWidth(decayHFRatioIntercept->sizePolicy().hasHeightForWidth());
+        decayHFRatioIntercept->setSizePolicy(sizePolicy);
 
         decayHFRatioWidgetLayout->addWidget(decayHFRatioIntercept, 1, 2, 1, 1);
 
@@ -506,6 +541,8 @@ public:
 
         decayHFRatioFactor = new QLineEdit(decayHFRatioWidget);
         decayHFRatioFactor->setObjectName("decayHFRatioFactor");
+        sizePolicy.setHeightForWidth(decayHFRatioFactor->sizePolicy().hasHeightForWidth());
+        decayHFRatioFactor->setSizePolicy(sizePolicy);
 
         decayHFRatioWidgetLayout->addWidget(decayHFRatioFactor, 1, 5, 1, 1);
 
@@ -538,6 +575,8 @@ public:
 
         decayLFRatioFactor = new QLineEdit(decayLFRatioWidget);
         decayLFRatioFactor->setObjectName("decayLFRatioFactor");
+        sizePolicy.setHeightForWidth(decayLFRatioFactor->sizePolicy().hasHeightForWidth());
+        decayLFRatioFactor->setSizePolicy(sizePolicy);
 
         decayLFRatioLayout->addWidget(decayLFRatioFactor, 1, 5, 1, 1);
 
@@ -548,6 +587,8 @@ public:
 
         decayLFRatioIntercept = new QLineEdit(decayLFRatioWidget);
         decayLFRatioIntercept->setObjectName("decayLFRatioIntercept");
+        sizePolicy.setHeightForWidth(decayLFRatioIntercept->sizePolicy().hasHeightForWidth());
+        decayLFRatioIntercept->setSizePolicy(sizePolicy);
 
         decayLFRatioLayout->addWidget(decayLFRatioIntercept, 1, 2, 1, 1);
 
@@ -590,6 +631,8 @@ public:
 
         diffusionFactor = new QLineEdit(diffusionWidget);
         diffusionFactor->setObjectName("diffusionFactor");
+        sizePolicy.setHeightForWidth(diffusionFactor->sizePolicy().hasHeightForWidth());
+        diffusionFactor->setSizePolicy(sizePolicy);
 
         diffussionLayout->addWidget(diffusionFactor, 1, 5, 1, 1);
 
@@ -600,6 +643,8 @@ public:
 
         diffusionIntercept = new QLineEdit(diffusionWidget);
         diffusionIntercept->setObjectName("diffusionIntercept");
+        sizePolicy.setHeightForWidth(diffusionIntercept->sizePolicy().hasHeightForWidth());
+        diffusionIntercept->setSizePolicy(sizePolicy);
 
         diffussionLayout->addWidget(diffusionIntercept, 1, 2, 1, 1);
 
@@ -632,11 +677,15 @@ public:
 
         densityFactor = new QLineEdit(densityWidget);
         densityFactor->setObjectName("densityFactor");
+        sizePolicy.setHeightForWidth(densityFactor->sizePolicy().hasHeightForWidth());
+        densityFactor->setSizePolicy(sizePolicy);
 
         densityLayout->addWidget(densityFactor, 1, 5, 1, 1);
 
         densityIntercept = new QLineEdit(densityWidget);
         densityIntercept->setObjectName("densityIntercept");
+        sizePolicy.setHeightForWidth(densityIntercept->sizePolicy().hasHeightForWidth());
+        densityIntercept->setSizePolicy(sizePolicy);
 
         densityLayout->addWidget(densityIntercept, 1, 2, 1, 1);
 

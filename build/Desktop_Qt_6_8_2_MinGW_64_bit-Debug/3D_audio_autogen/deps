@@ -7,6 +7,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QList \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QMutex \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QObject \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QPropertyAnimation \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QReadWriteLock \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QRect \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/QSize \
@@ -19,6 +20,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/q20memory.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/q20type_traits.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/q23utility.h \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qabstractanimation.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qalgorithms.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qanystringview.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qarraydata.h \
@@ -56,6 +58,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qdatetime.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qdeadlinetimer.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qdebug.h \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qeasingcurve.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qelapsedtimer.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qendian.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qeventloop.h \
@@ -104,6 +107,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qpair.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qpoint.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qprocessordetection.h \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qpropertyanimation.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qreadwritelock.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qrect.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qrefcount.h \
@@ -157,6 +161,7 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qutf8stringview.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/quuid.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qvariant.h \
+	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qvariantanimation.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qvarlengtharray.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qvector.h \
 	E:/WORK_software/Qt/6.8.2/mingw_64/include/QtCore/qversiontagging.h \
@@ -444,32 +449,95 @@
 	E:/WORK_software/Qt/6.8.2/mingw_64/lib/cmake/Qt6ZlibPrivate/Qt6ZlibPrivateConfigVersionImpl.cmake \
 	E:/WORK_software/Qt/6.8.2/mingw_64/lib/cmake/Qt6ZlibPrivate/Qt6ZlibPrivateTargets.cmake \
 	E:/WORK_software/Qt/6.8.2/mingw_64/lib/cmake/Qt6ZlibPrivate/Qt6ZlibPrivateVersionlessAliasTargets.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXCompiler.cmake.in \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXCompilerABI.cpp \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCXXInformation.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCommonLanguageInclude.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeCompilerIdDetection.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompileFeatures.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineRCCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeFindBinUtils.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeGenericSystem.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeInitializeConfigs.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeLanguageInformation.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeNinjaFindMake.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseArguments.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseImplicitIncludeInfo.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseImplicitLinkInfo.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeParseLibraryArchitecture.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeRCCompiler.cmake.in \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeRCInformation.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeSystem.cmake.in \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeSystemSpecificInformation.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeSystemSpecificInitialize.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestCompilerCommon.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CMakeTestRCCompiler.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CheckCXXCompilerFlag.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CheckCXXSourceCompiles.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CheckIncludeFileCXX.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/CheckLibraryExists.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/ADSP-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/ARMCC-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/ARMClang-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/AppleClang-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Borland-DetermineCompiler.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/CMakeCommonCompilerMacros.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Clang-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Clang-DetermineCompilerInternal.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Cray-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/CrayClang-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Embarcadero-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Fujitsu-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GHS-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GNU-CXX.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GNU-FindBinUtils.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/GNU.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/HP-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IAR-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Intel-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/MSVC-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/NVHPC-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/NVIDIA-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/OrangeC-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/PGI-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/PathScale-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/SCO-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/TI-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/TIClang-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Tasking-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/Watcom-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/XL-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/FindPackageHandleStandardArgs.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/FindPackageMessage.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/FindThreads.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/FindVulkan.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/GNUInstallDirs.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/CheckCompilerFlag.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/CheckFlagCommonConfig.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Internal/FeatureTesting.cmake \
+	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-Determine-CXX.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU-CXX-ABI.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU-CXX.cmake \
 	E:/WORK_software/Qt/Tools/CMake_64/share/cmake-3.29/Modules/Platform/Windows-GNU.cmake \
@@ -744,8 +812,9 @@
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/draggablesource.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/mapscene.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/occlusionfilterpanel.h \
-	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/parameterwidget.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/publicparameterpanel.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/sourceparameterwidget.h \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/stackpanel.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/wallrectitem.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/waveformwidget.h \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/GUI/xwidget.h \
@@ -775,14 +844,17 @@
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/draggablesource.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/mapscene.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/occlusionfilterpanel.cpp \
-	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/parameterwidget.cpp \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/publicparameterpanel.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/sourceparameterwidget.cpp \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/stackpanel.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/wallrectitem.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/waveformwidget.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/GUI/xwidget.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/main.cpp \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/form/audiosourcepanel.ui \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/form/occlusionfilterpanel.ui \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/form/publicparameterpanel.ui \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/form/sourceparameterwidget.ui \
+	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/form/stackpanel.ui \
 	E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/form/xwidget.ui \
 	E:/WORK_software/Qt/Tools/CMake_64/bin/cmake.exe

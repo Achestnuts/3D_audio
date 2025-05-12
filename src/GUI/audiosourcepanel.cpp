@@ -5,6 +5,14 @@ AudioSourcePanel::AudioSourcePanel(QWidget *parent)
     : QWidget(parent), ui(new Ui::AudioSourcePanel), m_source(nullptr)
 {
     ui->setupUi(this);
+    // // 关闭透明背景属性
+    // setAttribute(Qt::WA_TranslucentBackground, false);
+    // // 设置子部件的背景样式，例如设置为不透明的白色背景
+    // setStyleSheet("background-color: white;");
+    setMinimumSize(0, 0);
+    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+
     ui->volumeSlider->setRange(0, 100);
     ui->progressSlider->setRange(0, 1000);
 

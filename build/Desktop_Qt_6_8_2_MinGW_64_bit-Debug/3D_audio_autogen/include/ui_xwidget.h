@@ -12,17 +12,11 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <audiosourcepanel.h>
-#include <occlusionfilterpanel.h>
 #include <roommap.h>
-#include <sourceparameterwidget.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -44,25 +38,8 @@ public:
     QWidget *contentWidget;
     QGridLayout *contentWidgetLayout;
     RoomMap *roomMap;
-    QStackedWidget *stackedPanel;
-    QWidget *publicParameter;
-    QGridLayout *publicParaterLayout;
-    QLineEdit *lineEdit_4;
-    QLabel *publicParameterTitle;
-    QLabel *gridMeterLabel;
-    QLineEdit *lineEdit_2;
-    QLabel *meterLabel;
-    QLineEdit *gridMeterEdit;
-    QSpacerItem *verticalSpacer;
-    QLineEdit *lineEdit_3;
-    QPushButton *stopButton;
-    QPushButton *startButton;
-    QPushButton *sceneSaveButton;
-    QPushButton *sceneLoadButton;
-    AudioSourcePanel *audioSourcePanel;
-    SourceParameterWidget *sourceParameterWidget;
-    QGridLayout *itemParameterLayout;
-    OcclusionFilterPanel *occlusionFilterPanel;
+    QVBoxLayout *verticalLayout;
+    QPushButton *toggleButton;
 
     void setupUi(QWidget *XWidget)
     {
@@ -221,110 +198,23 @@ public:
 
         contentWidgetLayout->addWidget(roomMap, 0, 0, 2, 1);
 
-        stackedPanel = new QStackedWidget(contentWidget);
-        stackedPanel->setObjectName("stackedPanel");
-        QSizePolicy sizePolicy3(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-        sizePolicy3.setHorizontalStretch(1);
-        sizePolicy3.setVerticalStretch(1);
-        sizePolicy3.setHeightForWidth(stackedPanel->sizePolicy().hasHeightForWidth());
-        stackedPanel->setSizePolicy(sizePolicy3);
-        publicParameter = new QWidget();
-        publicParameter->setObjectName("publicParameter");
-        publicParaterLayout = new QGridLayout(publicParameter);
-        publicParaterLayout->setObjectName("publicParaterLayout");
-        lineEdit_4 = new QLineEdit(publicParameter);
-        lineEdit_4->setObjectName("lineEdit_4");
-        QSizePolicy sizePolicy4(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(lineEdit_4->sizePolicy().hasHeightForWidth());
-        lineEdit_4->setSizePolicy(sizePolicy4);
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setSpacing(0);
+        verticalLayout->setObjectName("verticalLayout");
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        toggleButton = new QPushButton(contentWidget);
+        toggleButton->setObjectName("toggleButton");
 
-        publicParaterLayout->addWidget(lineEdit_4, 4, 2, 1, 3);
+        verticalLayout->addWidget(toggleButton);
 
-        publicParameterTitle = new QLabel(publicParameter);
-        publicParameterTitle->setObjectName("publicParameterTitle");
 
-        publicParaterLayout->addWidget(publicParameterTitle, 1, 0, 1, 5);
-
-        gridMeterLabel = new QLabel(publicParameter);
-        gridMeterLabel->setObjectName("gridMeterLabel");
-
-        publicParaterLayout->addWidget(gridMeterLabel, 2, 0, 1, 1);
-
-        lineEdit_2 = new QLineEdit(publicParameter);
-        lineEdit_2->setObjectName("lineEdit_2");
-        sizePolicy4.setHeightForWidth(lineEdit_2->sizePolicy().hasHeightForWidth());
-        lineEdit_2->setSizePolicy(sizePolicy4);
-
-        publicParaterLayout->addWidget(lineEdit_2, 6, 2, 1, 3);
-
-        meterLabel = new QLabel(publicParameter);
-        meterLabel->setObjectName("meterLabel");
-
-        publicParaterLayout->addWidget(meterLabel, 2, 4, 1, 1);
-
-        gridMeterEdit = new QLineEdit(publicParameter);
-        gridMeterEdit->setObjectName("gridMeterEdit");
-        sizePolicy4.setHeightForWidth(gridMeterEdit->sizePolicy().hasHeightForWidth());
-        gridMeterEdit->setSizePolicy(sizePolicy4);
-
-        publicParaterLayout->addWidget(gridMeterEdit, 2, 3, 1, 1);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
-
-        publicParaterLayout->addItem(verticalSpacer, 9, 3, 1, 1);
-
-        lineEdit_3 = new QLineEdit(publicParameter);
-        lineEdit_3->setObjectName("lineEdit_3");
-        sizePolicy4.setHeightForWidth(lineEdit_3->sizePolicy().hasHeightForWidth());
-        lineEdit_3->setSizePolicy(sizePolicy4);
-
-        publicParaterLayout->addWidget(lineEdit_3, 5, 2, 1, 3);
-
-        stopButton = new QPushButton(publicParameter);
-        stopButton->setObjectName("stopButton");
-
-        publicParaterLayout->addWidget(stopButton, 7, 3, 1, 1);
-
-        startButton = new QPushButton(publicParameter);
-        startButton->setObjectName("startButton");
-
-        publicParaterLayout->addWidget(startButton, 7, 2, 1, 1);
-
-        sceneSaveButton = new QPushButton(publicParameter);
-        sceneSaveButton->setObjectName("sceneSaveButton");
-
-        publicParaterLayout->addWidget(sceneSaveButton, 8, 2, 1, 1);
-
-        sceneLoadButton = new QPushButton(publicParameter);
-        sceneLoadButton->setObjectName("sceneLoadButton");
-
-        publicParaterLayout->addWidget(sceneLoadButton, 8, 3, 1, 1);
-
-        stackedPanel->addWidget(publicParameter);
-        audioSourcePanel = new AudioSourcePanel();
-        audioSourcePanel->setObjectName("audioSourcePanel");
-        stackedPanel->addWidget(audioSourcePanel);
-        sourceParameterWidget = new SourceParameterWidget();
-        sourceParameterWidget->setObjectName("sourceParameterWidget");
-        itemParameterLayout = new QGridLayout(sourceParameterWidget);
-        itemParameterLayout->setObjectName("itemParameterLayout");
-        stackedPanel->addWidget(sourceParameterWidget);
-        occlusionFilterPanel = new OcclusionFilterPanel();
-        occlusionFilterPanel->setObjectName("occlusionFilterPanel");
-        stackedPanel->addWidget(occlusionFilterPanel);
-
-        contentWidgetLayout->addWidget(stackedPanel, 0, 1, 2, 1);
+        contentWidgetLayout->addLayout(verticalLayout, 0, 2, 2, 1);
 
 
         XWidgetLayout->addWidget(contentWidget);
 
 
         retranslateUi(XWidget);
-
-        stackedPanel->setCurrentIndex(0);
-
 
         QMetaObject::connectSlotsByName(XWidget);
     } // setupUi
@@ -336,13 +226,7 @@ public:
         pushButtonRestore->setText(QCoreApplication::translate("XWidget", "\345\223\201", nullptr));
         pushButtonClose->setText(QCoreApplication::translate("XWidget", "X", nullptr));
         pushButtonMax->setText(QCoreApplication::translate("XWidget", "\345\217\243", nullptr));
-        publicParameterTitle->setText(QCoreApplication::translate("XWidget", "\345\205\254\345\205\261\345\217\202\346\225\260", nullptr));
-        gridMeterLabel->setText(QCoreApplication::translate("XWidget", "\346\240\274\345\255\220\351\225\277\345\272\246", nullptr));
-        meterLabel->setText(QCoreApplication::translate("XWidget", "\347\261\263", nullptr));
-        stopButton->setText(QCoreApplication::translate("XWidget", "stop", nullptr));
-        startButton->setText(QCoreApplication::translate("XWidget", "start", nullptr));
-        sceneSaveButton->setText(QCoreApplication::translate("XWidget", "save", nullptr));
-        sceneLoadButton->setText(QCoreApplication::translate("XWidget", "load", nullptr));
+        toggleButton->setText(QCoreApplication::translate("XWidget", "PushButton", nullptr));
     } // retranslateUi
 
 };

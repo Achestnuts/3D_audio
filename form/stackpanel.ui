@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StackPanel</class>
+ <widget class="QWidget" name="StackPanel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>247</width>
+    <height>481</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="panelBodyWidget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>1</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <widget class="PublicParameterPanel" name="publicParameterPanel"/>
+        <widget class="AudioSourcePanel" name="audioSourcePanel"/>
+        <widget class="SourceParameterWidget" name="sourceParameterWidget"/>
+        <widget class="OcclusionFilterPanel" name="occlusionFilterPanel"/>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SourceParameterWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">sourceparameterwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OcclusionFilterPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">occlusionfilterpanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AudioSourcePanel</class>
+   <extends>QWidget</extends>
+   <header location="global">audiosourcepanel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PublicParameterPanel</class>
+   <extends>QWidget</extends>
+   <header location="global">publicparameterpanel.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

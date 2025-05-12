@@ -1,6 +1,5 @@
 #include "xwidget.h"
 #include "ui_xwidget.h"
-#include "sourceparameterwidget.h"
 #include <QFile>
 #include <QHoverEvent>
 #include <QGraphicsDropShadowEffect>
@@ -11,21 +10,24 @@
 #include <QScrollBar>
 #include <QPropertyAnimation>
 
+
 XWidget::XWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::XWidget)
 {
+    qDebug()<<"prepare store point";
     qApp->setProperty("MainXWidget", QVariant::fromValue(std::shared_ptr<XWidget>(this))); // 存储指针
-
+qDebug()<<"finish store point";
     setWindowFlags(Qt::FramelessWindowHint);    // 隐藏标题栏（无边框）
     setAttribute(Qt::WA_StyledBackground);      // 启用样式背景绘制
     setAttribute(Qt::WA_TranslucentBackground); // 背景透明
     setAttribute(Qt::WA_Hover);                 // 启动鼠标悬浮追踪
-
+qDebug()<<"finish set";
     m_bIsPressed = false;
     m_bIsResizing = false;
     m_bIsDoublePressed = false;
     m_direction = NONE;
 
+    qDebug()<<"prepare all setup";
     ui->setupUi(this);
 
     // if (ui->roomMap) {
@@ -44,55 +46,89 @@ XWidget::XWidget(QWidget *parent)
     // xWidgetStyleSheet.open(QIODevice::ReadOnly);
     // setStyleSheet(QString::fromUtf8(xWidgetStyleSheet.readAll()));
 
+    qDebug()<<"all setup";
+
     connect(ui->pushButtonClose, &QPushButton::clicked, this, &QWidget::close);
     connect(ui->pushButtonMax, &QPushButton::clicked, this, &XWidget::maximizeWidget);
     connect(ui->pushButtonRestore, &QPushButton::clicked, this, &XWidget::restoreWidget);
     connect(ui->pushButtonMin, &QPushButton::clicked, this, &QWidget::showMinimized);
 
     //AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
-    ui->gridMeterEdit->setText(QString::number(ui->roomMap->audioManager->gridMeter));
-    connect(ui->gridMeterEdit, &QLineEdit::editingFinished, [this]() {
-        ui->roomMap->audioManager->gridMeter = this->ui->gridMeterEdit->text().toFloat();
-    });
-
-    ui->stackedPanel->installEventFilter(this);
-
-    // connect(ui->wheelSlider->verticalScrollBar(), &QScrollBar::valueChanged, [this](int value){
-    //     int clamped = std::clamp(value, 0, ui->stackedPanel->count() - 1);
-    //     ui->stackedPanel->setCurrentIndex(clamped);
+    // ui->publicParameterPanel->ui->gridMeterEdit->setText(QString::number(ui->roomMap->audioManager->gridMeter));
+    // connect(ui->publicParameterPanel->ui->gridMeterEdit, &QLineEdit::editingFinished, [this]() {
+    //     ui->roomMap->audioManager->gridMeter = this->ui->publicParameterPanel->ui->gridMeterEdit->text().toFloat();
     // });
 
-    connect(ui->startButton, &QPushButton::clicked, [this](){
-        ui->roomMap->audioManager->recorder->startRecording("E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/recorder.wav");
-    });
+    stackPanel = new StackPanel(this);
+    stackPanel->installEventFilter(this);
 
-    connect(ui->stopButton, &QPushButton::clicked, [this](){
-        ui->roomMap->audioManager->recorder->stopRecording();
-    });
 
-    connect(ui->sceneSaveButton, &QPushButton::clicked, [this]() {
-        ui->roomMap->saveSceneFile();
-    });
-
-    connect(ui->sceneLoadButton, &QPushButton::clicked, [this]() {
-        ui->roomMap->loadSceneFile();
-    });
 
     createShadow();
 
     restoreWidget();
+
+    // 初始化面板
+
+    //stackPanel->setLinkedMainWindow(this);
+    //stackPanel->setFixedWidth(300);
+    stackPanel->setStyleSheet("background-color: rgba(30, 30, 30, 240); border-radius: 8px;");
+
+    stackPanel->hide(); // 初始隐藏
+
+    ui->toggleButton->setFixedSize(30, 80);
+    ui->toggleButton->raise();
+    ui->toggleButton->setText("<");
+
+
+    connect(ui->toggleButton, &QPushButton::clicked, [this]() {
+        qDebug()<<"map width:"<<ui->roomMap->width();
+        qDebug()<<"map pos:"<<ui->roomMap->pos();
+        qDebug()<<"stackPanel width:"<<stackPanel->width();
+        qDebug()<<"stackPanel pos:"<<stackPanel->pos();
+        if (stackPanel->isVisible()) {
+            stackPanel->hide();
+            ui->toggleButton->setText(">");
+        } else {
+            // stackPanel->move(ui->roomMap->width() - stackPanel->width(), 0);
+            // stackPanel->resize(stackPanel->width(), ui->roomMap->height());
+            stackPanel->show();
+            stackPanel->raise();
+            ui->toggleButton->setText("<");
+        }
+        qDebug()<<"stackPanel pos:"<<stackPanel->pos();
+    });
 }
 
 XWidget::~XWidget() {
 
 }
 
+// void XWidget::showEvent(QShowEvent *event)
+// {
+//     QWidget::showEvent(event);
+
+//     static bool inited = false;
+//     if (!inited) {
+//         inited = true;
+
+//         setWindowFlags(Qt::FramelessWindowHint);
+//         setAttribute(Qt::WA_StyledBackground);
+//         setAttribute(Qt::WA_TranslucentBackground);
+//         setAttribute(Qt::WA_Hover);
+
+//         show(); // 重新显示窗口以应用无边框
+//     }
+// }
+
+
 void XWidget::animatePageSwitch(int from, int to)
 {
-    QWidget* fromWidget = ui->stackedPanel->widget(from);
-    QWidget* toWidget   = ui->stackedPanel->widget(to);
+    stackPanel->setMinimumSize(0, 0);
+    QWidget* fromWidget = stackPanel->ui->stackedWidget->widget(from);
+    QWidget* toWidget   = stackPanel->ui->stackedWidget->widget(to);
 
-    int w = ui->stackedPanel->width();
+    int w = stackPanel->width();
 
     // 初始位置：待切换页面在右侧或左侧
     toWidget->move(to > from ? w : -w, 0);
@@ -115,20 +151,21 @@ void XWidget::animatePageSwitch(int from, int to)
     animTo->start(QAbstractAnimation::DeleteWhenStopped);
 
     // 切换 stack index
-    ui->stackedPanel->setCurrentIndex(to);
+    stackPanel->ui->stackedWidget->setCurrentIndex(to);
+    stackPanel->setMinimumSize(0, 0);
 }
 
 
 bool XWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == ui->stackedPanel && event->type() == QEvent::Wheel) {
+    if (watched == stackPanel && event->type() == QEvent::Wheel) {
         QWheelEvent* wheel = static_cast<QWheelEvent*>(event);
 
         int delta = wheel->angleDelta().y();
         if (delta == 0) return true;
 
-        int current = ui->stackedPanel->currentIndex();
-        int count = ui->stackedPanel->count();
+        int current = stackPanel->ui->stackedWidget->currentIndex();
+        int count = stackPanel->ui->stackedWidget->count();
 
         int nextIndex = current + (delta < 0 ? 1 : -1);
         nextIndex = std::clamp(nextIndex, 0, count - 1);
@@ -191,8 +228,25 @@ bool XWidget::event(QEvent *event)
         mouseMoveEvent(&mouseEvent);
     }
 
+    if (stackPanel && this->isVisible()) {
+        stackPanel->updatePosition();
+    }
+
     return QWidget::event(event);
 }
+
+void XWidget::moveEvent(QMoveEvent* event)
+{
+    QWidget::moveEvent(event);
+    setWindowTitle(windowTitle()); // 触发 titleChanged，stackPanel 已连接此信号
+}
+
+void XWidget::resizeEvent(QResizeEvent* event)
+{
+    QWidget::resizeEvent(event);
+    setWindowTitle(windowTitle()); // 触发 titleChanged
+}
+
 
 void XWidget::mousePressEvent(QMouseEvent *event)
 {

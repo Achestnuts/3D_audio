@@ -4,8 +4,8 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include "draggablesource.h"
-#include "roommap.h"
+#include "stackpanel.h"
+#include "ui_stackpanel.h"
 
 #define MARGIN_MIN_SIZE -10
 #define MARGIN_MAX_SIZE 15
@@ -51,6 +51,7 @@ public:
     void animatePageSwitch(int from, int to);
 
     Ui::XWidget* ui;                          //边框ui
+    StackPanel* stackPanel;
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
@@ -62,6 +63,9 @@ protected:
 // signals:
 //     void clickClose();
 
+    void moveEvent(QMoveEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    //void showEvent(QShowEvent *event) override;
 private:
 
     // std::shared_ptr<RoomMap> roomMap;

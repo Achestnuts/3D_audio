@@ -9,6 +9,7 @@
 #include <XWidget.h>
 #include "ui_xwidget.h"
 
+
 WallRectItem::WallRectItem(const QRectF rect, QGraphicsItem *parent)
     : QGraphicsRectItem(rect, parent),
     m_snapThreshold(80.0f),
@@ -24,7 +25,7 @@ WallRectItem::WallRectItem(const QRectF rect, QGraphicsItem *parent)
     roomMap->scene->addItem(this);
 
     connect(this, &WallRectItem::itemSelected, [this, xWidget](WallRectItem* selectedWall) {
-        xWidget->ui->occlusionFilterPanel->setFilter(&(selectedWall->filter));
+        xWidget->stackPanel->ui->occlusionFilterPanel->setFilter(&(selectedWall->filter));
     });
 
     std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));

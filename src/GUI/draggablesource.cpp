@@ -1,4 +1,5 @@
 #include "draggablesource.h"
+#include "ui_stackpanel.h"
 #include "ui_xwidget.h"
 #include "xwidget.h"
 #include "roommap.h"
@@ -49,8 +50,8 @@ DraggableSource::~DraggableSource() {
 
 void DraggableSource::disconnectAll() {
     std::shared_ptr<XWidget> xWidget = qvariant_cast<std::shared_ptr<XWidget>>(qApp->property("MainXWidget"));
-    xWidget->ui->audioSourcePanel->disconnectSource();
-    xWidget->ui->sourceParameterWidget->disconnectBound();
+    xWidget->stackPanel->ui->audioSourcePanel->disconnectSource();
+    xWidget->stackPanel->ui->sourceParameterWidget->disconnectBound();
 }
 
 void DraggableSource::removeSelf() {
@@ -103,8 +104,8 @@ bool DraggableSource::setAudioSourceFile(QString filePath)
         // 绑定一下GUI更新数据
         connect(this, &DraggableSource::itemSelected, [this, xWidget](DraggableSource* selectedSource) {
             disconnectAll();
-            xWidget->ui->audioSourcePanel->setSource(boundSource);
-            xWidget->ui->sourceParameterWidget->boundSource(this);
+            xWidget->stackPanel->ui->audioSourcePanel->setSource(boundSource);
+            xWidget->stackPanel->ui->sourceParameterWidget->boundSource(this);
         });
     } else if(xWidget->ui->roomMap->audioManager->isSourceExist(boundSource->sourceId)) {
         boundSource->switchAudio(sourceFilePath.toStdString());

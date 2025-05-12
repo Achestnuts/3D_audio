@@ -11,6 +11,7 @@
 
 RoomMap::RoomMap(QWidget *parent) : QGraphicsView(parent)
 {
+    qDebug()<<"prepare create roommap";
     qApp->setProperty("RoomMap", QVariant::fromValue(std::shared_ptr<RoomMap>(this))); // 存储指针
 
     scene = std::make_shared<MapScene>(this);
@@ -39,6 +40,7 @@ RoomMap::RoomMap(QWidget *parent) : QGraphicsView(parent)
 
     connect(addObjectAction.get(), &QAction::triggered, this, &RoomMap::addSource);
     connect(addWallAction.get(), &QAction::triggered, this, &RoomMap::addWall);
+    qDebug()<<"finish create roommap";
 }
 
 // void RoomMap::drawBackground(QPainter *painter, const QRectF &rect) // 绘制网格

@@ -37,8 +37,8 @@
      <widget class="QWidget" name="scrollAreaWidgetContents">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
+        <x>-50</x>
+        <y>-18</y>
         <width>465</width>
         <height>711</height>
        </rect>
@@ -48,7 +48,14 @@
         <widget class="QWidget" name="nameWidget" native="true">
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="1" column="1">
-           <widget class="QLineEdit" name="nameEdit"/>
+           <widget class="QLineEdit" name="nameEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="nameLabel">
@@ -112,10 +119,24 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="decayTimeIntercept"/>
+           <widget class="QLineEdit" name="decayTimeIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="decayTimeFactor"/>
+           <widget class="QLineEdit" name="decayTimeFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="decayTimeValue">
@@ -131,7 +152,14 @@
         <widget class="QWidget" name="reflectionsDelayWidget" native="true">
          <layout class="QGridLayout" name="reflectionDelayWidgetLayout">
           <item row="1" column="5">
-           <widget class="QLineEdit" name="reflectionsDelayFactor"/>
+           <widget class="QLineEdit" name="reflectionsDelayFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="7">
            <widget class="QLabel" name="reflectionsDelayRoomSize">
@@ -141,7 +169,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="reflectionsDelayIntercept"/>
+           <widget class="QLineEdit" name="reflectionsDelayIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="4">
            <widget class="QLabel" name="reflectionsDelayPlus">
@@ -185,7 +220,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="lateReverbDelayFactor"/>
+           <widget class="QLineEdit" name="lateReverbDelayFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="6">
            <widget class="QLabel" name="lateReverbDelayMultiplacation">
@@ -209,7 +251,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="lateReverbDelayIntercept"/>
+           <widget class="QLineEdit" name="lateReverbDelayIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="lateReverbDelayValue">
@@ -232,7 +281,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="gainIntercept"/>
+           <widget class="QLineEdit" name="gainIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="6">
            <widget class="QLabel" name="gainMultiplacation">
@@ -242,7 +298,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="gainFactor"/>
+           <widget class="QLineEdit" name="gainFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="gainLabel">
@@ -272,7 +335,14 @@
         <widget class="QWidget" name="reflectionsGainWidget" native="true">
          <layout class="QGridLayout" name="reflectionsGainWidgetLayout">
           <item row="1" column="5">
-           <widget class="QLineEdit" name="reflectionsGainFactor"/>
+           <widget class="QLineEdit" name="reflectionsGainFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="7">
            <widget class="QLabel" name="reflectionsGainRoomSize">
@@ -303,7 +373,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="reflectionsGainIntercept"/>
+           <widget class="QLineEdit" name="reflectionsGainIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="reflectionsGainValue">
@@ -319,7 +396,14 @@
         <widget class="QWidget" name="lateReverbGainWidget" native="true">
          <layout class="QGridLayout" name="lateReverbGainLayout">
           <item row="1" column="2">
-           <widget class="QLineEdit" name="lateReverbGainIntercept"/>
+           <widget class="QLineEdit" name="lateReverbGainIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="lateReverbGainLabel">
@@ -329,7 +413,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="lateReverbGainFactor"/>
+           <widget class="QLineEdit" name="lateReverbGainFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="7">
            <widget class="QLabel" name="lateReverbGainRoomSize">
@@ -366,7 +457,14 @@
         <widget class="QWidget" name="airAbsorptionHFWidget" native="true">
          <layout class="QGridLayout" name="airAbsorptionHFLayout">
           <item row="1" column="2">
-           <widget class="QLineEdit" name="airAbsorptionHFIntercept"/>
+           <widget class="QLineEdit" name="airAbsorptionHFIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="7">
            <widget class="QLabel" name="airAbsorptionHFRoomSize">
@@ -390,7 +488,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="airAbsorptionHFFactor"/>
+           <widget class="QLineEdit" name="airAbsorptionHFFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="4">
            <widget class="QLabel" name="airAbsorptionHFPlus">
@@ -427,7 +532,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="decayHFRatioIntercept"/>
+           <widget class="QLineEdit" name="decayHFRatioIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="4">
            <widget class="QLabel" name="decayHFRatioPlus">
@@ -437,7 +549,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="decayHFRatioFactor"/>
+           <widget class="QLineEdit" name="decayHFRatioFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="7">
            <widget class="QLabel" name="decayHFRatioRoomSize">
@@ -474,7 +593,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="decayLFRatioFactor"/>
+           <widget class="QLineEdit" name="decayLFRatioFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="7">
            <widget class="QLabel" name="decayLFRatioRoomSize">
@@ -484,7 +610,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="decayLFRatioIntercept"/>
+           <widget class="QLineEdit" name="decayLFRatioIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="4">
            <widget class="QLabel" name="decayLFRatioPlus">
@@ -535,7 +668,14 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="diffusionFactor"/>
+           <widget class="QLineEdit" name="diffusionFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="4">
            <widget class="QLabel" name="diffusionPlus">
@@ -545,7 +685,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="diffusionIntercept"/>
+           <widget class="QLineEdit" name="diffusionIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -582,10 +729,24 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="densityFactor"/>
+           <widget class="QLineEdit" name="densityFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="densityIntercept"/>
+           <widget class="QLineEdit" name="densityIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="densityValue">

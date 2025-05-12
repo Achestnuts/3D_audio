@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 
 
     XWidget w;
-
     w.show();
 
     return a.exec();
