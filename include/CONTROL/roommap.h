@@ -20,13 +20,15 @@ public:
     std::shared_ptr<AudioManager> audioManager;
     std::shared_ptr<SceneFileHandler> sceneFileHandler;
 
+    void addFileToSource(const QString &filepath);
 protected:
     void wheelEvent(QWheelEvent *event) override; // 处理滚轮缩放
     //void drawBackground(QPainter *painter, const QRectF &rect) override; // 绘制网格
     void drawForeground(QPainter *painter, const QRectF &rect) override; // 绘制比例尺
     void contextMenuEvent(QContextMenuEvent *event) override; // 右键菜单
-
-
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
 public slots:
     void addSource(); // 创建音源
     void addWall();

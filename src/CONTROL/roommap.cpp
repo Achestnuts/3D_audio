@@ -5,7 +5,10 @@
 #include <QGraphicsEllipseItem>
 #include <QFileDialog>
 #include<QMenu>
+#include <qmimedata.h>
+#include <qtconcurrentrun.h>
 #include <scenefilehandler.h>
+#include <AudioImportDialog.h>
 
 
 
@@ -21,6 +24,7 @@ RoomMap::RoomMap(QWidget *parent) : QGraphicsView(parent)
     setRenderHint(QPainter::Antialiasing); // 开启抗锯齿
     setDragMode(QGraphicsView::ScrollHandDrag); // 允许鼠标拖动整个场景
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse); // 让缩放围绕鼠标进行
+    setAcceptDrops(true);
 
     audioManager = std::make_shared<AudioManager>(scene, this);
 
@@ -41,6 +45,55 @@ RoomMap::RoomMap(QWidget *parent) : QGraphicsView(parent)
     connect(addObjectAction.get(), &QAction::triggered, this, &RoomMap::addSource);
     connect(addWallAction.get(), &QAction::triggered, this, &RoomMap::addWall);
     qDebug()<<"finish create roommap";
+}
+
+void RoomMap::dragEnterEvent(QDragEnterEvent *event) {
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+        qDebug()<<urls;
+        if (!urls.isEmpty() && QFileInfo(urls.first().toLocalFile()).isFile()) {
+            qDebug()<<"ok?";
+            event->acceptProposedAction();
+        }
+    }
+}
+
+void RoomMap::dragMoveEvent(QDragMoveEvent *event) {
+    event->acceptProposedAction();
+}
+
+void RoomMap::dropEvent(QDropEvent *event) {
+    qDebug()<<"drop accpet";
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty()) return;
+
+    const QString filePath = urls.first().toLocalFile();
+    if (filePath.isEmpty()) return;
+
+    AudioImportDialog dialog(filePath, this);
+    //dialog.show();
+    if (dialog.exec() == QDialog::Accepted) {
+        if (dialog.choice() == AudioImportDialog::ImportAsSource) {
+            addFileToSource(filePath);
+        } else if (dialog.choice() == AudioImportDialog::ConvertFormat) {
+            QString saveFilePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+
+            if (filePath.isEmpty()) {
+                return;
+            }
+
+            // 获取用户选择的文件扩展名
+            QFileInfo fileInfo(saveFilePath);
+            QString fileExtension = fileInfo.suffix().toLower();
+
+            QtConcurrent::run([=]() {
+                // 根据选择的扩展名，保存音频文件
+                if (!audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
+                    qWarning() << "保存录音文件失败";
+                }
+            });
+        }
+    }
 }
 
 // void RoomMap::drawBackground(QPainter *painter, const QRectF &rect) // 绘制网格
@@ -110,6 +163,27 @@ void RoomMap::addSource()
 
     QString filepath = QFileDialog::getOpenFileName(nullptr, "选择音频文件", "",
                                                     "目标音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+    if(!filepath.isEmpty()) {
+        source = std::make_shared<DraggableSource>();
+        // qDebug()<<"分配指针完成";
+        source->setAudioSourceFile(filepath);
+        audioManager->sources[source->boundSource->sourceId] = source;
+        // qDebug()<<"音频文件设置完成";
+        // scene->addItem(source.get());
+        source->setPos(mapToScene(viewport()->rect().center()));
+    }
+    // if (item->setAudioSourceFile()) {
+    //     //item->setAudioSource("source" + QString::fromStdString(std::to_string(rand())));
+    //     qDebug()<<"成功绑定";
+    //     scene->addItem(item);
+    //     item->setPos(mapToScene(viewport()->rect().center()));
+    // }
+}
+
+void RoomMap::addFileToSource(const QString& filepath)
+{
+    std::shared_ptr<DraggableSource> source;
+
     if(!filepath.isEmpty()) {
         source = std::make_shared<DraggableSource>();
         // qDebug()<<"分配指针完成";

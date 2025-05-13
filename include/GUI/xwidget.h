@@ -52,7 +52,10 @@ public:
 
     Ui::XWidget* ui;                          //边框ui
     StackPanel* stackPanel = nullptr;
+
 protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 // public slots:

@@ -9,6 +9,11 @@
 #include <QLineEdit>
 #include <QScrollBar>
 #include <QPropertyAnimation>
+#include <qmimedata.h>
+#include <AudioImportDialog.h>
+#include <audiofileprocessor.h>
+#include <QFileDialog>
+#include <qtconcurrentrun.h>
 
 
 XWidget::XWidget(QWidget *parent)
@@ -21,6 +26,7 @@ qDebug()<<"finish store point";
     setAttribute(Qt::WA_StyledBackground);      // 启用样式背景绘制
     setAttribute(Qt::WA_TranslucentBackground); // 背景透明
     setAttribute(Qt::WA_Hover);                 // 启动鼠标悬浮追踪
+    setAcceptDrops(true);
 qDebug()<<"finish set";
     m_bIsPressed = false;
     m_bIsResizing = false;
@@ -52,6 +58,8 @@ qDebug()<<"finish set";
     connect(ui->pushButtonMax, &QPushButton::clicked, this, &XWidget::maximizeWidget);
     connect(ui->pushButtonRestore, &QPushButton::clicked, this, &XWidget::restoreWidget);
     connect(ui->pushButtonMin, &QPushButton::clicked, this, &QWidget::showMinimized);
+
+    this->installEventFilter(this);
 
     //AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
     // ui->publicParameterPanel->ui->gridMeterEdit->setText(QString::number(ui->roomMap->audioManager->gridMeter));
@@ -108,6 +116,52 @@ XWidget::~XWidget() {
 // }
 
 
+void XWidget::dragEnterEvent(QDragEnterEvent *event) {
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+        qDebug()<<urls;
+        if (!urls.isEmpty() && QFileInfo(urls.first().toLocalFile()).isFile()) {
+            qDebug()<<"ok?";
+            event->acceptProposedAction();
+        }
+    }
+}
+
+void XWidget::dropEvent(QDropEvent *event) {
+    qDebug()<<"drop accpet";
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty()) return;
+
+    const QString filePath = urls.first().toLocalFile();
+    if (filePath.isEmpty()) return;
+
+    AudioImportDialog dialog(filePath, this);
+    //dialog.show();
+    if (dialog.exec() == QDialog::Accepted) {
+        if (dialog.choice() == AudioImportDialog::ImportAsSource) {
+            ui->roomMap->addFileToSource(filePath);
+        } else if (dialog.choice() == AudioImportDialog::ConvertFormat) {
+            QString saveFilePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+
+            if (filePath.isEmpty()) {
+                return;
+            }
+
+            // 获取用户选择的文件扩展名
+            QFileInfo fileInfo(saveFilePath);
+            QString fileExtension = fileInfo.suffix().toLower();
+
+            QtConcurrent::run([=]() {
+                // 根据选择的扩展名，保存音频文件
+                if (!ui->roomMap->audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
+                    qWarning() << "保存录音文件失败";
+                }
+            });
+
+        }
+    }
+}
+
 void XWidget::animatePageSwitch(int from, int to)
 {
     QWidget* fromWidget = stackPanel->ui->stackedWidget->widget(from);
@@ -160,6 +214,10 @@ bool XWidget::eventFilter(QObject *watched, QEvent *event)
 
         return true; // 已处理，不再向上传播
     }
+
+    // if (event->type() == QEvent::DragEnter || event->type() == QEvent::Drop) {
+    //     qDebug() << "EventFilter: got drag/drop event from" << watched;
+    // }
 
     return QWidget::eventFilter(watched, event);
 }
