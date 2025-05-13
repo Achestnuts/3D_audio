@@ -440,6 +440,12 @@
 			null
 		],
 		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/AUDIO/audiofileprocessor.h",
+			"MU",
+			"MELDYZ2Z65/moc_audiofileprocessor.cpp",
+			null
+		],
+		[
 			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/include/AUDIO/audiorecorder.h",
 			"MU",
 			"MELDYZ2Z65/moc_audiorecorder.cpp",
@@ -709,6 +715,11 @@
 	"SETTINGS_FILE" : "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/build/Desktop_Qt_6_8_2_MinGW_64_bit-Debug/CMakeFiles/3D_audio_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[
+			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/AUDIO/audiofileprocessor.cpp",
+			"MU",
+			null
+		],
 		[
 			"E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/src/AUDIO/audiorecorder.cpp",
 			"MU",

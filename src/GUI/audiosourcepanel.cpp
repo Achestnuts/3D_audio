@@ -43,9 +43,9 @@ AudioSourcePanel::~AudioSourcePanel() {
     delete ui;
 }
 
-// QSize AudioSourcePanel::sizeHint() const {
-//     return QSize(0, 0); // 控制在合理范围内
-// }
+QSize AudioSourcePanel::sizeHint() const {
+    return QSize(0, 0); // 控制在合理范围内
+}
 
 void AudioSourcePanel::setSource(AudioSource* source) {
     m_source = source;

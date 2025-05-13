@@ -35,6 +35,8 @@ public:
     ALuint getSourceBuffer();
     ALuint* getSourceBufferPoint();
 
+    bool loadFromFile(const std::string &filePath);
+
     bool isPlaying() const;
 
     void initMirrorSource();

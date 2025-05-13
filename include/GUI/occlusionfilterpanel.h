@@ -23,8 +23,8 @@ public:
     explicit OcclusionFilterPanel(QWidget *parent = nullptr);
     void setFilter(OcclusionFilter* filter);
 
-// protected:
-//     QSize sizeHint() const override;
+protected:
+    QSize sizeHint() const override;
 private slots:
     void onGainChanged(int value);
     void onGainHFChanged(int value);

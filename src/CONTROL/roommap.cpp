@@ -107,7 +107,9 @@ void RoomMap::wheelEvent(QWheelEvent *event)
 void RoomMap::addSource()
 {
     std::shared_ptr<DraggableSource> source;
-    QString filepath = QFileDialog::getOpenFileName(nullptr, "选择音频文件", "", "WAV 文件 (*.wav)");
+
+    QString filepath = QFileDialog::getOpenFileName(nullptr, "选择音频文件", "",
+                                                    "目标音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
     if(!filepath.isEmpty()) {
         source = std::make_shared<DraggableSource>();
         // qDebug()<<"分配指针完成";

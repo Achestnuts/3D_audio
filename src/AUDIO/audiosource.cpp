@@ -4,6 +4,10 @@
 #include <qapplication.h>
 #include <qdebug>
 #include <vector>
+#include <QFileInfo>
+#include <audiofileprocessor.h>
+#include <QDir>
+#include <QTemporaryFile>
 
 Q_DECLARE_OPAQUE_POINTER(ALCcontext)
 Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
@@ -20,7 +24,7 @@ AudioSource::AudioSource(const std::string& filePath)
 
     initMirrorSource();
 
-    if (!loadWavFile(filePath)) {
+    if (!loadFromFile(filePath)) {
         std::cerr << "Failed to load WAV file: " << filePath << std::endl;
     }
 
@@ -35,6 +39,53 @@ AudioSource::AudioSource(const std::string& filePath)
 
 }
 
+bool AudioSource::loadFromFile(const std::string &filePath) {
+    QString effectivePath = QString::fromStdString(filePath);
+    QString tempWavPath;
+
+    QFileInfo fileInfo(effectivePath);
+    QString suffix = fileInfo.suffix().toLower();
+
+    if (suffix != "wav") {
+        QString tempTemplate = QDir::currentPath() + "/temp/converted_XXXXXX.wav";
+        QDir().mkpath(QDir::currentPath() + "/temp"); // 确保目录存在
+        // fileInfo.setFile(QDir::currentPath() + "/current/converted_XXXXXX.wav");
+        // // 创建目录（如果不存在）
+        // fileInfo.absoluteDir().mkpath(".");
+        // 非 WAV 格式，需转码
+        AudioFileProcessor processor;
+        processor.setInputFile(effectivePath);
+
+        qDebug()<<tempTemplate;
+
+        QTemporaryFile tempFile(tempTemplate);
+        tempFile.setAutoRemove(false); // 稍后手动移除
+        if (!tempFile.open()) {
+            qWarning() << "无法创建临时文件用于转码";
+            return false;
+        }
+        tempWavPath = tempFile.fileName();
+        tempFile.close();
+
+        QString error;
+        if (!processor.convertAndExport(tempWavPath, "wav", &error)) {
+            qWarning() << "转码失败：" << error;
+            return false;
+        }
+
+        effectivePath = tempWavPath;
+    }
+
+    // 加载 WAV 文件
+    bool result = loadWavFile(effectivePath.toStdString());
+
+    // 清理临时文件
+    // if (!tempWavPath.isEmpty()) {
+    //     QFile::remove(tempWavPath);
+    // }
+
+    return result;
+}
 
 
 void AudioSource::initEffectSlots() {
@@ -545,7 +596,7 @@ void AudioSource::switchAudio(const std::string& newFile) {
     // ----------------------------------------------------------------------------
 
     // 3. 重新加载新音频数据
-    if (!loadWavFile(newFile)) {
+    if (!loadFromFile(newFile)) {
         std::cerr << "Error: Failed to load new WAV file: " << newFile << std::endl;
         return;
     }

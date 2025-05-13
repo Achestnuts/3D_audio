@@ -20,6 +20,7 @@ public:
     void stopRecording();
     bool isRecording() const;
 
+    bool saveRecording(const QString &tempFilePath, const QString &filePath, const QString &format);
 signals:
     void recordingStopped();
     void recordingTimeUpdated(float seconds);

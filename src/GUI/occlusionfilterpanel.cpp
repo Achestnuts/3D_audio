@@ -32,9 +32,9 @@ OcclusionFilterPanel::OcclusionFilterPanel(QWidget *parent)
     m_waveformTimer->start(33); // ~30fps
 }
 
-// QSize OcclusionFilterPanel::sizeHint() const {
-//     return QSize(0, 0); // 控制在合理范围内
-// }
+QSize OcclusionFilterPanel::sizeHint() const {
+    return QSize(0, 0); // 控制在合理范围内
+}
 
 
 void OcclusionFilterPanel::disconnectCurrentFilter() {

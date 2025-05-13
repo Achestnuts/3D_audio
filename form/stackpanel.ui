@@ -10,6 +10,12 @@
     <height>455</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -31,6 +37,12 @@
    </property>
    <item>
     <widget class="QWidget" name="panelBodyWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
        <number>0</number>
@@ -45,26 +57,60 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QStackedWidget" name="stackedWidget">
+       <widget class="QTabWidget" name="stackedWidget">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>1</horstretch>
-          <verstretch>1</verstretch>
+         <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>3</number>
         </property>
-        <widget class="PublicParameterPanel" name="publicParameterPanel"/>
-        <widget class="AudioSourcePanel" name="audioSourcePanel"/>
-        <widget class="SourceParameterWidget" name="sourceParameterWidget"/>
-        <widget class="OcclusionFilterPanel" name="occlusionFilterPanel"/>
+        <widget class="PublicParameterPanel" name="publicParameterPanel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <attribute name="title">
+          <string>公共</string>
+         </attribute>
+        </widget>
+        <widget class="AudioSourcePanel" name="audioSourcePanel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <attribute name="title">
+          <string>音频</string>
+         </attribute>
+        </widget>
+        <widget class="OcclusionFilterPanel" name="occlusionFilterPanel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <attribute name="title">
+          <string>墙体</string>
+         </attribute>
+        </widget>
+        <widget class="SourceParameterWidget" name="sourceParameterWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <attribute name="title">
+          <string>空间</string>
+         </attribute>
+        </widget>
        </widget>
       </item>
      </layout>

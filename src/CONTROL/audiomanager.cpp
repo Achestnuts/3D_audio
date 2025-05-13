@@ -6,6 +6,7 @@
 #include <AL/alc.h>
 #define AL_ALEXT_PROTOTYPES
 #include <AL/efx.h>
+#include <QFileDialog>
 #include <QVector3D>
 #include <QtConcurrent>
 #include <cmath> // 计算距离
@@ -149,6 +150,32 @@ void AudioManager::updateEffectSlots() {
 
 //     //qDebug()<<"Listener is in:"<<x<<","<<y<<" now";
 // }
+
+// 在 AudioManager 类中
+void AudioManager::stopRecordingAndSave() {
+
+    recorder->stopRecording();
+
+    QString filePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+
+    if (filePath.isEmpty()) {
+        return;
+    }
+
+    // 获取用户选择的文件扩展名
+    QFileInfo fileInfo(filePath);
+    QString fileExtension = fileInfo.suffix().toLower();
+
+    // 根据选择的扩展名，保存音频文件
+    if (!recorder->saveRecording(recordTempPath, filePath, fileExtension)) {
+        qWarning() << "保存录音文件失败";
+    }
+}
+
+void AudioManager::startRecording()
+{
+    recorder->startRecording(recordTempPath);
+}
 
 void AudioManager::removeAudioSource(const ALuint &sourceId) {
     // qDebug()<<"即将锁住管理器";

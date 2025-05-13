@@ -1,4 +1,6 @@
 #include "publicparameterpanel.h"
+#include <QDir>
+#include <QFileDialog>
 #include <audiomanager.h>
 #include <roommap.h>
 
@@ -28,11 +30,12 @@ PublicParameterPanel::PublicParameterPanel(QWidget *parent)
     });
 
     connect(ui->startButton, &QPushButton::clicked, [=](){
-        roomMap->audioManager->recorder->startRecording("E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/recorder.wav");
+        roomMap->audioManager->startRecording();
     });
 
     connect(ui->stopButton, &QPushButton::clicked, [=](){
-        roomMap->audioManager->recorder->stopRecording();
+        roomMap->audioManager->stopRecordingAndSave();
+
     });
 
     connect(ui->sceneSaveButton, &QPushButton::clicked, [=]() {
@@ -46,9 +49,9 @@ PublicParameterPanel::PublicParameterPanel(QWidget *parent)
     qDebug()<<"public setup";
 }
 
-// QSize PublicParameterPanel::sizeHint() const {
-//     return QSize(0, 0); // 控制在合理范围内
-// }
+QSize PublicParameterPanel::sizeHint() const {
+    return QSize(0, 0); // 控制在合理范围内
+}
 
 
 

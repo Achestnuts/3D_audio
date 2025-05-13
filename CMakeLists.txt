@@ -39,6 +39,19 @@ qt_add_executable(3D_audio
     ${UI_PATH}
 )
 
+# 路径到 ffmpeg.exe（放在 assets/ 目录中）
+set(FFMPEG_EXE "${CMAKE_SOURCE_DIR}/assets/ffmpeg.exe")
+
+# 目标复制目录（可执行文件输出路径）
+set(OUTPUT_DIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
+# 拷贝 ffmpeg.exe 到构建输出目录
+add_custom_command(TARGET 3D_audio POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${FFMPEG_EXE}"
+            "$<TARGET_FILE_DIR:3D_audio>/ffmpeg.exe"
+)
+
 # 设置头文件路径
 target_include_directories(3D_audio PUBLIC
     ${PROJECT_SOURCE_DIR}/include/

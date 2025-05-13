@@ -9,7 +9,9 @@
 #define AL_ALEXT_PROTOTYPES
 #include <AL/alc.h>
 
+#include <QDir>
 #include <QVariant>
+#include <audiofileprocessor.h>
 
 Q_DECLARE_OPAQUE_POINTER(ALCcontext)
 Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
@@ -322,4 +324,21 @@ void AudioRecorder::finalizeWavHeader() {
     m_outputFile.seek(40); // DataSize 位于第 40 字节
     out << quint32(dataSize);
     m_outputFile.close();
+}
+
+
+// 保存录音并转码为用户选择的格式
+bool AudioRecorder::saveRecording(const QString &tempFilePath, const QString &filePath, const QString &format) {
+    //QString tempFilePath = QDir::tempPath() + "/temp_audio.wav";  // 临时保存为 WAV
+    // 使用转换模块保存为用户指定的格式
+    AudioFileProcessor processor;
+    processor.setInputFile(tempFilePath);
+
+    QString error;
+    if (!processor.convertAndExport(filePath, format, &error)) {
+        qWarning() << "保存失败：" << error;
+        return false;
+    }
+
+    return true;
 }

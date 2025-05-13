@@ -10,6 +10,7 @@
 #include <QMutex>
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <QDir>
 #include <QGraphicsScene>
 #include <QReadWriteLock>
 #include <draggablesource.h>
@@ -58,6 +59,12 @@ public:
     float gridMeter;
     QMutex managerMutex;
     std::shared_ptr<QReadWriteLock> itemMutex;
+
+    QString tempPath = QDir::currentPath() + "/temp";
+    QString recordTempPath = QDir::currentPath() + "/temp/record_temp.wav";
+
+    void stopRecordingAndSave();
+    void startRecording();
 
 private:
     ALCdevice *device;

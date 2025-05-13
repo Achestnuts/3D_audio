@@ -17,8 +17,8 @@ public:
 
     Ui::PublicParameterPanel *ui;
 
-// protected:
-//     QSize sizeHint() const override;
+protected:
+    QSize sizeHint() const override;
 private:
 
 };

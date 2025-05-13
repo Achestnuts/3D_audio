@@ -73,14 +73,13 @@ qDebug()<<"finish set";
     connect(ui->toggleButton, &QPushButton::clicked, [this]() {
         stackPanel->is_visible = !stackPanel->isVisible();
         if (stackPanel->isVisible()) {
-            stackPanel->raise();
-            stackPanel->togglePanel();
+            //stackPanel->togglePanel();
             stackPanel->hide();
             ui->toggleButton->setText("<");
         } else {
             stackPanel->show();
-            stackPanel->togglePanel();
-            stackPanel->raise();
+            //stackPanel->togglePanel();
+            //stackPanel->raise();
             ui->toggleButton->setText(">");
         }
     });

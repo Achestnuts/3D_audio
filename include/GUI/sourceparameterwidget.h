@@ -19,7 +19,7 @@ public:
     Ui::SourceParameterWidget *ui;
     DraggableSource* source;
 protected:
-    // QSize sizeHint() const override;
+    QSize sizeHint() const override;
 private:
 
 };
