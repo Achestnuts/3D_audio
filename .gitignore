@@ -34,5 +34,8 @@
 # build
 build/
 
+#music
+resources/music/
+
 # cmake.user
 CMakeLists.txt.user
