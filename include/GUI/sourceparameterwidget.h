@@ -18,6 +18,8 @@ public:
     bool boundSource(DraggableSource* boundSource);
     Ui::SourceParameterWidget *ui;
     DraggableSource* source;
+protected:
+    // QSize sizeHint() const override;
 private:
 
 };

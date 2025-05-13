@@ -19,6 +19,11 @@ SourceParameterWidget::SourceParameterWidget(QWidget *parent)
     // setStyleSheet("background-color: white;");
 }
 
+// QSize SourceParameterWidget::sizeHint() const {
+//     return QSize(0, 0); // 控制在合理范围内
+// }
+
+
 void SourceParameterWidget::disconnectBound()
 {
     if(!source) {

@@ -59,45 +59,32 @@ qDebug()<<"finish set";
     //     ui->roomMap->audioManager->gridMeter = this->ui->publicParameterPanel->ui->gridMeterEdit->text().toFloat();
     // });
 
-    stackPanel = new StackPanel(this);
-    stackPanel->installEventFilter(this);
-
-
 
     createShadow();
 
     restoreWidget();
 
     // 初始化面板
-
-    //stackPanel->setLinkedMainWindow(this);
-    //stackPanel->setFixedWidth(300);
-    stackPanel->setStyleSheet("background-color: rgba(30, 30, 30, 240); border-radius: 8px;");
-
-    stackPanel->hide(); // 初始隐藏
-
-    ui->toggleButton->setFixedSize(30, 80);
-    ui->toggleButton->raise();
-    ui->toggleButton->setText("<");
-
+    stackPanel = new StackPanel(this);
+    stackPanel->updatePosition();
+    stackPanel->show();
+    stackPanel->installEventFilter(this);
 
     connect(ui->toggleButton, &QPushButton::clicked, [this]() {
-        qDebug()<<"map width:"<<ui->roomMap->width();
-        qDebug()<<"map pos:"<<ui->roomMap->pos();
-        qDebug()<<"stackPanel width:"<<stackPanel->width();
-        qDebug()<<"stackPanel pos:"<<stackPanel->pos();
+        stackPanel->is_visible = !stackPanel->isVisible();
         if (stackPanel->isVisible()) {
-            stackPanel->hide();
-            ui->toggleButton->setText(">");
-        } else {
-            // stackPanel->move(ui->roomMap->width() - stackPanel->width(), 0);
-            // stackPanel->resize(stackPanel->width(), ui->roomMap->height());
-            stackPanel->show();
             stackPanel->raise();
+            stackPanel->togglePanel();
+            stackPanel->hide();
             ui->toggleButton->setText("<");
+        } else {
+            stackPanel->show();
+            stackPanel->togglePanel();
+            stackPanel->raise();
+            ui->toggleButton->setText(">");
         }
-        qDebug()<<"stackPanel pos:"<<stackPanel->pos();
     });
+
 }
 
 XWidget::~XWidget() {
@@ -124,7 +111,6 @@ XWidget::~XWidget() {
 
 void XWidget::animatePageSwitch(int from, int to)
 {
-    stackPanel->setMinimumSize(0, 0);
     QWidget* fromWidget = stackPanel->ui->stackedWidget->widget(from);
     QWidget* toWidget   = stackPanel->ui->stackedWidget->widget(to);
 
@@ -152,7 +138,6 @@ void XWidget::animatePageSwitch(int from, int to)
 
     // 切换 stack index
     stackPanel->ui->stackedWidget->setCurrentIndex(to);
-    stackPanel->setMinimumSize(0, 0);
 }
 
 
@@ -228,7 +213,7 @@ bool XWidget::event(QEvent *event)
         mouseMoveEvent(&mouseEvent);
     }
 
-    if (stackPanel && this->isVisible()) {
+    if(stackPanel && stackPanel->isVisible()) {
         stackPanel->updatePosition();
     }
 

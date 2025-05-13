@@ -51,7 +51,7 @@ public:
     void animatePageSwitch(int from, int to);
 
     Ui::XWidget* ui;                          //边框ui
-    StackPanel* stackPanel;
+    StackPanel* stackPanel = nullptr;
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 

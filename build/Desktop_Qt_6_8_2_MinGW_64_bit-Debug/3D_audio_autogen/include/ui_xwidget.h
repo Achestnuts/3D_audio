@@ -187,6 +187,7 @@ public:
         contentWidget = new QWidget(XWidget);
         contentWidget->setObjectName("contentWidget");
         contentWidgetLayout = new QGridLayout(contentWidget);
+        contentWidgetLayout->setSpacing(0);
         contentWidgetLayout->setObjectName("contentWidgetLayout");
         roomMap = new RoomMap(contentWidget);
         roomMap->setObjectName("roomMap");
@@ -196,19 +197,24 @@ public:
         sizePolicy2.setHeightForWidth(roomMap->sizePolicy().hasHeightForWidth());
         roomMap->setSizePolicy(sizePolicy2);
 
-        contentWidgetLayout->addWidget(roomMap, 0, 0, 2, 1);
+        contentWidgetLayout->addWidget(roomMap, 2, 0, 2, 1);
 
         verticalLayout = new QVBoxLayout();
-        verticalLayout->setSpacing(0);
+        verticalLayout->setSpacing(7);
         verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        verticalLayout->setContentsMargins(0, -1, -1, 0);
         toggleButton = new QPushButton(contentWidget);
         toggleButton->setObjectName("toggleButton");
+        QSizePolicy sizePolicy3(QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(toggleButton->sizePolicy().hasHeightForWidth());
+        toggleButton->setSizePolicy(sizePolicy3);
 
         verticalLayout->addWidget(toggleButton);
 
 
-        contentWidgetLayout->addLayout(verticalLayout, 0, 2, 2, 1);
+        contentWidgetLayout->addLayout(verticalLayout, 2, 1, 2, 1);
 
 
         XWidgetLayout->addWidget(contentWidget);
@@ -226,7 +232,7 @@ public:
         pushButtonRestore->setText(QCoreApplication::translate("XWidget", "\345\223\201", nullptr));
         pushButtonClose->setText(QCoreApplication::translate("XWidget", "X", nullptr));
         pushButtonMax->setText(QCoreApplication::translate("XWidget", "\345\217\243", nullptr));
-        toggleButton->setText(QCoreApplication::translate("XWidget", "PushButton", nullptr));
+        toggleButton->setText(QCoreApplication::translate("XWidget", ">", nullptr));
     } // retranslateUi
 
 };

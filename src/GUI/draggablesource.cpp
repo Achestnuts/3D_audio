@@ -50,8 +50,8 @@ DraggableSource::~DraggableSource() {
 
 void DraggableSource::disconnectAll() {
     std::shared_ptr<XWidget> xWidget = qvariant_cast<std::shared_ptr<XWidget>>(qApp->property("MainXWidget"));
-    xWidget->stackPanel->ui->audioSourcePanel->disconnectSource();
-    xWidget->stackPanel->ui->sourceParameterWidget->disconnectBound();
+    // xWidget->stackPanel->ui->audioSourcePanel->disconnectSource();
+    // xWidget->stackPanel->ui->sourceParameterWidget->disconnectBound();
 }
 
 void DraggableSource::removeSelf() {

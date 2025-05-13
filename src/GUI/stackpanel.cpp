@@ -7,14 +7,11 @@
 
 StackPanel::StackPanel(QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::StackPanel),
-    animation(new QPropertyAnimation)
+    ui(new Ui::StackPanel)
+    , showAnimation(new QPropertyAnimation)
 {
     ui->setupUi(this);
     // 关闭透明背景属性
-    setAttribute(Qt::WA_TranslucentBackground, false);
-    // // 设置子部件的背景样式，例如设置为不透明的白色背景
-    // setStyleSheet("background-color: white;");
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     setAttribute(Qt::WA_TranslucentBackground);
@@ -22,15 +19,10 @@ StackPanel::StackPanel(QWidget *parent)
 
     // connect(ui->toggleButton, &QPushButton::clicked, this, &StackPanel::togglePanel);
 
-    animation->setTargetObject(ui->panelBodyWidget);
-    animation->setPropertyName("pos");
-    animation->setDuration(300);
+    showAnimation->setTargetObject(ui->panelBodyWidget);
+    showAnimation->setPropertyName("pos");
+    showAnimation->setDuration(300);
 
-    setMinimumSize(0, 0);
-    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-
-    raise();
 }
 
 StackPanel::~StackPanel()
@@ -54,36 +46,29 @@ void StackPanel::setPageWidget(QWidget *widget, int index)
 
 void StackPanel::updatePosition()
 {
-    QWidget *mainWidget = parentWidget(); // 通常是 XWidget
+    QWidget *mainWidget = parentWidget(); // 应该是 XWidget 指针
     if (!mainWidget) return;
 
-    QWidget *roomMap = mainWidget->findChild<QWidget*>("roomMap");
-    if (!roomMap) return;
+    QWidget *mapWidget = mainWidget->findChild<QWidget*>("roomMap");
+    if (!mapWidget) return;
 
-    setMinimumSize(0, 0);
+    // 获取 roomMap 的相对位置和大小
+    QPoint mapPos = mapWidget->mapTo(mainWidget, QPoint(0, 0));
+    QSize mapSize = mapWidget->size();
 
-    // 获取 roomMap 在 parent（XWidget）中的位置
-    QPoint mapPos = roomMap->mapTo(mainWidget, QPoint(0, 0));
-    QSize mapSize = roomMap->size();
-
-    int panelWidth = mapSize.width() * 0.4;
-    int panelHeight = mapSize.height() * 0.4;
-    this->resize(panelWidth, panelHeight);
+    // 固定宽度，根据需要可自定义
+    int panelWidth = mapSize.width() * widthFactor;
+    int panelHeight = mapSize.height() * heightFactor;
 
     // 计算面板的位置（位于 roomMap 内部右侧）
-    int x = mainWidget->geometry().left() + mapPos.x() + mapSize.width() - panelWidth - 20;
+    int x = mainWidget->geometry().left() + mapPos.x() + mapSize.width() - panelWidth - 15;
     int y = mainWidget->geometry().top() + mapPos.y();
-    qDebug()<<"some para";
-    qDebug()<<x;
-    qDebug()<<mainWidget->geometry().left();
-    qDebug()<<mapPos.x();
-    qDebug()<<mapSize.width();
-    qDebug()<<panelWidth;
-    qDebug() << "min width:" << this->minimumWidth() << ", min height:" << this->minimumHeight();
 
+    this->resize(panelWidth, panelHeight);
     this->move(x, y);
 
-    this->raise(); // 保证在前
+    this->raise(); // 保证在最前面
+
 }
 
 void StackPanel::togglePanel()
@@ -91,19 +76,28 @@ void StackPanel::togglePanel()
     const int panelWidth = ui->panelBodyWidget->width();
     const QPoint startPos = ui->panelBodyWidget->pos();
     QPoint endPos;
-
-    if (isExpanded) {
+qDebug()<<is_visible;
+    if (!is_visible) {
         // slide out
-        endPos = QPoint(width(), 0);
+        endPos = startPos + QPoint(panelWidth, 0);
     } else {
         // slide in
-        endPos = QPoint(width() - panelWidth, 0);
+        endPos = startPos - QPoint(panelWidth , 0);
     }
 
-    animation->stop();
-    animation->setStartValue(startPos);
-    animation->setEndValue(endPos);
-    animation->start();
+    qDebug()<<panelWidth;
+    qDebug()<<startPos;
+    qDebug()<<endPos;
 
-    isExpanded = !isExpanded;
+    showAnimation->stop();
+    showAnimation->setStartValue(startPos);
+    showAnimation->setEndValue(endPos);
+    showAnimation->start();
+
+    // if(isVisible()) {
+    //     hide();
+    // }
+    // else {
+    //     show();
+    // }
 }

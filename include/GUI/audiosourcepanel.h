@@ -21,6 +21,8 @@ public:
     void setSource(AudioSource* source);
     void disconnectSource();
 
+protected:
+    // QSize sizeHint() const override;
 private slots:
     void onPlayPauseClicked();
     void onStopClicked();

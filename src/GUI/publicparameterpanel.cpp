@@ -46,4 +46,9 @@ PublicParameterPanel::PublicParameterPanel(QWidget *parent)
     qDebug()<<"public setup";
 }
 
+// QSize PublicParameterPanel::sizeHint() const {
+//     return QSize(0, 0); // 控制在合理范围内
+// }
+
+
 

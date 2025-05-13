@@ -32,6 +32,11 @@ OcclusionFilterPanel::OcclusionFilterPanel(QWidget *parent)
     m_waveformTimer->start(33); // ~30fps
 }
 
+// QSize OcclusionFilterPanel::sizeHint() const {
+//     return QSize(0, 0); // 控制在合理范围内
+// }
+
+
 void OcclusionFilterPanel::disconnectCurrentFilter() {
     // 可选：断开旧连接（如果 filter 是 QObject 派生类，可在这里处理）
     m_filter = nullptr;

@@ -18,23 +18,15 @@ public:
 
     void setCurrentPage(int index);
     void setPageWidget(QWidget* widget, int index = -1);  // 添加页面
-    void updatePosition();
 
     Ui::StackPanel *ui;
 
-    float widthFactor = 0.4, heightFactor = 0.8;
+    float widthFactor = 0.4, heightFactor = 0.4;
+    QPropertyAnimation* showAnimation;
+    bool is_visible = true;
 
-protected:
-
-private slots:
+    void updatePosition();
     void togglePanel();
-
-private:
-
-    QPropertyAnimation* animation;
-    bool isExpanded = false;
-
-
 };
 
 #endif // STACKPANEL_H

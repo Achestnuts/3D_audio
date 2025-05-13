@@ -63,7 +63,7 @@ public:
 
         volumeSlider = new QSlider(scrollAreaWidgetContents);
         volumeSlider->setObjectName("volumeSlider");
-        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Expanding);
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(volumeSlider->sizePolicy().hasHeightForWidth());
@@ -108,7 +108,7 @@ public:
 
         stopButton = new QPushButton(scrollAreaWidgetContents);
         stopButton->setObjectName("stopButton");
-        QSizePolicy sizePolicy3(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Ignored);
+        QSizePolicy sizePolicy3(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(stopButton->sizePolicy().hasHeightForWidth());
