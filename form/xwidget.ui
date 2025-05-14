@@ -37,7 +37,16 @@ QWidget#top {
 QPushButton {
     background-color: #3498db; /* 蓝色背景 */
     border: none; /* 无边框 */
-    color: red; /* 红色文字 */
+    color: white; /* 红色文字 */
+    margin: 4px; /* 按钮外边距 */
+    border-radius: 5px; /* 圆角边框 */
+}
+
+/* 设置按钮的基本样式*/
+QPushButton#toggleButton {
+    background-color:#F5F5F5; /* 蓝色背景 */
+    border: none; /* 无边框 */
+    color:black; /* 红色文字 */
     margin: 4px; /* 按钮外边距 */
     border-radius: 5px; /* 圆角边框 */
 }
@@ -142,7 +151,11 @@ spacer#vSpacer {
          </size>
         </property>
         <property name="text">
-         <string>一</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/icons/min.png</normaloff>:/icons/min.png</iconset>
         </property>
        </widget>
       </item>
@@ -176,7 +189,11 @@ spacer#vSpacer {
          </size>
         </property>
         <property name="text">
-         <string>品</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/icons/window.png</normaloff>:/icons/window.png</iconset>
         </property>
        </widget>
       </item>
@@ -207,7 +224,11 @@ spacer#vSpacer {
          </size>
         </property>
         <property name="text">
-         <string>X</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
         </property>
        </widget>
       </item>
@@ -238,7 +259,11 @@ spacer#vSpacer {
          </size>
         </property>
         <property name="text">
-         <string>口</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../resources/resources.qrc">
+          <normaloff>:/icons/max.png</normaloff>:/icons/max.png</iconset>
         </property>
        </widget>
       </item>
@@ -339,6 +364,72 @@ spacer#vSpacer {
           <verstretch>1</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">/* 背景和边框统一扁平风格 */
+QGraphicsView {
+    background-color: #f5f5f5;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+}
+
+/* 滚动条 - 极简扁平风格 */
+QScrollBar:vertical, QScrollBar:horizontal {
+    background: transparent;
+    border: none;
+    width: 8px;
+    height: 8px;
+    margin: 0px;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #c0c0c0;
+    border-radius: 4px;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    background: none;
+    border: none;
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+/* 右键菜单 - 简洁白底灰边 */
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+QMenu::item {
+    padding: 5px 14px;
+    background-color: transparent;
+    color: #333;
+}
+
+QMenu::item:selected {
+    background-color: #e0e0e0;
+    color: #000000;
+}
+
+/* QAction 风格 */
+QWidget QToolTip {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #c0c0c0;
+}
+
+/* 拖拽文件进入区域高亮边框（你可在 dragEnterEvent 中设置） */
+RoomMap[dragActive=&quot;true&quot;] {
+    border: 2px dashed #4A90E2;
+    background-color: #eaf4ff;
+}
+</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="1" rowspan="2">
@@ -379,6 +470,8 @@ spacer#vSpacer {
    <header location="global">roommap.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

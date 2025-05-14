@@ -17,7 +17,72 @@ SourceParameterWidget::SourceParameterWidget(QWidget *parent)
     setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     // // 设置子部件的背景样式，例如设置为不透明的白色背景
     // setStyleSheet("background-color: white;");
+    for (const auto& t : reverbTemplates)
+        ui->templateComboBox->addItem(t.name);
+
+    connect(ui->loadTemplateButton, &QPushButton::clicked, this, &SourceParameterWidget::onLoadTemplateClicked);
 }
+
+void SourceParameterWidget::onLoadTemplateClicked() {
+    // 获取当前选中的模板索引
+    int index = ui->templateComboBox->currentIndex();
+    if (index < 0 || index >= reverbTemplates.size()) return;
+
+    const auto& t = reverbTemplates[index]; // 选中的模板数据
+
+    if(!source) return;
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    if(!(audioManager->isSourceExist(source->boundSource->sourceId))) {
+        return;
+    }
+
+    auto changeParameter = [=] (QLineEdit* edit, float* needChangeParameter, float updateParameter) {
+        audioManager->itemMutex->lockForWrite();
+        *needChangeParameter = updateParameter;
+        audioManager->itemMutex->unlock();
+        edit->setText(QString::number(*needChangeParameter));
+    };
+
+    // 为每个参数字段设置对应的值
+    // 更新和存储每个参数值
+    AuxEffectSlot* eSlot = &source->boundSource->auxEffectSlots;
+    changeParameter(ui->decayTimeIntercept, &eSlot->decayTimeIntercept, t.decayTimeIntercept);
+    changeParameter(ui->decayTimeFactor, &eSlot->decayTimeFactor, t.decayTimeFactor);
+
+    changeParameter(ui->reflectionsDelayIntercept, &eSlot->reflectionsDelayIntercept, t.reflectionsDelayIntercept);
+    changeParameter(ui->reflectionsDelayFactor, &eSlot->reflectionsDelayFactor, t.reflectionsDelayFactor);
+
+    changeParameter(ui->lateReverbDelayIntercept, &eSlot->lateReverbDelayIntercept, t.lateReverbDelayIntercept);
+    changeParameter(ui->lateReverbDelayFactor, &eSlot->lateReverbDelayFactor, t.lateReverbDelayFactor);
+
+    changeParameter(ui->gainIntercept, &eSlot->gainIntercept, t.gainIntercept);
+    changeParameter(ui->gainFactor, &eSlot->gainFactor, t.gainFactor);
+
+    changeParameter(ui->reflectionsGainIntercept, &eSlot->reflectionsGainIntercept, t.reflectionsGainIntercept);
+    changeParameter(ui->reflectionsGainFactor, &eSlot->reflectionsGainFactor, t.reflectionsGainFactor);
+
+    changeParameter(ui->lateReverbGainIntercept, &eSlot->lateReverbGainIntercept, t.lateReverbGainIntercept);
+    changeParameter(ui->lateReverbGainFactor, &eSlot->lateReverbGainFactor, t.lateReverbGainFactor);
+
+    changeParameter(ui->airAbsorptionHFIntercept, &eSlot->airAbsorptionHFIntercept, t.airAbsorptionHFIntercept);
+    changeParameter(ui->airAbsorptionHFFactor, &eSlot->airAbsorptionHFFactor, t.airAbsorptionHFFactor);
+
+    changeParameter(ui->decayHFRatioIntercept, &eSlot->decayHFRatioIntercept, t.decayHFRatioIntercept);
+    changeParameter(ui->decayHFRatioFactor, &eSlot->decayHFRatioFactor, t.decayHFRatioFactor);
+
+    changeParameter(ui->decayLFRatioIntercept, &eSlot->decayLFRatioIntercept, t.decayLFRatioIntercept);
+    changeParameter(ui->decayLFRatioFactor, &eSlot->decayLFRatioFactor, t.decayLFRatioFactor);
+
+    changeParameter(ui->diffusionIntercept, &eSlot->diffusionIntercept, t.diffusionIntercept);
+    changeParameter(ui->diffusionFactor, &eSlot->diffusionFactor, t.diffusionFactor);
+
+    changeParameter(ui->densityIntercept, &eSlot->densityIntercept, t.densityIntercept);
+    changeParameter(ui->densityFactor, &eSlot->densityFactor, t.densityFactor);
+
+    audioManager->updateEffectSlots();
+}
+
+
 
 QSize SourceParameterWidget::sizeHint() const {
     return QSize(0, 0); // 控制在合理范围内
@@ -113,7 +178,7 @@ bool SourceParameterWidget::boundSource(DraggableSource *boundSource)
         connect(eSlot, &AuxEffectSlot::roomSizeChange, [=] (float newRoomSize) {
             // qDebug()<<"pre show";
             audioManager->itemMutex->lockForRead();
-            label->setText(QString::number(*showParameter));
+            label->setText(QString::number(*showParameter) + QString(" = "));
             audioManager->itemMutex->unlock();
             // qDebug()<<"show ok";
         } );

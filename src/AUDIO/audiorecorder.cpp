@@ -9,6 +9,7 @@
 #define AL_ALEXT_PROTOTYPES
 #include <AL/alc.h>
 
+#include <AudioProgressDialog.h>
 #include <QDir>
 #include <QVariant>
 #include <audiofileprocessor.h>
@@ -332,10 +333,22 @@ bool AudioRecorder::saveRecording(const QString &tempFilePath, const QString &fi
     //QString tempFilePath = QDir::tempPath() + "/temp_audio.wav";  // 临时保存为 WAV
     // 使用转换模块保存为用户指定的格式
     AudioFileProcessor processor;
-    processor.setInputFile(tempFilePath);
+
+    //processor.setInputFile(tempFilePath);
 
     QString error;
-    if (!processor.convertAndExport(filePath, format, &error)) {
+
+    AudioProgressDialog dialog;
+    dialog.show();
+
+    bool ok = processor.convertAndExport(
+        tempFilePath,
+        filePath,
+        format
+        );
+
+    dialog.close();
+    if (!ok) {
         qWarning() << "保存失败：" << error;
         return false;
     }

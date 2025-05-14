@@ -30,7 +30,26 @@ OcclusionFilterPanel::OcclusionFilterPanel(QWidget *parent)
         audioManager->updateEffectSlots();
     });
     m_waveformTimer->start(33); // ~30fps
+
+    for (const auto& t : filterTemplates)
+        ui->templateComboBox->addItem(t.name);
+
+    connect(ui->loadTemplateButton, &QPushButton::clicked, this, &OcclusionFilterPanel::onLoadTemplateClicked);
+
 }
+
+void OcclusionFilterPanel::onLoadTemplateClicked() {
+    int index = ui->templateComboBox->currentIndex();
+    if (index < 0 || index >= filterTemplates.size()) return;
+
+    const auto& t = filterTemplates[index];
+    ui->knobGain->setValue(t.gain * 100);
+    ui->knobGainHF->setValue(t.gainHF * 100);
+    ui->knobGainLF->setValue(t.gainLF * 100);
+
+    emit filterChanged();
+}
+
 
 QSize OcclusionFilterPanel::sizeHint() const {
     return QSize(0, 0); // 控制在合理范围内

@@ -139,7 +139,7 @@ void StackPanel::togglePanel()
 void StackPanel::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        int hitSize = 10;
+        int hitSize = 20;
         QRect leftEdge(0, 0, hitSize, height());
         QRect bottomEdge(0, height() - hitSize, width(), hitSize);
         QRect bottomLeftCorner(0, height() - hitSize, hitSize, hitSize);

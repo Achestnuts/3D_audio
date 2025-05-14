@@ -19,6 +19,150 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* StackPanel 主体区域 */
+QWidget#StackPanel {
+    background-color: #fafafa;
+    border-left: 1px solid #dcdcdc;
+}
+
+/* 页面容器（StackPanel 内每页） */
+QWidget[panelPage=&quot;true&quot;] {
+    background-color: #ffffff;
+    border: none;
+}
+
+/* 通用标签 */
+QLabel {
+    color: #333333;
+    font-size: 13px;
+}
+
+/* 输入框样式 */
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 13px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #4A90E2;
+}
+
+/* 下拉框 */
+QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 13px;
+}
+
+QComboBox:hover {
+    border: 1px solid #4A90E2;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    selection-background-color: #e6f0ff;
+    selection-color: #000000;
+    border: 1px solid #c0c0c0;
+    outline: none;
+}
+
+/* 按钮样式 */
+QPushButton {
+    background-color: #f0f0f0;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #333333;
+}
+
+QPushButton:hover {
+    background-color: #e0e0e0;
+    border-color: #4A90E2;
+}
+
+QPushButton:pressed {
+    background-color: #d0d0d0;
+}
+
+/* 滚动区域 */
+QScrollArea {
+    border: none;
+    background-color: transparent;
+}
+
+QScrollBar:vertical, QScrollBar:horizontal {
+    background: transparent;
+    border: none;
+    width: 8px;
+    height: 8px;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #c0c0c0;
+    border-radius: 4px;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    background: none;
+    border: none;
+    width: 0px;
+    height: 0px;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+/* 分隔线样式 */
+QFrame[frameShape=&quot;4&quot;] { /* QFrame::HLine */
+    border-top: 1px solid #e0e0e0;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+/* QTabBar 整体样式 */
+QTabBar {
+    background: transparent;
+    qproperty-drawBase: 0;
+}
+
+/* 普通 Tab */
+QTabBar::tab {
+    background: transparent;
+    color: #666;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+/* 悬浮效果 */
+QTabBar::tab:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
+/* 当前选中的 Tab */
+QTabBar::tab:selected {
+    background-color: #A5D9D3;
+    color: white;
+}
+
+/* tab 间距控制（取消下方选中线） */
+QTabBar::tab:selected {
+    margin-bottom: 0;
+}
+
+</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
     <number>0</number>
@@ -65,7 +209,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="PublicParameterPanel" name="publicParameterPanel">
          <property name="sizePolicy">

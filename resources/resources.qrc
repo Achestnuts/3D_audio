@@ -4,10 +4,16 @@
         <file>qss/contentwidget.qss</file>
     </qresource>
     <qresource prefix="/">
-        <file>icons/test.svg</file>
-        <file>icons/play.svg</file>
-        <file>icons/stop.svg</file>
-        <file>music/test2.wav</file>
         <file>icons/listener.svg</file>
+        <file>icons/pause.png</file>
+        <file>icons/play.png</file>
+        <file>icons/silence.png</file>
+        <file>icons/source.png</file>
+        <file>icons/stop.png</file>
+        <file>icons/volume.png</file>
+        <file>icons/close.png</file>
+        <file>icons/max.png</file>
+        <file>icons/min.png</file>
+        <file>icons/window.png</file>
     </qresource>
 </RCC>

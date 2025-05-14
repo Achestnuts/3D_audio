@@ -10,6 +10,21 @@
 #include "ui_occlusionfilterpanel.h"
 #include "occlusionfilter.h"
 
+struct FilterTemplate {
+    QString name;
+    float gain;
+    float gainHF;
+    float gainLF;
+};
+
+const QVector<FilterTemplate> filterTemplates = {
+    { "默认", 0.5f, 0.5f, 0.5f },
+    { "墙体厚", 0.3f, 0.2f, 0.4f },
+    { "玻璃", 0.8f, 0.9f, 0.6f }
+};
+
+
+
 namespace Ui {
 class OcclusionFilterPanel;
 }
@@ -23,6 +38,7 @@ public:
     explicit OcclusionFilterPanel(QWidget *parent = nullptr);
     void setFilter(OcclusionFilter* filter);
 
+    void onLoadTemplateClicked();
 protected:
     QSize sizeHint() const override;
 private slots:

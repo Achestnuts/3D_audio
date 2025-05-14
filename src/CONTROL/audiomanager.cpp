@@ -55,8 +55,11 @@ AudioManager::~AudioManager() {
 }
 
 void AudioManager::updateEffectSlots() {
+    qDebug()<<"accept";
     QMutexLocker lock(&managerMutex);
+    qDebug()<<"manager ok";
     QReadLocker locker(itemMutex.get());
+    qDebug()<<"item ok";
 
     qDebug()<<"正在更新";
     // 假设 listener 和 source 均在 scene 坐标系中，且 sources 存储所有可见声源
@@ -156,7 +159,7 @@ void AudioManager::stopRecordingAndSave() {
 
     recorder->stopRecording();
 
-    QString filePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+    QString filePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.m4a *.flac)");
 
     if (filePath.isEmpty()) {
         return;
@@ -263,9 +266,9 @@ bool AudioManager::isSourceExist(const ALuint &sourceId) {
 
 std::shared_ptr<WallRectItem> AudioManager::createWall()
 {
-    QRectF rect =  QRectF(0, 0, 400, 400);
+    QRectF rect =  QRectF(0, 0, 50, 200);
     std::shared_ptr<WallRectItem> wall = std::make_shared<WallRectItem>(rect);
-    scene->addItem(wall.get());
+    //scene->addItem(wall.get());
     walls[wall->filter.getFilterId()] = wall;
     //wall->setRect(rect);
 

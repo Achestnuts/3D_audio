@@ -6,7 +6,7 @@
 
 MapScene::MapScene(QObject *parent) : QGraphicsScene(parent)
 {
-    setSceneRect(0, 0, 4000, 4000); // 设置一个较大的地图区域
+    setSceneRect(0, 0, 8000, 8000); // 设置一个较大的地图区域
     menu = new QMenu();
     addAction = menu->addAction("添加新组件");
     clearAction = menu->addAction("清空场景");
@@ -20,7 +20,7 @@ void MapScene::addDraggableItem(QGraphicsItem *item)
 void MapScene::drawBackground(QPainter *painter, const QRectF &rect) // 绘制网格
 {
     const int gridSize = GridSize;
-    painter->setPen(QPen(Qt::red, 0.5));
+    painter->setPen(QPen(Qt::gray, 0.5));
     // 获取场景范围
     QRectF sceneRect = this->sceneRect();
 

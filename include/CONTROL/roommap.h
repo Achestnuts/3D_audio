@@ -45,7 +45,7 @@ private:
     std::shared_ptr<QMenu> menu;
 
     // 初始化缩放的上下限
-    double m_minScale = 0.1;
+    double m_minScale = 0.2;
     double m_maxScale = 5.0;
     // 初始化当前缩放比例
     double m_currentScale = 1.0;

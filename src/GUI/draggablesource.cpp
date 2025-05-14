@@ -11,7 +11,7 @@
 
 
 DraggableSource::DraggableSource()
-    : DraggableItem(QString(":/icons/play.svg"))
+    : DraggableItem(QString(":/icons/source.png"))
 {
     std::shared_ptr<RoomMap> roomMap = qvariant_cast<std::shared_ptr<RoomMap>>(qApp->property("RoomMap"));
     roomMap->scene->addItem(this);
@@ -27,18 +27,6 @@ DraggableSource::DraggableSource()
         audioManager->updateEffectSlots();
     });
 
-    // if(setAudioSourceFile()) {
-    //     roomMap->scene->addItem(this);
-    //     setPos(roomMap->mapToScene(roomMap->viewport()->rect().center()));
-    // } else {
-    //     return;
-    // }
-
-
-    // XWidget* xWidget = qvariant_cast<XWidget*>(qApp->property("MainXWidget"));
-    // connect(this, &DraggableSource::itemSelected, xWidget, &XWidget::updateSourceParameterWidget);
-    // std::shared_ptr<XWidget> xWidget = qvariant_cast<std::shared_ptr<XWidget>>(qApp->property("MainXWidget"));
-    // connect(this, &DraggableSource::itemSelected, xWidget->ui->sourceParameterWidget, &SourceParameterWidget::boundSource);
 }
 
 DraggableSource::~DraggableSource() {

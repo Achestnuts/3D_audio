@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
-    <height>712</height>
+    <width>287</width>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,239 +38,38 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-18</y>
-        <width>465</width>
-        <height>711</height>
+        <y>-159</y>
+        <width>461</width>
+        <height>760</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QWidget" name="nameWidget" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="nameEdit">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="nameLabel">
-            <property name="text">
-             <string>声源名称：</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="2" column="2">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
-       <item>
-        <widget class="QWidget" name="roomSizeWidget" native="true">
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="1" column="0">
-           <widget class="QLabel" name="roomSizeLabel">
-            <property name="text">
-             <string>估算房间大小（roomSize）：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="roomSizeValue">
-            <property name="text">
-             <string>0</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="decayTimeWidget" native="true">
-         <layout class="QGridLayout" name="decayTimeWidgetLayout">
-          <item row="1" column="6">
-           <widget class="QLabel" name="decayTimeMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="decayTimeLabel">
-            <property name="text">
-             <string>衰减时间：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="7">
-           <widget class="QLabel" name="decayTimeRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="decayTimePlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="decayTimeIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="decayTimeFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="decayTimeValue">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="reflectionsDelayWidget" native="true">
-         <layout class="QGridLayout" name="reflectionDelayWidgetLayout">
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="reflectionsDelayFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="7">
-           <widget class="QLabel" name="reflectionsDelayRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="reflectionsDelayIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="reflectionsDelayPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QLabel" name="reflectionsDelayMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="reflectionsDelayLabel">
-            <property name="text">
-             <string>反射延迟：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="reflectionsDelayValue">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="lateReverbDelayWidget" native="true">
-         <layout class="QGridLayout" name="lateReverbDelayWidgetLayout">
-          <item row="1" column="7">
-           <widget class="QLabel" name="lateReverbDelayRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="lateReverbDelayFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QLabel" name="lateReverbDelayMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="lateReverbDelayLabel">
-            <property name="text">
-             <string>混响延迟：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="lateReverbDelayPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="lateReverbDelayIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="lateReverbDelayValue">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
+       <item row="7" column="1">
         <widget class="QWidget" name="gainWidget" native="true">
          <layout class="QGridLayout" name="gainWidgetLayout">
           <item row="1" column="4">
@@ -331,11 +130,72 @@
          </layout>
         </widget>
        </item>
-       <item>
-        <widget class="QWidget" name="reflectionsGainWidget" native="true">
-         <layout class="QGridLayout" name="reflectionsGainWidgetLayout">
+       <item row="4" column="1">
+        <widget class="QWidget" name="decayTimeWidget" native="true">
+         <layout class="QGridLayout" name="decayTimeWidgetLayout">
+          <item row="1" column="1">
+           <widget class="QLabel" name="decayTimeValue">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="decayTimeLabel">
+            <property name="text">
+             <string>衰减时间：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="decayTimeRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="decayTimePlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="5">
-           <widget class="QLineEdit" name="reflectionsGainFactor">
+           <widget class="QLineEdit" name="decayTimeFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="decayTimeIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="decayTimeMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QWidget" name="reflectionsDelayWidget" native="true">
+         <layout class="QGridLayout" name="reflectionDelayWidgetLayout">
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="reflectionsDelayFactor">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -345,35 +205,14 @@
            </widget>
           </item>
           <item row="1" column="7">
-           <widget class="QLabel" name="reflectionsGainRoomSize">
+           <widget class="QLabel" name="reflectionsDelayRoomSize">
             <property name="text">
              <string>roomSize</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="reflectionsGainLabel">
-            <property name="text">
-             <string>反射增益：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="reflectionsGainPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QLabel" name="reflectionsGainMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="2">
-           <widget class="QLineEdit" name="reflectionsGainIntercept">
+           <widget class="QLineEdit" name="reflectionsDelayIntercept">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -382,8 +221,29 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="reflectionsDelayPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="reflectionsDelayMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="reflectionsDelayLabel">
+            <property name="text">
+             <string>反射延迟：</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="reflectionsGainValue">
+           <widget class="QLabel" name="reflectionsDelayValue">
             <property name="text">
              <string>TextLabel</string>
             </property>
@@ -392,190 +252,20 @@
          </layout>
         </widget>
        </item>
-       <item>
-        <widget class="QWidget" name="lateReverbGainWidget" native="true">
-         <layout class="QGridLayout" name="lateReverbGainLayout">
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="lateReverbGainIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="lateReverbGainLabel">
-            <property name="text">
-             <string>后期混响增益：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="lateReverbGainFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="7">
-           <widget class="QLabel" name="lateReverbGainRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QLabel" name="lateReverbGainMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="lateReverbGainPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="lateReverbGainValue">
-            <property name="text">
-             <string>l</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+       <item row="2" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
-       <item>
-        <widget class="QWidget" name="airAbsorptionHFWidget" native="true">
-         <layout class="QGridLayout" name="airAbsorptionHFLayout">
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="airAbsorptionHFIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="7">
-           <widget class="QLabel" name="airAbsorptionHFRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="airAbsorptionHFLabel">
-            <property name="text">
-             <string>高频空气吸收：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QLabel" name="airAbsorptionHFMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="airAbsorptionHFFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="airAbsorptionHFPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="airAbsorptionHFValue">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="decayHFRatioWidget" native="true">
-         <layout class="QGridLayout" name="decayHFRatioWidgetLayout">
-          <item row="1" column="0">
-           <widget class="QLabel" name="decayHFRatioLabel">
-            <property name="text">
-             <string>高频衰减比：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="6">
-           <widget class="QLabel" name="decayHFRatioMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="decayHFRatioIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="decayHFRatioPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="decayHFRatioFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="7">
-           <widget class="QLabel" name="decayHFRatioRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="decayHFRatioValue">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
+       <item row="12" column="1">
         <widget class="QWidget" name="decayLFRatioWidget" native="true">
          <layout class="QGridLayout" name="decayLFRatioLayout">
           <item row="1" column="6">
@@ -636,7 +326,462 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="8" column="1">
+        <widget class="QWidget" name="reflectionsGainWidget" native="true">
+         <layout class="QGridLayout" name="reflectionsGainWidgetLayout">
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="reflectionsGainFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="reflectionsGainRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="reflectionsGainLabel">
+            <property name="text">
+             <string>反射增益：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="reflectionsGainPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="reflectionsGainMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="reflectionsGainIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="reflectionsGainValue">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QWidget" name="roomSizeWidget" native="true">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="1" column="0">
+           <widget class="QLabel" name="roomSizeLabel">
+            <property name="text">
+             <string>估算房间大小（roomSize）：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="roomSizeValue">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QWidget" name="nameWidget" native="true">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="nameEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="nameLabel">
+            <property name="text">
+             <string>声源名称：</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QWidget" name="lateReverbDelayWidget" native="true">
+         <layout class="QGridLayout" name="lateReverbDelayWidgetLayout">
+          <item row="1" column="7">
+           <widget class="QLabel" name="lateReverbDelayRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="lateReverbDelayFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="lateReverbDelayMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lateReverbDelayLabel">
+            <property name="text">
+             <string>混响延迟：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="lateReverbDelayPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="lateReverbDelayIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="lateReverbDelayValue">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QWidget" name="airAbsorptionHFWidget" native="true">
+         <layout class="QGridLayout" name="airAbsorptionHFLayout">
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="airAbsorptionHFIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="airAbsorptionHFRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="airAbsorptionHFLabel">
+            <property name="text">
+             <string>高频空气吸收：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="airAbsorptionHFMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="airAbsorptionHFFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="airAbsorptionHFPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="airAbsorptionHFValue">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="14" column="1">
+        <widget class="QWidget" name="densityWidget" native="true">
+         <layout class="QGridLayout" name="densityLayout">
+          <item row="1" column="6">
+           <widget class="QLabel" name="densityMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="densityPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="densityRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="densityLabel">
+            <property name="text">
+             <string>密度：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="densityFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="densityIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="densityValue">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QWidget" name="lateReverbGainWidget" native="true">
+         <layout class="QGridLayout" name="lateReverbGainLayout">
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="lateReverbGainIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lateReverbGainLabel">
+            <property name="text">
+             <string>后期混响增益：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="lateReverbGainFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="lateReverbGainRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="lateReverbGainMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="lateReverbGainPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="lateReverbGainValue">
+            <property name="text">
+             <string>lTextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QComboBox" name="templateComboBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>3</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="loadTemplateButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>载入</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="11" column="1">
+        <widget class="QWidget" name="decayHFRatioWidget" native="true">
+         <layout class="QGridLayout" name="decayHFRatioWidgetLayout">
+          <item row="1" column="0">
+           <widget class="QLabel" name="decayHFRatioLabel">
+            <property name="text">
+             <string>高频衰减比：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="6">
+           <widget class="QLabel" name="decayHFRatioMultiplacation">
+            <property name="text">
+             <string> * </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="decayHFRatioIntercept">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="decayHFRatioPlus">
+            <property name="text">
+             <string> + </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QLineEdit" name="decayHFRatioFactor">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="7">
+           <widget class="QLabel" name="decayHFRatioRoomSize">
+            <property name="text">
+             <string>roomSize</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="decayHFRatioValue">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="13" column="1">
         <widget class="QWidget" name="diffusionWidget" native="true">
          <layout class="QGridLayout" name="diffussionLayout">
           <item row="1" column="6">
@@ -697,66 +842,18 @@
          </layout>
         </widget>
        </item>
-       <item>
-        <widget class="QWidget" name="densityWidget" native="true">
-         <layout class="QGridLayout" name="densityLayout">
-          <item row="1" column="6">
-           <widget class="QLabel" name="densityMultiplacation">
-            <property name="text">
-             <string> * </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="densityPlus">
-            <property name="text">
-             <string> + </string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="7">
-           <widget class="QLabel" name="densityRoomSize">
-            <property name="text">
-             <string>roomSize</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="densityLabel">
-            <property name="text">
-             <string>密度：</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <widget class="QLineEdit" name="densityFactor">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="densityIntercept">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLabel" name="densityValue">
-            <property name="text">
-             <string>TextLabel</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+       <item row="15" column="1">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

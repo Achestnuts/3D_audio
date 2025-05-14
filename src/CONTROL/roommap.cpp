@@ -76,7 +76,7 @@ void RoomMap::dropEvent(QDropEvent *event) {
         if (dialog.choice() == AudioImportDialog::ImportAsSource) {
             addFileToSource(filePath);
         } else if (dialog.choice() == AudioImportDialog::ConvertFormat) {
-            QString saveFilePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+            QString saveFilePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.m4a *.flac)");
 
             if (filePath.isEmpty()) {
                 return;
@@ -86,12 +86,17 @@ void RoomMap::dropEvent(QDropEvent *event) {
             QFileInfo fileInfo(saveFilePath);
             QString fileExtension = fileInfo.suffix().toLower();
 
-            QtConcurrent::run([=]() {
-                // 根据选择的扩展名，保存音频文件
-                if (!audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
-                    qWarning() << "保存录音文件失败";
-                }
-            });
+            // 根据选择的扩展名，保存音频文件
+            if (!audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
+                qWarning() << "保存录音文件失败";
+            }
+
+            // QtConcurrent::run([=]() {
+            //     // 根据选择的扩展名，保存音频文件
+            //     if (!audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
+            //         qWarning() << "保存录音文件失败";
+            //     }
+            // });
         }
     }
 }
@@ -162,16 +167,18 @@ void RoomMap::addSource()
     std::shared_ptr<DraggableSource> source;
 
     QString filepath = QFileDialog::getOpenFileName(nullptr, "选择音频文件", "",
-                                                    "目标音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+                                                    "目标音频文件 (*.mp3 *.ogg *.wav *.acc *.m4a *.flac)");
     if(!filepath.isEmpty()) {
         source = std::make_shared<DraggableSource>();
         // qDebug()<<"分配指针完成";
         source->setAudioSourceFile(filepath);
         audioManager->sources[source->boundSource->sourceId] = source;
         // qDebug()<<"音频文件设置完成";
-        // scene->addItem(source.get());
-        source->setPos(mapToScene(viewport()->rect().center()));
+        //scene->addItem(source.get());
+        source->setPosition(mapToScene(viewport()->rect().center()));
+        //source->update();
     }
+
     // if (item->setAudioSourceFile()) {
     //     //item->setAudioSource("source" + QString::fromStdString(std::to_string(rand())));
     //     qDebug()<<"成功绑定";
@@ -190,9 +197,12 @@ void RoomMap::addFileToSource(const QString& filepath)
         source->setAudioSourceFile(filepath);
         audioManager->sources[source->boundSource->sourceId] = source;
         // qDebug()<<"音频文件设置完成";
-        // scene->addItem(source.get());
-        source->setPos(mapToScene(viewport()->rect().center()));
+        //scene->addItem(source.get());
+        source->setPosition(mapToScene(viewport()->rect().center()));
+        //source->update();
+
     }
+
     // if (item->setAudioSourceFile()) {
     //     //item->setAudioSource("source" + QString::fromStdString(std::to_string(rand())));
     //     qDebug()<<"成功绑定";

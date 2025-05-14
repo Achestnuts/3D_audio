@@ -1,0 +1,45 @@
+{
+    "gridSize": 0.20000000298023224,
+    "sources": [
+        {
+            "airAbsorptionHFFactor": -9.999999747378752e-05,
+            "airAbsorptionHFIntercept": 0.9940000176429749,
+            "decayHFRatioFactor": -0.004999999888241291,
+            "decayHFRatioIntercept": 1,
+            "decayLFRatioFactor": 0.003000000026077032,
+            "decayLFRatioIntercept": 1,
+            "decayTimeFactor": 0.30000001192092896,
+            "decayTimeIntercept": 0.5,
+            "densityFactor": -0.0020000000949949026,
+            "densityIntercept": 0.6000000238418579,
+            "diffusionFactor": 0.004999999888241291,
+            "diffusionIntercept": 0.800000011920929,
+            "gainFactor": -0.03999999910593033,
+            "gainIntercept": 1.5,
+            "lateReverbDelayFactor": 0.0010000000474974513,
+            "lateReverbDelayIntercept": 0,
+            "lateReverbGainFactor": -0.009999999776482582,
+            "lateReverbGainIntercept": 1.7999999523162842,
+            "posX": 1951.2598876953125,
+            "posY": 2098.718994140625,
+            "reflectionsDelayFactor": 0.004999999888241291,
+            "reflectionsDelayIntercept": 0,
+            "reflectionsGainFactor": -0.014999999664723873,
+            "reflectionsGainIntercept": 1.2000000476837158,
+            "sourceFilePath": "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/lia.wav",
+            "sourceName": "source17688",
+            "volume": 1
+        }
+    ],
+    "walls": [
+        {
+            "filterGain": 0,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 100,
+            "leftTopX": 1450,
+            "leftTopY": 2000,
+            "width": 500
+        }
+    ]
+}

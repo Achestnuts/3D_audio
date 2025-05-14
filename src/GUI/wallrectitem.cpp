@@ -29,9 +29,11 @@ WallRectItem::WallRectItem(const QRectF rect, QGraphicsItem *parent)
     });
 
     std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+
     mutex = audioManager->itemMutex;
-    connect(this, &WallRectItem::needUpdateEffect, [audioManager](){
+    connect(this, &WallRectItem::needUpdateEffect, [=](){
         audioManager->updateEffectSlots();
+        qDebug()<<audioManager->gridMeter;
     });
 
     initMenu();
@@ -48,12 +50,15 @@ void WallRectItem::initMenu()
     menu = new QMenu();
     QAction *deleteAction = menu->addAction("删除");
 
-    connect(deleteAction, &QAction::triggered, [this] () {
-        QMutex mutex;
-        QMutexLocker locker(&mutex);
+    connect(deleteAction, &QAction::triggered, [=] () {
         std::shared_ptr<AudioManager> manager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+        //mutex->lockForWrite();
         manager->removeWallRectItem(filter.getFilterId());
+        qDebug()<<"prepare for emit";
         emit needUpdateEffect();
+        qDebug()<<"finish for emit";
+        manager->updateEffectSlots();
+        //mutex->unlock();
     });
 }
 
@@ -229,14 +234,14 @@ void WallRectItem::resizeItem(const QPointF &pos) {
     }
 
     // 保持最小尺寸
-    if (newRect.width() < 100) {
+    if (newRect.width() < 50) {
         if (m_resizeMode == ResizeLeft || m_resizeMode == ResizeTopLeft || m_resizeMode == ResizeBottomLeft)
             newRect.setLeft(newRect.right() - 100);
         else
             newRect.setRight(newRect.left() + 100);
     }
 
-    if (newRect.height() < 100) {
+    if (newRect.height() < 50) {
         if (m_resizeMode == ResizeTop || m_resizeMode == ResizeTopLeft || m_resizeMode == ResizeTopRight)
             newRect.setTop(newRect.bottom() - 100);
         else

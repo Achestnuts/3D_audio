@@ -54,7 +54,7 @@ bool AudioSource::loadFromFile(const std::string &filePath) {
         // fileInfo.absoluteDir().mkpath(".");
         // 非 WAV 格式，需转码
         AudioFileProcessor processor;
-        processor.setInputFile(effectivePath);
+        //processor.setInputFile(effectivePath);
 
         qDebug()<<tempTemplate;
 
@@ -67,9 +67,9 @@ bool AudioSource::loadFromFile(const std::string &filePath) {
         tempWavPath = tempFile.fileName();
         tempFile.close();
 
-        QString error;
-        if (!processor.convertAndExport(tempWavPath, "wav", &error)) {
-            qWarning() << "转码失败：" << error;
+
+        if (!processor.convertAndExport(effectivePath, tempWavPath, "wav")) {
+            qWarning() << "转码失败：";
             return false;
         }
 
@@ -79,10 +79,10 @@ bool AudioSource::loadFromFile(const std::string &filePath) {
     // 加载 WAV 文件
     bool result = loadWavFile(effectivePath.toStdString());
 
-    // 清理临时文件
-    // if (!tempWavPath.isEmpty()) {
-    //     QFile::remove(tempWavPath);
-    // }
+    //清理临时文件
+    if (!tempWavPath.isEmpty()) {
+        QFile::remove(tempWavPath);
+    }
 
     return result;
 }

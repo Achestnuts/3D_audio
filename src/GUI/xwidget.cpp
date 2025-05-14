@@ -141,7 +141,7 @@ void XWidget::dropEvent(QDropEvent *event) {
         if (dialog.choice() == AudioImportDialog::ImportAsSource) {
             ui->roomMap->addFileToSource(filePath);
         } else if (dialog.choice() == AudioImportDialog::ConvertFormat) {
-            QString saveFilePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.flac)");
+            QString saveFilePath = QFileDialog::getSaveFileName(nullptr, "保存音频", QDir::currentPath(), "音频文件 (*.mp3 *.ogg *.wav *.acc *.m4a *.flac)");
 
             if (filePath.isEmpty()) {
                 return;
@@ -151,12 +151,17 @@ void XWidget::dropEvent(QDropEvent *event) {
             QFileInfo fileInfo(saveFilePath);
             QString fileExtension = fileInfo.suffix().toLower();
 
-            QtConcurrent::run([=]() {
-                // 根据选择的扩展名，保存音频文件
-                if (!ui->roomMap->audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
-                    qWarning() << "保存录音文件失败";
-                }
-            });
+            // 根据选择的扩展名，保存音频文件
+            if (!ui->roomMap->audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
+                qWarning() << "保存录音文件失败";
+            }
+
+            // QtConcurrent::run([=]() {
+            //     // 根据选择的扩展名，保存音频文件
+            //     if (!ui->roomMap->audioManager->recorder->saveRecording(filePath, saveFilePath, fileExtension)) {
+            //         qWarning() << "保存录音文件失败";
+            //     }
+            // });
 
         }
     }
