@@ -21,19 +21,21 @@ PublicParameterPanel::PublicParameterPanel(QWidget *parent)
     setMinimumSize(0, 0);
     setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    AudioManager* audioManager = qvariant_cast<AudioManager*>(qApp->property("AudioManager"));
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
     std::shared_ptr<RoomMap> roomMap = qvariant_cast<std::shared_ptr<RoomMap>>(qApp->property("RoomMap"));
 
     ui->gridMeterEdit->setText(QString::number(roomMap->audioManager->gridMeter));
     connect(ui->gridMeterEdit, &QLineEdit::editingFinished, this, [=]() {
+        qDebug()<<"before";
         audioManager->gridMeter = ui->gridMeterEdit->text().toFloat();
+        qDebug()<<"what's wrong?";
     });
 
-    connect(ui->startButton, &QPushButton::clicked, [=](){
+    connect(ui->startRecordButton, &QPushButton::clicked, [=](){
         roomMap->audioManager->startRecording();
     });
 
-    connect(ui->stopButton, &QPushButton::clicked, [=](){
+    connect(ui->stopRecordButton, &QPushButton::clicked, [=](){
         roomMap->audioManager->stopRecordingAndSave();
 
     });
@@ -44,6 +46,16 @@ PublicParameterPanel::PublicParameterPanel(QWidget *parent)
 
     connect(ui->sceneLoadButton, &QPushButton::clicked, [=]() {
         roomMap->loadSceneFile();
+    });
+
+    connect(ui->startPlayButton, &QPushButton::clicked, [=](){
+        roomMap->audioManager->playAll();
+
+    });
+
+    connect(ui->pausePlayButton, &QPushButton::clicked, [=](){
+        roomMap->audioManager->pauseAll();
+
     });
 
     qDebug()<<"public setup";

@@ -62,7 +62,7 @@ void DraggableListener::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 
 void DraggableListener::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
-    menu->exec(event->screenPos());
+    //menu->exec(event->screenPos());
 }
 void DraggableListener::initMenu(){
 

@@ -37,6 +37,8 @@ AudioSourcePanel::AudioSourcePanel(QWidget *parent)
         m_isDragging = false;
     });
 
+    qApp->setProperty("AudioSourcePanel", QVariant::fromValue(this)); // 存储指针
+
 }
 
 AudioSourcePanel::~AudioSourcePanel() {
@@ -48,8 +50,11 @@ QSize AudioSourcePanel::sizeHint() const {
 }
 
 void AudioSourcePanel::setSource(AudioSource* source) {
+    if(m_source)qDebug()<<"pre set, sourceid is:"<<m_source;
+    disconnectSource();
     m_source = source;
     if (m_source) {
+        qDebug()<<"set it, souceid is:"<<m_source;
         ui->volumeSlider->setValue(static_cast<int>(m_source->volume * 100));
         m_durationSeconds = m_source->duration;  // 在 AudioSource 中补充 duration 读取
     }
@@ -68,17 +73,14 @@ void AudioSourcePanel::onPlayPauseClicked() {
     if (!m_source) return;
     if (m_source->isPlaying()) {
         m_source->pause();
-        ui->playPauseButton->setText("播放");
     } else {
         m_source->play();
-        ui->playPauseButton->setText("暂停");
     }
 }
 
 void AudioSourcePanel::onStopClicked() {
     if (!m_source) return;
     m_source->stop();
-    ui->playPauseButton->setText("播放");
     ui->progressSlider->setValue(0);
 }
 
@@ -97,7 +99,15 @@ void AudioSourcePanel::onProgressChanged() {
 }
 
 void AudioSourcePanel::updateProgress() {
-    if (!m_source || !m_source->isPlaying() || m_isDragging) return;
+    if(!m_source)return;
+    // 根据状态切换图标
+    if (m_source->isPlaying()) {
+        ui->playPauseButton->setIcon(QIcon(":/icons/pause.png"));  // 状态为真时显示开启图片
+    } else {
+        ui->playPauseButton->setIcon(QIcon(":/icons/play.png")); // 状态为假时显示关闭图片
+    }
+
+    if (!m_source->isPlaying() || m_isDragging) return;
 
     float offset = 0.0f;
     alGetSourcef(m_source->sourceId, AL_SEC_OFFSET, &offset);
@@ -111,6 +121,8 @@ void AudioSourcePanel::updateProgress() {
             int s = static_cast<int>(sec) % 60;
             return QString("%1:%2").arg(m, 2, 10, QChar('0')).arg(s, 2, 10, QChar('0'));
         };
+
+        qDebug()<<"pre update offset:"<<offset;
 
         ui->labelProgress->setText(
             formatTime(offset) + " / " + formatTime(m_durationSeconds));

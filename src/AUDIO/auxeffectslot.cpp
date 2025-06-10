@@ -25,7 +25,7 @@ AuxEffectSlot::AuxEffectSlot() {
     lateReverbDelayIntercept = 0.0f;
     lateReverbDelayFactor = 0.001f;
     gainIntercept = 1.5f;
-    gainFactor = -0.04f;
+    gainFactor = -0.4f;
     reflectionsGainIntercept = 1.2f;
     reflectionsGainFactor = -0.015f;
     lateReverbGainIntercept = 1.8f;

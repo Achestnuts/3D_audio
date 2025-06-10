@@ -92,6 +92,8 @@ qDebug()<<"finish set";
         }
     });
 
+    setWindowIcon(QIcon(":/icons/true_music.ico"));
+
 }
 
 XWidget::~XWidget() {
@@ -316,25 +318,27 @@ void XWidget::mouseMoveEvent(QMouseEvent *event)
             m_pressPoint += m_movePoint;
         } else {
             // 全屏拖动
-            if (!m_bIsDoublePressed && isWidgetSizeGreaterScreenSize()) {
+            if (!m_bIsDoublePressed/* && isWidgetSizeGreaterScreenSize()*/) {
                 // setGeometry(QRect(400, 400, 600, 500));
                 //setWindowState(Qt::WindowMaximized);
-                restoreWidget();
+                if(isWidgetSizeGreaterScreenSize())restoreWidget();
                 // 根据拖拽百分比移动窗口
-                QPointF point(width() * ((double)(event->globalPosition().x())/QApplication::primaryScreen()->availableSize().width()),
-                              height() * ((double)(event->globalPosition().y())/QApplication::primaryScreen()->availableSize().height()));
+                // QPointF point(width() * ((double)(event->globalPosition().x())/QApplication::primaryScreen()->availableSize().width()),
+                //               height() * ((double)(event->globalPosition().y())/QApplication::primaryScreen()->availableSize().height()));
 
-                move((event->globalPosition() - point.toPoint()).toPoint());
-
-                m_pressPoint = event->globalPosition();
-            }
-            // 非全屏拖动
-            else {
+                // move((event->globalPosition() - point.toPoint()).toPoint());
                 QPointF point = event->globalPosition() - m_pressPoint;
                 move((pos() + point).toPoint());
 
                 m_pressPoint = event->globalPosition();
             }
+            // // 非全屏拖动
+            // else {
+            //     QPointF point = event->globalPosition() - m_pressPoint;
+            //     move((pos() + point).toPoint());
+
+            //     m_pressPoint = event->globalPosition();
+            // }
         }
     }
     // 更新游标
@@ -541,6 +545,7 @@ void XWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     // 检查是否是鼠标左键双击
     if (event->button() == Qt::LeftButton) {
         m_bIsDoublePressed = true;
+        m_bIsPressed = false;
         // 获取双击的坐标
         QPoint pos = event->pos();
         // 这里可以添加你的双击事件处理代码

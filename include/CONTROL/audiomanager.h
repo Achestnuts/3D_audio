@@ -40,6 +40,7 @@ public:
     //void playSingal(const ALuint &sourceId);
     void playAll();
     void stopAll();
+    void pauseAll();
     bool isSourceExist(const ALuint &sourceId);
     void removeWallRectItem(const ALuint &filterId);
     bool listenerIsExist(std::shared_ptr<Listener> checkListener);
@@ -66,7 +67,7 @@ public:
     void stopRecordingAndSave();
     void startRecording();
 
-private:
+
     ALCdevice *device;
     ALCcontext *context;
 

@@ -59,16 +59,16 @@ struct WallLineSegment {
     bool existIntersection(const QPointF& p1, const QPointF& p2) const {
         QLineF path(p1, p2);
         QLineF wallEdge(frontEnd, backEnd);
-        qDebug()<<"lineA:"<<path;
-        qDebug()<<"lineB:"<<wallEdge;
+        // qDebug()<<"lineA:"<<path;
+        // qDebug()<<"lineB:"<<wallEdge;
 
         QPointF intersection;
         if (path.intersects(wallEdge, &intersection) == QLineF::BoundedIntersection) {
-            qDebug()<<"yes";
+            // qDebug()<<"yes";
             return true;
         }
         else {
-            qDebug()<<"no";
+            // qDebug()<<"no";
             return false;
         }
     }
@@ -81,7 +81,7 @@ class ParameterCalculationEngine
 {
 public:
     ParameterCalculationEngine();
-    static std::list<WallLineSegment> lineSplit(std::list<WallLineSegment> &walls);
+    static std::list<WallLineSegment> lineSplit(QPointF sourcePoint, std::list<WallLineSegment> &walls, std::list<WallLineSegment> otherWalls);
     static void estimateQuarterAreaAndRadianAndReflection(
         QPointF source,
         const std::list<WallLineSegment> &walls,

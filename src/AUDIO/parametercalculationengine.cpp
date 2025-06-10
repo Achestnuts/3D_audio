@@ -4,7 +4,22 @@
 ParameterCalculationEngine::ParameterCalculationEngine() {}
 
 
-std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(std::list<WallLineSegment> & walls) {
+// 计算向量叉积：(p1-p0) × (p2-p0)
+double cross(const QPointF& p0, const QPointF& p1, const QPointF& p2) {
+    return (p1.x() - p0.x()) * (p2.y() - p0.y()) - (p1.y() - p0.y()) * (p2.x() - p0.x());
+}
+
+// 计算从点p出发，经过点a的射线与线段b1-b2所在直线的交点
+QPointF rayLineIntersection(const QPointF& p, const QPointF& a, const QPointF& b1, const QPointF& b2) {
+    double ua = cross(b1, b2, p);
+    double ub = cross(b1, b2, a);
+    double t = ua / (ua - ub);
+
+    return {p.x() + t * (a.x() - p.x()), p.y() + t * (a.y() - p.y())};
+}
+
+std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(
+    QPointF sourcePoint, std::list<WallLineSegment> & walls, std::list<WallLineSegment> otherWalls) {
     // QMutex mutex;
     // QMutexLocker locker(&mutex);
     // 先将墙体线段按距离升序排序
@@ -23,7 +38,12 @@ std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(std::list<WallL
         //  [--------wall-------]
         //  [---splilltedWall---]
         for(auto it = splitedWalls.begin(); it != splitedWalls.end(); it++) {
-            auto splitedWall = *it;
+            auto behindWall = *it;
+            WallLineSegment splitedWall = {
+                rayLineIntersection(sourcePoint, behindWall.frontEnd, wall.frontEnd, wall.backEnd),
+                rayLineIntersection(sourcePoint, behindWall.backEnd, wall.frontEnd, wall.backEnd),
+                wall.distance
+        };
 
             // 后端点小于前端点，全部放入
             //  [--------wall-------]
@@ -76,11 +96,40 @@ std::list<WallLineSegment> ParameterCalculationEngine::lineSplit(std::list<WallL
         }
 
     }
-    qDebug()<<"*********************";
-    qDebug()<<splitedWalls.size()<<"walls were splited";
-    for(auto wall : splitedWalls) {
-        qDebug()<<wall.frontEnd<<"  "<<wall.backEnd;
-    }
+
+    //qDebug()<<"*********************";
+    //qDebug()<<splitedWalls.size()<<"walls were splited";
+    // for(auto wall : splitedWalls) {
+    //     bool eraseIt = false;
+    //     WallLineSegment sourceToWall = {sourcePoint, wall.getMidPoint(), wall.distance};
+    //     for(auto otherWall : otherWalls) {
+    //         if(otherWall.existIntersection(sourceToWall.frontEnd, sourceToWall.backEnd)) {
+    //             eraseIt = true;
+    //             break;
+    //         }
+    //     }
+    //     if(eraseIt) splitedWalls.erase(wall);
+    //     qDebug()<<wall.frontEnd<<"  "<<wall.backEnd;
+    // }
+    // 先标记需要删除的元素
+    auto newEnd = std::remove_if(splitedWalls.begin(), splitedWalls.end(), [&](WallLineSegment& wall) {
+        WallLineSegment sourceToWall = {sourcePoint, wall.getMidPoint(), wall.distance};
+        for (const auto& otherWall : otherWalls) {
+            if (otherWall.existIntersection(sourceToWall.frontEnd, sourceToWall.backEnd)) {
+                return true;  // 需要删除
+            }
+        }
+        return false;  // 保留
+    });
+
+    // 输出未被删除的元素
+    // for (auto it = splitedWalls.begin(); it != newEnd; ++it) {
+    //     qDebug() << it->frontEnd << "  " << it->backEnd;
+    // }
+
+    // 执行删除
+    splitedWalls.erase(newEnd, splitedWalls.end());
+    //qDebug()<<"Now, "<<splitedWalls.size()<<"walls were splited!";
     return splitedWalls;
 }
 
@@ -225,6 +274,7 @@ float ParameterCalculationEngine::calculateEffectParameter(
         QPointF quarterReflection = {0.0, 0.0};
 
         std::list<WallLineSegment> needHandleWalls;
+        std::list<WallLineSegment> otherWalls;
 
         // 遍历所有墙体
         for (auto wallPair : walls) {
@@ -300,11 +350,34 @@ float ParameterCalculationEngine::calculateEffectParameter(
                 needHandleWalls.push_back(needHandleWall);
                 foundWall = true;
             }
+            else {
+                // 插入四边用于判断裁边时阻拦
+                otherWalls.push_back({
+                    {wallLeft, wallTop},
+                    {wallLeft, wallBottom},
+                    wallLeft - srcX
+                });
+                otherWalls.push_back({
+                    {wallRight, wallTop},
+                    {wallRight, wallBottom},
+                    srcX - wallRight
+                });
+                otherWalls.push_back({
+                    {wallLeft, wallBottom},
+                    {wallRight, wallBottom},
+                    srcY - wallBottom
+                });
+                otherWalls.push_back({
+                    {wallLeft, wallTop},
+                    {wallRight, wallTop},
+                    wallTop - srcY
+                });
+            }
         } // end walls loop
 
         if (foundWall) {
             existWall++;
-            std::list<WallLineSegment> handledWalls = ParameterCalculationEngine::lineSplit(needHandleWalls);
+            std::list<WallLineSegment> handledWalls = ParameterCalculationEngine::lineSplit(sourcePoint, needHandleWalls, otherWalls);
             qDebug()<<"the dir is "<<dir;
             //qDebug()<<handledWalls.size()<<"walls were splited";
             ParameterCalculationEngine::estimateQuarterAreaAndRadianAndReflection(

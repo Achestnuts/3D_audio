@@ -1,4 +1,5 @@
 #include "listener.h"
+#include <audiomanager.h>
 #include <qapplication.h>
 
 Q_DECLARE_OPAQUE_POINTER(ALCcontext)
@@ -34,10 +35,14 @@ Listener::Listener()
 
 void Listener::setPosition(float x, float y, float z) {
     std::lock_guard<std::mutex> lock(mtx);
+
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    float gridMeter = audioManager->gridMeter;
+
     posX = x;
     posY = y;
     posZ = z;
-    alListener3f(AL_POSITION, x, y, z);
+    alListener3f(AL_POSITION, x * gridMeter, y * gridMeter, z);
 
     qDebug()<<"now listener is at:"<<x<<","<<y<<","<<z;
 

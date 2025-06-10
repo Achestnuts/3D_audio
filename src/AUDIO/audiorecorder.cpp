@@ -159,7 +159,7 @@ bool AudioRecorder::startRecording(const QString &filename) {
 
     m_isRecording = true;
     m_elapsedSeconds = 0;
-    // 根据缓冲区大小计算精确间隔
+    // 根据采样率大小计算精确间隔
     constexpr int framesPerBuffer = 512;
     const int bufferDurationMs = (framesPerBuffer * 1000) / m_sampleRate;
     m_timer->start(bufferDurationMs); // 512帧 → 约12ms
@@ -338,8 +338,8 @@ bool AudioRecorder::saveRecording(const QString &tempFilePath, const QString &fi
 
     QString error;
 
-    AudioProgressDialog dialog;
-    dialog.show();
+    // AudioProgressDialog dialog;
+    // dialog.show();
 
     bool ok = processor.convertAndExport(
         tempFilePath,
@@ -347,7 +347,7 @@ bool AudioRecorder::saveRecording(const QString &tempFilePath, const QString &fi
         format
         );
 
-    dialog.close();
+    // dialog.close();
     if (!ok) {
         qWarning() << "保存失败：" << error;
         return false;

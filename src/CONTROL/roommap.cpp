@@ -39,7 +39,7 @@ RoomMap::RoomMap(QWidget *parent) : QGraphicsView(parent)
     // audioManager->addAudioSource("source1", "E:/WorkPlace/QT/3D_audio/music/test2.wav", 10.0f, 5.0f, 1.0f);
 
     menu = std::make_shared<QMenu>(this);
-    addObjectAction = std::make_shared<QAction>("创建音源", this);
+    addObjectAction = std::make_shared<QAction>("创建声源", this);
     addWallAction = std::make_shared<QAction>("创建墙体", this);
 
     connect(addObjectAction.get(), &QAction::triggered, this, &RoomMap::addSource);

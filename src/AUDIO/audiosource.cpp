@@ -8,6 +8,7 @@
 #include <audiofileprocessor.h>
 #include <QDir>
 #include <QTemporaryFile>
+#include <audiomanager.h>
 
 Q_DECLARE_OPAQUE_POINTER(ALCcontext)
 Q_DECLARE_OPAQUE_POINTER(ALCcontext*)
@@ -76,6 +77,11 @@ bool AudioSource::loadFromFile(const std::string &filePath) {
         effectivePath = tempWavPath;
     }
 
+    // // 2. 将QString转为系统本地宽字符路径
+    // std::wstring widePath = effectivePath.toStdWString();
+    // // 3. 使用宽字符版本的文件加载函数
+    // bool result = loadWavFileWithWidePath(widePath);
+
     // 加载 WAV 文件
     bool result = loadWavFile(effectivePath.toStdString());
 
@@ -126,7 +132,7 @@ void AudioSource::loadBufferAndArguments() {
     alSourcef(sourceId, AL_GAIN, volume);
 
     // 默认开启衰减
-    setAttenuation(5.0f, 700.0f, 900.0f);
+    setAttenuation(1.0f, 10.0f, 4000.0f);
 
     // 保存播放上下文并切换到录音上下文-------------------------------------------------
     ALCcontext* currentCtx = alcGetCurrentContext();
@@ -142,6 +148,10 @@ void AudioSource::loadBufferAndArguments() {
 }
 
 AudioSource::~AudioSource() {
+    deleteSelf();
+}
+
+void AudioSource::deleteSelf() {
     // 释放 OpenAL 资源
     alDeleteSources(1, &sourceId);
     alDeleteBuffers(1, &sourceBuffer);
@@ -258,16 +268,20 @@ void AudioSource::setVolume(float newVolume) {
 
 void AudioSource::setPosition(float x, float y, float z) {
     std::lock_guard<std::mutex> lock(mtx);
-    qDebug()<<"source is"<<x<<" "<<y<<" "<<z;
+
+    std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
+    float gridMeter = audioManager->gridMeter;
+
+    qDebug()<<"source is"<<x * gridMeter<<" "<<y * gridMeter<<" "<<z;
     posX = x;
     posY = y;
-    alSource3f(sourceId, AL_POSITION, x, y, z);
+    alSource3f(sourceId, AL_POSITION, x * gridMeter, y * gridMeter, z);
 
     // 保存播放上下文并切换到录音上下文-------------------------------------------------
     ALCcontext* currentCtx = alcGetCurrentContext();
     alcMakeContextCurrent(recordCtx);
 
-    alSource3f(mirrorSourceId, AL_POSITION, x, y, z);
+    alSource3f(mirrorSourceId, AL_POSITION, x * gridMeter, y * gridMeter, z);
 
     // 切回原上下文
     alcMakeContextCurrent(currentCtx);

@@ -15,5 +15,6 @@
         <file>icons/max.png</file>
         <file>icons/min.png</file>
         <file>icons/window.png</file>
+        <file>icons/true_music.ico</file>
     </qresource>
 </RCC>

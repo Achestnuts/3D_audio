@@ -13,7 +13,7 @@ SourceParameterWidget::SourceParameterWidget(QWidget *parent)
     // 关闭透明背景属性
     setAttribute(Qt::WA_TranslucentBackground, false);
     setMinimumSize(0, 0);
-    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    // setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     // // 设置子部件的背景样式，例如设置为不透明的白色背景
     // setStyleSheet("background-color: white;");
@@ -21,6 +21,62 @@ SourceParameterWidget::SourceParameterWidget(QWidget *parent)
         ui->templateComboBox->addItem(t.name);
 
     connect(ui->loadTemplateButton, &QPushButton::clicked, this, &SourceParameterWidget::onLoadTemplateClicked);
+
+    qApp->setProperty("SourceParameterWidget", QVariant::fromValue(this)); // 存储指针
+}
+
+void SourceParameterWidget::reset() {
+    auto changeParameter = [=] (QLineEdit* edit, float updateParameter) {
+        edit->setText(QString::number(updateParameter));
+    };
+
+    // 为每个参数字段设置对应的值
+    // 更新和存储每个参数值
+    ui->roomSizeValue->clear();
+
+    changeParameter(ui->decayTimeIntercept, 0);
+    changeParameter(ui->decayTimeFactor, 0);
+    ui->decayTimeValue->clear();
+
+    changeParameter(ui->reflectionsDelayIntercept, 0);
+    changeParameter(ui->reflectionsDelayFactor, 0);
+    ui->reflectionsDelayValue->clear();
+
+    changeParameter(ui->lateReverbDelayIntercept, 0);
+    changeParameter(ui->lateReverbDelayFactor, 0);
+    ui->lateReverbDelayValue->clear();
+
+    changeParameter(ui->gainIntercept, 0);
+    changeParameter(ui->gainFactor, 0);
+    ui->gainValue->clear();
+
+    changeParameter(ui->reflectionsGainIntercept, 0);
+    changeParameter(ui->reflectionsGainFactor, 0);
+    ui->reflectionsGainValue->clear();
+
+    changeParameter(ui->lateReverbGainIntercept, 0);
+    changeParameter(ui->lateReverbGainFactor, 0);
+    ui->lateReverbGainValue->clear();
+
+    changeParameter(ui->airAbsorptionHFIntercept, 0);
+    changeParameter(ui->airAbsorptionHFFactor, 0);
+    ui->airAbsorptionHFValue->clear();
+
+    changeParameter(ui->decayHFRatioIntercept, 0);
+    changeParameter(ui->decayHFRatioFactor, 0);
+    ui->decayHFRatioValue->clear();
+
+    changeParameter(ui->decayLFRatioIntercept, 0);
+    changeParameter(ui->decayLFRatioFactor, 0);
+    ui->decayLFRatioValue->clear();
+
+    changeParameter(ui->diffusionIntercept, 0);
+    changeParameter(ui->diffusionFactor, 0);
+    ui->diffusionValue->clear();
+
+    changeParameter(ui->densityIntercept, 0);
+    changeParameter(ui->densityFactor, 0);
+    ui->densityValue->clear();
 }
 
 void SourceParameterWidget::onLoadTemplateClicked() {
@@ -101,6 +157,7 @@ void SourceParameterWidget::disconnectBound()
     }
 
     ui->nameEdit->disconnect();
+    ui->nameEdit->clear();
 
     ui->decayTimeIntercept->disconnect();
     ui->decayTimeFactor->disconnect();
@@ -152,7 +209,7 @@ void SourceParameterWidget::disconnectBound()
 
 bool SourceParameterWidget::boundSource(DraggableSource *boundSource)
 {
-    disconnect();
+    disconnectBound();
     source = boundSource;
 
     std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
@@ -178,7 +235,7 @@ bool SourceParameterWidget::boundSource(DraggableSource *boundSource)
         connect(eSlot, &AuxEffectSlot::roomSizeChange, [=] (float newRoomSize) {
             // qDebug()<<"pre show";
             audioManager->itemMutex->lockForRead();
-            label->setText(QString::number(*showParameter) + QString(" = "));
+            label->setText(QString::number(*showParameter) + QString(""));
             audioManager->itemMutex->unlock();
             // qDebug()<<"show ok";
         } );

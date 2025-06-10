@@ -9,6 +9,7 @@
 #include <QFileDialog>
 #include <QVector3D>
 #include <QtConcurrent>
+#include <audiosourcepanel.h>
 #include <cmath> // 计算距离
 
 
@@ -57,7 +58,9 @@ AudioManager::~AudioManager() {
 void AudioManager::updateEffectSlots() {
     qDebug()<<"accept";
     QMutexLocker lock(&managerMutex);
+    //managerMutex.lock();
     qDebug()<<"manager ok";
+    //itemMutex->lockForWrite();
     QReadLocker locker(itemMutex.get());
     qDebug()<<"item ok";
 
@@ -82,6 +85,9 @@ void AudioManager::updateEffectSlots() {
         // 更新声源的总过滤器
         source->boundSource->updateFilter();
     } // end sources loop
+
+    // itemMutex->unlock();
+    // managerMutex.unlock();
 }
 
 // ALuint AudioManager::addAudioSource(const QString &filePath, float x, float y, float volume) {
@@ -181,14 +187,20 @@ void AudioManager::startRecording()
 }
 
 void AudioManager::removeAudioSource(const ALuint &sourceId) {
-    // qDebug()<<"即将锁住管理器";
-    QMutexLocker locker(&managerMutex);
+    qDebug()<<"即将锁住管理器";
+    //QMutexLocker lock(&managerMutex);
+    // managerMutex.lock();
     if (sources.find(sourceId) == sources.end()) return;
-    // qDebug()<<sourceId<<"锁住并找到了";
-    alDeleteSources(1, &(sourceId));
-    // qDebug()<<"删除完成";
+    qDebug()<<sourceId<<"锁住并找到了";
+    // emit sources[sourceId]->boundSource->auxEffectSlots.roomSizeChange(0);
+    // alDeleteSources(1, &(sourceId));
+    sources[sourceId]->boundSource->deleteSelf();
+    qDebug()<<"删除完成";
     sources.erase(sourceId);
-    // qDebug()<<"管理器删除完成";
+    qDebug()<<"管理器删除完成";
+
+    // managerMutex.unlock();
+
     return;
 }
 
@@ -237,7 +249,7 @@ void AudioManager::playAll() {
         if(pair.second && pair.second->boundSource->sourceId) {
 
             // qDebug()<<pair.second->sourceId<<"";
-            QtConcurrent::run(playAudioSource, pair.second);
+            pair.second->playVoice();
             //alSourcePlay(pair.second->source);
         } else {
             qDebug()<<"what's wrong?";
@@ -247,8 +259,15 @@ void AudioManager::playAll() {
     qDebug()<<"out of for";
 }
 
+void AudioManager::pauseAll() {
+    //QMutexLocker locker(&managerMutex);
+    for (auto &pair : sources) {
+        pair.second->pauseVoice();
+    }
+}
+
 void AudioManager::stopAll() {
-    QMutexLocker locker(&managerMutex);
+    //QMutexLocker locker(&managerMutex);
     for (auto &pair : sources) {
         pair.second->boundSource->stop();
     }

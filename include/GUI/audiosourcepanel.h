@@ -21,6 +21,8 @@ public:
     void setSource(AudioSource* source);
     void disconnectSource();
 
+    AudioSource *m_source;
+
 protected:
     QSize sizeHint() const override;
 private slots:
@@ -32,7 +34,7 @@ private slots:
 
 private:
     Ui::AudioSourcePanel *ui;
-    AudioSource *m_source;
+
     QTimer *m_timer;
     float m_durationSeconds = 0.0f;
     bool m_isDragging = false;  // 进度条是否被拖拽

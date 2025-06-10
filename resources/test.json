@@ -1,0 +1,63 @@
+{
+    "gridSize": 0.20000000298023224,
+    "sources": [
+        {
+            "airAbsorptionHFFactor": -9.999999747378752e-05,
+            "airAbsorptionHFIntercept": 0.9940000176429749,
+            "decayHFRatioFactor": -0.004999999888241291,
+            "decayHFRatioIntercept": 1,
+            "decayLFRatioFactor": 0.003000000026077032,
+            "decayLFRatioIntercept": 1,
+            "decayTimeFactor": 0.30000001192092896,
+            "decayTimeIntercept": 0.5,
+            "densityFactor": -0.0020000000949949026,
+            "densityIntercept": 0.6000000238418579,
+            "diffusionFactor": 0.004999999888241291,
+            "diffusionIntercept": 0.800000011920929,
+            "gainFactor": -0.03999999910593033,
+            "gainIntercept": 1.5,
+            "lateReverbDelayFactor": 0.0010000000474974513,
+            "lateReverbDelayIntercept": 0,
+            "lateReverbGainFactor": -0.009999999776482582,
+            "lateReverbGainIntercept": 1.7999999523162842,
+            "posX": 3836.710693359375,
+            "posY": 3960.9375,
+            "reflectionsDelayFactor": 0.004999999888241291,
+            "reflectionsDelayIntercept": 0,
+            "reflectionsGainFactor": -0.014999999664723873,
+            "reflectionsGainIntercept": 1.2000000476837158,
+            "sourceFilePath": "E:/WorkPlace/QT/3D_audio_rebuild/3D_audio/resources/music/lia.mp3",
+            "sourceName": "source26490",
+            "volume": 1
+        }
+    ],
+    "walls": [
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 200,
+            "leftTopX": 4000,
+            "leftTopY": 3950,
+            "width": 50
+        },
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 50,
+            "leftTopX": 3650,
+            "leftTopY": 3850,
+            "width": 250
+        },
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 200,
+            "leftTopX": 3600,
+            "leftTopY": 3950,
+            "width": 50
+        }
+    ]
+}

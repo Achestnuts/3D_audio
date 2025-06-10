@@ -37,6 +37,7 @@ qt_add_executable(3D_audio
     ${QRC_PATH}
     ${INCLUDE}
     ${UI_PATH}
+    ico.rc
 )
 
 # 路径到 ffmpeg.exe（放在 assets/ 目录中）
@@ -88,12 +89,26 @@ install(TARGETS 3D_audio
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
+# 安装额外依赖
+install(FILES ${OPENAL_DLL_PATH} DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES ${FFMPEG_EXE} DESTINATION ${CMAKE_INSTALL_BINDIR})
+
 qt_generate_deploy_app_script(
     TARGET 3D_audio
     OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
 install(SCRIPT ${deploy_script})
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_GENERATOR "NSIS")
+set(CPACK_PACKAGE_NAME "3D_audio")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_EXECUTABLES "3D_audio" "3D_audio")
+include(CPack)
+
+install(TARGETS 3D_audio DESTINATION bin)
+
 
 # ├─build
 # │  ├─.qt

@@ -23,8 +23,9 @@ DraggableSource::DraggableSource()
 
     std::shared_ptr<AudioManager> audioManager = qvariant_cast<std::shared_ptr<AudioManager>>(qApp->property("AudioManager"));
     mutex = audioManager->itemMutex;
-    connect(this, &DraggableSource::needUpdateEffect, [audioManager](){
+    connect(this, &DraggableSource::needUpdateEffect, [=](){
         audioManager->updateEffectSlots();
+        //emit boundSource->auxEffectSlots.roomSizeChange(0);
     });
 
 }
@@ -43,31 +44,42 @@ void DraggableSource::disconnectAll() {
 }
 
 void DraggableSource::removeSelf() {
-    mutex->lockForWrite();
+    //mutex->lockForWrite();
+    SourceParameterWidget* sourceParameterWidget = qvariant_cast<SourceParameterWidget*>(qApp->property("SourceParameterWidget"));
     boundSource->stop();
     disconnectAll();
     std::shared_ptr<RoomMap> roomMap = qvariant_cast<std::shared_ptr<RoomMap>>(qApp->property("RoomMap"));
     roomMap->scene->removeItem(this);
+
+    //emit boundSource->auxEffectSlots.roomSizeChange(0);
+
     if(roomMap->audioManager->isSourceExist(boundSource->sourceId)) {
         qDebug()<<"准备删除";
         roomMap->audioManager->removeAudioSource(boundSource->sourceId);
     }
     qDebug()<<"删除完成";
-    mutex->unlock();
+    //mutex->unlock();
     qDebug()<<"解锁";
-    emit needUpdateEffect();
+    if(sourceParameterWidget->source == this) {
+        sourceParameterWidget->reset();
+        sourceParameterWidget->disconnectBound();
+    }
+    //roomMap->audioManager->updateEffectSlots();
+    //emit needUpdateEffect();
 }
 
 void DraggableSource::initMenu()
 {
     menu = new QMenu();
     QAction *playVoiceAction = menu->addAction("播放");
+    QAction *pauseVoiceAction = menu->addAction("暂停");
     QAction *setSourceFileAction = menu->addAction("设置音源");
     QAction *deleteAction = menu->addAction("删除");
 
     connect(playVoiceAction, &QAction::triggered, this, &DraggableSource::playVoice);
+    connect(pauseVoiceAction, &QAction::triggered, this, &DraggableSource::pauseVoice);
     connect(setSourceFileAction, &QAction::triggered, [this]() {
-        QString filepath = QFileDialog::getOpenFileName(nullptr, "选择音频文件", "", "WAV 文件 (*.wav)");
+        QString filepath = QFileDialog::getOpenFileName(nullptr, "选择音频文件", "", "音频文件 (*.mp3 *.ogg *.wav *.acc *.m4a *.flac)");
         if(!filepath.isEmpty()) {
             setAudioSourceFile(filepath);
         }
@@ -92,8 +104,8 @@ bool DraggableSource::setAudioSourceFile(QString filePath)
         // 绑定一下GUI更新数据
         connect(this, &DraggableSource::itemSelected, [this, xWidget](DraggableSource* selectedSource) {
             disconnectAll();
-            xWidget->stackPanel->ui->audioSourcePanel->setSource(boundSource);
-            xWidget->stackPanel->ui->sourceParameterWidget->boundSource(this);
+            xWidget->stackPanel->ui->audioSourcePanel->setSource(selectedSource->boundSource);
+            xWidget->stackPanel->ui->sourceParameterWidget->boundSource(selectedSource);
         });
     } else if(xWidget->ui->roomMap->audioManager->isSourceExist(boundSource->sourceId)) {
         boundSource->switchAudio(sourceFilePath.toStdString());
@@ -153,13 +165,27 @@ void DraggableSource::playVoice()
     mutex->lockForWrite();
 
     if(boundSource) {
-        QtConcurrent::run([this]() {
-            this->boundSource->play();
-        });
+
+        this->boundSource->play();
+        // QtConcurrent::run([this]() {
+        //     this->boundSource->play();
+        // });
     }
 
     mutex->unlock();
     emit needUpdateEffect();
+}
+
+void DraggableSource::pauseVoice()
+{
+    mutex->lockForWrite();
+
+    if(boundSource) {
+        this->boundSource->pause();
+    }
+
+    mutex->unlock();
+    //emit needUpdateEffect();
 }
 
 QJsonObject DraggableSource::toJson() const {

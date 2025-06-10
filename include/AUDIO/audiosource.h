@@ -39,6 +39,8 @@ public:
 
     bool isPlaying() const;
 
+    void deleteSelf();
+
     void initMirrorSource();
     ALCcontext* recordCtx;
     ALuint mirrorSourceId = 0;

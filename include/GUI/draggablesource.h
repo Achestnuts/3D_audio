@@ -37,8 +37,9 @@ signals:
 
 
 
-private slots:
+public slots:
     void playVoice();
+    void pauseVoice();
     void removeSelf();
 
 };

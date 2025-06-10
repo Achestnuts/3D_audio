@@ -1,0 +1,43 @@
+{
+    "gridSize": 0.20000000298023224,
+    "sources": [
+    ],
+    "walls": [
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 50,
+            "leftTopX": 3850,
+            "leftTopY": 4000,
+            "width": 450
+        },
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 350,
+            "leftTopX": 4250,
+            "leftTopY": 4050,
+            "width": 50
+        },
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 50,
+            "leftTopX": 3800,
+            "leftTopY": 4350,
+            "width": 450
+        },
+        {
+            "filterGain": 1,
+            "filterGainHF": 1,
+            "filterGainLF": 1,
+            "height": 350,
+            "leftTopX": 3800,
+            "leftTopY": 4000,
+            "width": 50
+        }
+    ]
+}
